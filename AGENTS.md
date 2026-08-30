@@ -104,6 +104,7 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 - TypeScript を使う場合は `any` 禁止
 - スクリプトは `scripts/` に置き、案件ディレクトリにコピーしない
 - 生成スクリプトは必ず「生成 → PDF 変換 → 画像化して目視確認」まで実行してから完了とする
+- **`.ps1` は UTF-8 **BOM付き** で保存する。**Windows PowerShell 5.1 は BOM がない `.ps1` を ANSI（CP932）として読むため、日本語コメントが化けてパースが壊れる（`MissingEndCurlyBrace`）
 
 ---
 

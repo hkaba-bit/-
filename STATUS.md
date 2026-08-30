@@ -19,6 +19,15 @@
 
 ## 直近
 
+### [2026-08-30] `.ps1` が Windows で実行できないバグを修正 — Claude
+- 成果物: `scripts/sync-skills.ps1` / `scripts/new-project.ps1`（UTF-8 BOM を付与）/ `AGENTS.md` 第6章のコード規約に1行
+- 検証: 両ファイルの先頭3バイトが `EF BB BF` であること、UTF-8 として波括弧の対応が取れていること（9対 / 10対）を確認 ＝ **OK**
+- 判断メモ:
+  - 蒲さんのローカルで `sync-skills.ps1` が `MissingEndCurlyBrace` で落ちた。原因は**こちらのファイル出力**。UTF-8（BOMなし）で書いたため、Windows PowerShell 5.1 が ANSI（CP932）として読み、日本語コメントが化けて `}` を飲み込んでいた
+  - リモート実行環境（Linux）でしか検証していなかったため見逃した。Windows 固有の挙動は実機でしか出ない
+  - 同じ事故を繰り返さないよう `AGENTS.md` 第6章に規約として明記した
+- 残課題: 蒲さんのローカルで `pip` が未認識。Python の導入状況を確認中
+
 ### [2026-08-30] ワイヤー／Artifact の実物 QA と、検品の自動化 — Claude
 - 成果物: `scripts/qa-wireframe.py` / `AGENTS.md` 第2章の環境スクリプト表に1行
 - 検証（Chromium で実際にレンダリングして確認）:
