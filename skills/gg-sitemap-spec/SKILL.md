@@ -95,10 +95,12 @@ description: GrowGroupの提案・制作で使う「仕様書」のサイトマ�
 ### STEP 6. 生成して検証する
 
 ```bash
+# 作業ルート（AGENTS.md がある階層）から実行する
 OUT="仕様書_{クライアント名}_提案サイトマップ.xlsx"
-python scripts/build_sitemap_xlsx.py spec.json -o "$OUT"
-python /mnt/skills/public/xlsx/scripts/recalc.py "$OUT"   # 数式のキャッシュ値を埋める
-python scripts/verify_sitemap_xlsx.py "$OUT"              # 品質チェックリストを自動判定
+SPEC=skills/gg-sitemap-spec/scripts
+python $SPEC/build_sitemap_xlsx.py spec.json -o "$OUT"
+python "$(python scripts/find-skill-script.py xlsx scripts/recalc.py)" "$OUT"   # 数式のキャッシュ値を埋める
+python $SPEC/verify_sitemap_xlsx.py "$OUT"                                     # 品質チェックリストを自動判定
 ```
 
 `recalc.py` が `errors_found` を返す状態、または `verify` が `FAIL` を出す状態で渡さない。

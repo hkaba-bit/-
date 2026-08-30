@@ -8,7 +8,9 @@ JSON定義を読み、GrowGroupの仕様書フォーマットに沿ったxlsxを
 
 生成後は必ず recalc.py を通すこと（openpyxlは数式のキャッシュ値を持たない）:
 
-  python /mnt/skills/public/xlsx/scripts/recalc.py <出力ファイル>
+  python "$(python scripts/find-skill-script.py xlsx scripts/recalc.py)" <出力ファイル>
+
+  （find-skill-script.py は作業ルートの scripts/ にある。Skill の置き場所は環境ごとに違うため）
 
 JSONの書き方は assets/sitemap_spec_example.json を参照。
 """

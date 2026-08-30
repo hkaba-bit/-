@@ -41,6 +41,7 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 | `scripts\sync-skills.ps1` / `bash scripts/sync-skills.sh` | `skills/` を Claude Code 側（`~/.claude/skills/`）へ配布 |
 | `python scripts/check-skills-table.py` | 第5章の一覧表と `skills/` の実体が一致しているか検証 |
 | `python scripts/find-skill-script.py <skill> <スクリプト>` | Skill 同梱スクリプトの実パスを解決（環境ごとに置き場所が違うため直書きしない） |
+| `python scripts/check-skill-assets.py` | SKILL.md が参照する assets / scripts / references が実在するか検証 |
 
 ---
 

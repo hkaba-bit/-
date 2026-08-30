@@ -19,6 +19,14 @@
 
 ## 直近
 
+### [2026-08-30] `/mnt/skills` 直書きの解消と、Skill 参照先の実在チェック — Claude
+- 成果物: `skills/gg-proposal-deck/SKILL.md` / `skills/gg-sitemap-spec/SKILL.md` / `skills/gg-sitemap-spec/scripts/build_sitemap_xlsx.py` / `scripts/check-skill-assets.py` / `AGENTS.md` 第2章の環境スクリプト表
+- 検証: `grep -rn '/mnt/skills' skills/` が **0件**。`check-skill-assets.py` が 6 スキルを走査し、gg-proposal-deck の欠落9件を検出 ＝ **OK**（検出器としては意図どおり）
+- 判断メモ:
+  - 承認をもらった3箇所を置換。あわせて同じコードブロック内のパスを**作業ルート相対に統一**した（`AGENTS.md` 第8章「パスを直書きせず作業ルートからの相対パスで書く」に合わせるため。cwd が Skill ディレクトリ前提のままだと置換後の行と噛み合わない）
+  - 参照だけあって実体がない事故は今回もう一度起きるので、検出を `check-skill-assets.py` として常設化した
+- 残課題: 要承認事項2（gg-proposal-deck の欠落9件）。**このスキルは現状使えない**
+
 ### [2026-08-30] スキル同梱スクリプトの実行検証と依存の明文化 — Claude
 - 成果物: `package.json` / `package-lock.json` / `requirements.txt` / `scripts/find-skill-script.py` / `README.md`（導入手順）/ `AGENTS.md` 第2章の環境スクリプト表に1行追加
 - 検証:
@@ -104,7 +112,7 @@
 
 ## 要承認事項（`skills/` の変更は人間承認が要る）
 
-### 1. Skill 内に `/mnt/skills/public/...` が直書きされている（3箇所）
+### 1. Skill 内の `/mnt/skills/public/...` 直書き（3箇所）── **2026-08-30 承認・対応済み**
 
 このパスは Anthropic の管理サンドボックスにしか存在しない。Windows ローカルにも Codex にも無いので、
 書かれたとおりに実行すると必ず落ちる。`scripts/find-skill-script.py` を用意したので、次の置換を提案する。
@@ -115,7 +123,30 @@
 | `skills/gg-sitemap-spec/SKILL.md:100` | `python /mnt/skills/public/xlsx/scripts/recalc.py "$OUT"` | `python "$(python scripts/find-skill-script.py xlsx scripts/recalc.py)" "$OUT"` |
 | `skills/gg-sitemap-spec/scripts/build_sitemap_xlsx.py:11`（docstring） | 同上 | 同上 |
 
-承認をもらえれば適用する。
+承認を受けて適用済み。あわせて同じブロック内のパスを作業ルート相対に統一した。
+
+---
+
+### 2. `gg-proposal-deck` は参照先が9件すべて欠落していて、現状使えない
+
+`SKILL.md`（196行）は目次に近く、中身を9つのファイルに委ねているが、**そのどれも配布物に入っていない**。
+`python scripts/check-skill-assets.py` で再現できる。
+
+| 欠落ファイル | SKILL.md での位置づけ |
+|---|---|
+| `references/structure.md` | 章別スライド定義・全118Pの型 |
+| `references/copy-rules.md` | 版面・文言・数字の規約 |
+| `references/policy-rules.md` | **毎回必ず**読む社内の政策ルール。「未反映のルールがある状態で提案書を出さない」と明記 |
+| `references/fixed-blocks.md` | 章13〜19の確定文言（P91–P118 の約28P） |
+| `references/variants.md` | 案件類型による章の増減 |
+| `assets/deck-schema.md` | `deck.json` の書式 |
+| `assets/deck-example.json` | `deck.json` の雛形 |
+| `assets/deck-template.json` | 81枚のテンプレート定義 |
+| `scripts/build_deck.js` | PPTX 生成本体 |
+
+内容は蒲の提案標準（日拓グループ提案118Pベース）そのもので、**こちらで代筆すると中身を捏造することになる**ため手を付けていない。
+元データがどこかにある（別マシン・Notion・Drive 等）なら、その在り処を教えてもらえれば `skills/gg-proposal-deck/` に取り込む。
+無い場合は、この9件を新規に作る作業として別途起票する。
 
 ---
 

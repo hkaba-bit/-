@@ -50,8 +50,9 @@ description: GrowGroupのWebサイト提案書（PPTX）を、日拓グループ
 先方提出物としてそのまま使わないこと。
 
 ```bash
-node scripts/build_deck.js deck.json out.pptx
-python /mnt/skills/public/pptx/scripts/office/validate.py out.pptx
+# 作業ルート（AGENTS.md がある階層）から実行する
+node skills/gg-proposal-deck/scripts/build_deck.js deck.json out.pptx
+python "$(python scripts/find-skill-script.py pptx scripts/office/validate.py)" out.pptx
 ```
 
 `deck.json` の書式は `assets/deck-schema.md`、雛形は `assets/deck-example.json`。
@@ -62,7 +63,7 @@ python /mnt/skills/public/pptx/scripts/office/validate.py out.pptx
 固定ブロック（章13〜19）は確定文言入り、可変ブロックは `〔　〕` のプレースホルダ。
 
 ```bash
-node scripts/build_deck.js assets/deck-template.json テンプレート.pptx
+node skills/gg-proposal-deck/scripts/build_deck.js skills/gg-proposal-deck/assets/deck-template.json テンプレート.pptx
 ```
 
 新規案件では、このPPTXを複製して `〔　〕` を埋めていくのが最短。
