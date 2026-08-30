@@ -19,6 +19,19 @@
 
 ## 直近
 
+### [2026-08-30] gg-proposal-deck の欠落9件を復旧 — Claude
+- 成果物: `skills/gg-proposal-deck/` に `scripts/build_deck.js` / `assets/deck-schema.md` / `assets/deck-example.json` / `assets/deck-template.json` / `references/` 5本。`SKILL.md` の参照ファイル表とテンプレート節を実態に合わせて更新。`requirements.txt` に defusedxml・lxml
+- 検証:
+  - `deck-example.json`（5枚）と `deck-template.json`（40枚）から PPTX を生成 → `find-skill-script.py` で解決した pptx skill の `validate.py` が **All validations PASSED** ＝ **OK**
+  - 壊れた deck.json（章扉の3点欠け／表の列数不一致／未知の type）を投げ、**生成せずに3件すべてを指摘して終了**することを確認 ＝ **OK**
+  - `python3 scripts/check-skill-assets.py` が全6スキルで欠落0 ＝ **OK**
+- 判断メモ:
+  - **元データがないため、作れるものと作れないものを分けた。** 生成スクリプト・スキーマ・雛形は技術なのでこちらで実装。章構成・区分・時間配分・品質チェックリストは `SKILL.md` 本体に既に書かれていたので、そこから転記して `structure.md` `copy-rules.md` に落とした（新規に考えたものではない）
+  - 会社の確定文言（`fixed-blocks.md`）と運用判断（`variants.md` `policy-rules.md`）は**空欄のまま**にした。会社紹介・強み・他社比較を推測で書くと、誤った内容を先方に出すことになる
+  - 空欄を空欄と分かるようにするため、`SKILL.md` の参照ファイル表に「記入状態」列を追加し、「モードA・Bはこの空欄が埋まるまで完全には回らない」と明記した
+  - `deck-template.json` は SKILL.md の章構成表を**パースして生成**した40枚。手で並べ直していないので表とズレない。SKILL.md が言う「81枚」は正本にしか存在しないため、記述を実態（40枚の枠）に直した
+- 残課題: 下の「記入待ち」3件。埋まればモードA〜Cが通しで回る
+
 ### [2026-08-30] `/mnt/skills` 直書きの解消と、Skill 参照先の実在チェック — Claude
 - 成果物: `skills/gg-proposal-deck/SKILL.md` / `skills/gg-sitemap-spec/SKILL.md` / `skills/gg-sitemap-spec/scripts/build_sitemap_xlsx.py` / `scripts/check-skill-assets.py` / `AGENTS.md` 第2章の環境スクリプト表
 - 検証: `grep -rn '/mnt/skills' skills/` が **0件**。`check-skill-assets.py` が 6 スキルを走査し、gg-proposal-deck の欠落9件を検出 ＝ **OK**（検出器としては意図どおり）
@@ -127,7 +140,7 @@
 
 ---
 
-### 2. `gg-proposal-deck` は参照先が9件すべて欠落していて、現状使えない
+### 2. `gg-proposal-deck` の欠落9件 ── **2026-08-30 対応済み（一部は記入待ち）**
 
 `SKILL.md`（196行）は目次に近く、中身を9つのファイルに委ねているが、**そのどれも配布物に入っていない**。
 `python scripts/check-skill-assets.py` で再現できる。
@@ -144,9 +157,25 @@
 | `assets/deck-template.json` | 81枚のテンプレート定義 |
 | `scripts/build_deck.js` | PPTX 生成本体 |
 
-内容は蒲の提案標準（日拓グループ提案118Pベース）そのもので、**こちらで代筆すると中身を捏造することになる**ため手を付けていない。
-元データがどこかにある（別マシン・Notion・Drive 等）なら、その在り処を教えてもらえれば `skills/gg-proposal-deck/` に取り込む。
-無い場合は、この9件を新規に作る作業として別途起票する。
+9件すべてを配置し、`check-skill-assets.py` は欠落0になった。ただし中身は次の3段階に分かれる。
+
+| 状態 | ファイル |
+|---|---|
+| 完成（技術） | `scripts/build_deck.js` ・ `assets/deck-schema.md` ・ `assets/deck-example.json` ・ `assets/deck-template.json` |
+| SKILL.md から転記して完成 | `references/structure.md`（章構成・区分・時間配分）・ `references/copy-rules.md` |
+| **記入待ち（蒲にしか書けない）** | `references/fixed-blocks.md` ・ `references/variants.md` ・ `references/policy-rules.md` |
+
+---
+
+## 記入待ち（蒲の情報が要る）
+
+| # | ファイル | 要るもの | 最短の埋め方 |
+|---|---|---|---|
+| 1 | `skills/gg-proposal-deck/references/fixed-blocks.md` | 章13〜19（約28P）の確定文言。会社紹介・強み・チーム体制・他社比較・実績・担当紹介 | 直近の提出済み提案書 PPTX から該当ページを転記。ファイルを渡してもらえれば読み取って流し込む |
+| 2 | `skills/gg-proposal-deck/references/variants.md` | 案件類型（コンペ／リニューアル／広告）ごとの章の増減と想定P数 | 直近3案件で実際に増減させた章を教えてもらえれば表に起こす |
+| 3 | `skills/gg-proposal-deck/references/policy-rules.md` | 社内の政策ルール（現在0件） | ルールが出た時点で ID・反映先・記載文案の3点で追記 |
+
+1 が埋まるまで、固定ブロックは毎回手作業になる。
 
 ---
 

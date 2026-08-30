@@ -14,13 +14,16 @@ description: GrowGroupのWebサイト提案書（PPTX）を、日拓グループ
 
 ## 参照ファイル
 
-| ファイル | いつ読むか |
-|---|---|
-| `references/structure.md` | 骨子を組むとき（章別スライド定義・全118Pの型） |
-| `references/copy-rules.md` | 原稿を書くとき（版面・文言・数字の規約） |
-| `references/policy-rules.md` | **毎回必ず**（特記事項＝社内の政策ルール） |
-| `references/fixed-blocks.md` | 章13〜19の確定文言が要るとき |
-| `references/variants.md` | 案件類型で章を増減させるとき |
+| ファイル | いつ読むか | 記入状態 |
+|---|---|---|
+| `references/structure.md` | 骨子を組むとき（章別スライド定義・全118Pの型） | 骨格のみ。章別スライド定義は未記入 |
+| `references/copy-rules.md` | 原稿を書くとき（版面・文言・数字の規約） | 記入済み（版面数値は暫定） |
+| `references/policy-rules.md` | **毎回必ず**（特記事項＝社内の政策ルール） | 台帳は空（ルール0件） |
+| `references/fixed-blocks.md` | 章13〜19の確定文言が要るとき | **未記入** |
+| `references/variants.md` | 案件類型で章を増減させるとき | **未記入** |
+
+> 正本（日拓提案118P）の現物が手元にないため、上記のうち会社の確定文言・運用判断にあたる部分は
+> 空欄にしてある。**モードA・Bはこの空欄が埋まるまで完全には回らない。**埋め方は各ファイルの冒頭に書いた。
 
 ---
 
@@ -59,8 +62,12 @@ python "$(python scripts/find-skill-script.py pptx scripts/office/validate.py)" 
 
 ### テンプレートPPTX
 
-`assets/deck-template.json` は**81枚のテンプレート**の定義。
-固定ブロック（章13〜19）は確定文言入り、可変ブロックは `〔　〕` のプレースホルダ。
+`assets/deck-template.json` は、上の章構成表から機械的に起こした**40枚の枠**
+（表紙＋全体像＋19章分の章扉と先頭スライド）。全スライドが `〔　〕` のプレースホルダで、
+各枠のリード文に区分と正本Pレンジが入れてある。
+
+固定ブロック（章13〜19）の確定文言は `references/fixed-blocks.md` が未記入のため**まだ入っていない**。
+埋まり次第、このテンプレートにも反映する。
 
 ```bash
 node skills/gg-proposal-deck/scripts/build_deck.js skills/gg-proposal-deck/assets/deck-template.json テンプレート.pptx
