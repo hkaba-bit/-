@@ -19,6 +19,18 @@
 
 ## 直近
 
+### [2026-08-30] ワイヤー／Artifact の実物 QA と、検品の自動化 — Claude
+- 成果物: `scripts/qa-wireframe.py` / `AGENTS.md` 第2章の環境スクリプト表に1行
+- 検証（Chromium で実際にレンダリングして確認）:
+  - `gg-wireframe` の `example-corporate-top.html` ・ `_page-template.html`：コンソールエラー0、`wireframe.css` 適用済み（container-type: inline-size）、PC 1280px → SP 390px、**グリッドが3列→1列に実際に組み替わる**、注釈トグルも動作 ＝ **OK**
+  - 目視でも確認：SP でヒーローが縦積み、統計4つ→2×2、フッター4列→2列、ハンバーガーと固定CTAバーが出現。SKILL.md が言う「会議中の見せ場」は成立する
+  - `gg-proposal-artifact` の `_artifact-template.html`：コンソールエラー0、外部リソース読み込み0（CSP に引っかからない）、フェーズ切替・任意項目チェック・費用集計が描画される ＝ **OK**
+  - `qa-wireframe.py` 自体の検証：正常なページで OK、`@container` を `@media` に置換した壊れたページで **NG を出す**ことを確認
+- 判断メモ:
+  - 最初の実装は `grid-template-columns` の px 文字列を比較していて、**キャンバスが縮んだだけの変化を「組み替わった」と誤判定**した。列数で比べるように直して、メディアクエリで組んだページを検出できるようにした
+  - `skills/gg-wireframe/assets/` を直接かけると `index.html` へのリンク切れが出るが、これは仕様どおり（index.html は案件ごとに作るハブ）。このスクリプトは案件のワイヤーにかけるもの
+- 残課題: 下の小さな要承認事項1件
+
 ### [2026-08-30] gg-proposal-deck の欠落9件を復旧 — Claude
 - 成果物: `skills/gg-proposal-deck/` に `scripts/build_deck.js` / `assets/deck-schema.md` / `assets/deck-example.json` / `assets/deck-template.json` / `references/` 5本。`SKILL.md` の参照ファイル表とテンプレート節を実態に合わせて更新。`requirements.txt` に defusedxml・lxml
 - 検証:
@@ -164,6 +176,14 @@
 | 完成（技術） | `scripts/build_deck.js` ・ `assets/deck-schema.md` ・ `assets/deck-example.json` ・ `assets/deck-template.json` |
 | SKILL.md から転記して完成 | `references/structure.md`（章構成・区分・時間配分）・ `references/copy-rules.md` |
 | **記入待ち（蒲にしか書けない）** | `references/fixed-blocks.md` ・ `references/variants.md` ・ `references/policy-rules.md` |
+
+---
+
+## 小さな要承認事項
+
+| # | 対象 | 内容 |
+|---|---|---|
+| 1 | `skills/gg-proposal-artifact/assets/_artifact-template.html` | `<title>` タグがない。商談で画面共有したときブラウザのタブにファイルパスが出る。`<title>{案件名}｜{型の名前}</title>` を追加したい（`gg-wireframe` 側のテンプレートには入っている） |
 
 ---
 

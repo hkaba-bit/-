@@ -42,6 +42,7 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 | `python scripts/check-skills-table.py` | 第5章の一覧表と `skills/` の実体が一致しているか検証 |
 | `python scripts/find-skill-script.py <skill> <スクリプト>` | Skill 同梱スクリプトの実パスを解決（環境ごとに置き場所が違うため直書きしない） |
 | `python scripts/check-skill-assets.py` | SKILL.md が参照する assets / scripts / references が実在するか検証 |
+| `python scripts/qa-wireframe.py <HTML...>` | ワイヤーを実際に開いて検品（JSエラー・SP切替・組み替わり・リンク切れ） |
 
 ---
 
