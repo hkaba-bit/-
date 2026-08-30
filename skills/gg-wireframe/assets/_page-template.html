@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{ページ名} | {クライアント名} ワイヤーフレーム</title>
+<link rel="stylesheet" href="wireframe.css">
+</head>
+<body data-device="pc" data-notes="on">
+
+<!-- ============ ツールバー（全ページ共通・コピペで使う） ============ -->
+<div class="wf-bar">
+  <span class="wf-bar__title">{クライアント名} WF</span>
+  <span class="wf-bar__meta">{ページID} / {ページ名}</span>
+  <span class="wf-bar__spacer"></span>
+  <a href="index.html">サイトマップ</a>
+  <button type="button" data-wf="pc" aria-pressed="true">PC</button>
+  <button type="button" data-wf="sp" aria-pressed="false">SP</button>
+  <button type="button" data-wf="notes" aria-pressed="true">注釈</button>
+</div>
+
+<div class="wf-canvas">
+
+  <!-- ============ ヘッダー ============ -->
+  <header class="wf-header">
+    <div class="wf-logo"><span>LOGO</span></div>
+    <ul class="wf-gnav">
+      <li><a href="#">ナビ1</a></li>
+      <li><a href="#">ナビ2</a></li>
+      <li><a href="#">ナビ3</a></li>
+      <li><a href="#">ナビ4</a></li>
+    </ul>
+    <div class="wf-header__cta">
+      <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">資料請求</a>
+      <a href="#" class="wf-btn wf-btn--sm">お問い合わせ</a>
+    </div>
+    <div class="wf-burger">≡</div>
+  </header>
+
+  <!-- ============ 本文：ここにセクションを積む ============ -->
+  <main>
+
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-note" data-n="1">
+          <b>意図</b>このセクションで何を解決するか／なぜこの位置か を1〜2行で書く
+        </div>
+        <div class="wf-sechead">
+          <span class="wf-en">SECTION LABEL</span>
+          <h2 class="wf-h2">セクション見出し</h2>
+        </div>
+        <!-- コンテンツ -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ 共通CTA ============ -->
+  <section class="wf-sec wf-sec--fill">
+    <div class="wf-inner wf-center">
+      <h2 class="wf-h2">CTA見出し</h2>
+      <p class="wf-lead">補足の一文</p>
+      <div class="wf-btns wf-btns--center">
+        <a href="#" class="wf-btn wf-btn--lg">主CTA</a>
+        <a href="#" class="wf-btn wf-btn--lg wf-btn--ghost">副CTA</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ フッター ============ -->
+  <footer class="wf-footer">
+    <div class="wf-inner">
+      <div class="wf-footer__nav">
+        <div><h4 class="wf-h4">カテゴリ1</h4><ul><li><a href="#">リンク</a></li><li><a href="#">リンク</a></li></ul></div>
+        <div><h4 class="wf-h4">カテゴリ2</h4><ul><li><a href="#">リンク</a></li><li><a href="#">リンク</a></li></ul></div>
+        <div><h4 class="wf-h4">カテゴリ3</h4><ul><li><a href="#">リンク</a></li><li><a href="#">リンク</a></li></ul></div>
+        <div><h4 class="wf-h4">カテゴリ4</h4><ul><li><a href="#">リンク</a></li><li><a href="#">リンク</a></li></ul></div>
+      </div>
+      <p class="wf-copy">© {クライアント名}</p>
+    </div>
+  </footer>
+
+  <!-- ============ SP固定CTA ============ -->
+  <div class="wf-fixcta">
+    <a href="#" class="is-sub">電話</a>
+    <a href="#">お問い合わせ</a>
+  </div>
+
+</div><!-- /.wf-canvas -->
+
+<!-- ============ 制御スクリプト（全ページ共通・コピペで使う） ============ -->
+<script>
+document.querySelectorAll('[data-wf]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var k = b.dataset.wf, d = document.body;
+    if (k === 'notes'){
+      var on = d.dataset.notes === 'on';
+      d.dataset.notes = on ? 'off' : 'on';
+      b.setAttribute('aria-pressed', String(!on));
+    } else {
+      d.dataset.device = k;
+      document.querySelectorAll('[data-wf="pc"],[data-wf="sp"]').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x.dataset.wf === k));
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>

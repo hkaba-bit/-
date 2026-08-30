@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TOP | サンプル製作所 ワイヤーフレーム</title>
+<link rel="stylesheet" href="wireframe.css">
+</head>
+<body data-device="pc" data-notes="on">
+
+<div class="wf-bar">
+  <span class="wf-bar__title">サンプル製作所 WF</span>
+  <span class="wf-bar__meta">top / TOPページ ※デザインではなく構成案です</span>
+  <span class="wf-bar__spacer"></span>
+  <a href="index.html">サイトマップ</a>
+  <button type="button" data-wf="pc" aria-pressed="true">PC</button>
+  <button type="button" data-wf="sp" aria-pressed="false">SP</button>
+  <button type="button" data-wf="notes" aria-pressed="true">注釈</button>
+</div>
+
+<div class="wf-canvas">
+
+  <header class="wf-header">
+    <div class="wf-logo"><span>LOGO</span></div>
+    <ul class="wf-gnav">
+      <li><a href="#">課題から探す</a></li>
+      <li><a href="#">製品・サービス</a></li>
+      <li><a href="#">導入事例</a></li>
+      <li><a href="#">会社情報</a></li>
+      <li><a href="#">採用情報</a></li>
+    </ul>
+    <div class="wf-header__cta">
+      <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">資料請求</a>
+      <a href="#" class="wf-btn wf-btn--sm">お問い合わせ</a>
+    </div>
+    <div class="wf-burger">≡</div>
+  </header>
+
+  <main>
+
+    <!-- FV -->
+    <section class="wf-hero wf-hero--split">
+      <div class="wf-hero__copy">
+        <span class="wf-en">PRECISION PARTS MANUFACTURING</span>
+        <h1 class="wf-h1">試作1個から、<br>量産10万個まで。</h1>
+        <p class="wf-lead">精密切削部品の一貫加工。図面をいただいた当日にお見積りします。</p>
+        <div class="wf-btns">
+          <a href="#" class="wf-btn wf-btn--lg">図面から見積依頼</a>
+          <a href="#" class="wf-btn wf-btn--lg wf-btn--ghost">技術資料をダウンロード</a>
+        </div>
+      </div>
+      <div class="wf-img wf-img--hero"><span>KEY VISUAL</span></div>
+    </section>
+
+    <div class="wf-inner">
+      <div class="wf-note" data-n="1">
+        <b>意図</b>FVで「何を作る会社か」を名詞で言い切る。現行サイトは「ものづくりで未来を」のみで業種が判別できず、直帰率72%の主因になっている。
+      </div>
+      <div class="wf-note" data-n="2">
+        <b>差別化</b>主CTAを「お問い合わせ」ではなく「図面から見積依頼」に。行動が具体的なほどCVRは上がる。副CTAで非指名層のリードも確保する。
+      </div>
+    </div>
+
+    <!-- 信頼バー -->
+    <section class="wf-sec wf-sec--tight">
+      <div class="wf-inner">
+        <div class="wf-stats">
+          <div class="wf-stat"><span class="wf-stat__num">1968</span><span class="wf-stat__label">創業</span></div>
+          <div class="wf-stat"><span class="wf-stat__num">420</span><span class="wf-stat__label">取引社数</span></div>
+          <div class="wf-stat"><span class="wf-stat__num">±0.005</span><span class="wf-stat__label">加工精度(mm)</span></div>
+          <div class="wf-stat"><span class="wf-stat__num">24h</span><span class="wf-stat__label">見積回答</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 課題提起 -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead wf-center">
+          <span class="wf-en">ISSUE</span>
+          <h2 class="wf-h2">こんな課題はありませんか</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--icon"><span></span></div>
+            <h3 class="wf-h3">試作の納期が読めない</h3>
+            <p class="wf-p">開発が止まり、量産の立ち上げが後ろ倒しになる。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--icon"><span></span></div>
+            <h3 class="wf-h3">量産で品質がぶれる</h3>
+            <p class="wf-p">試作は通るのに、ロットごとに寸法が安定しない。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--icon"><span></span></div>
+            <h3 class="wf-h3">複数社に分けて発注</h3>
+            <p class="wf-p">加工・熱処理・表面処理で窓口が分かれ管理が煩雑。</p>
+          </div></div>
+        </div>
+        <div class="wf-note" data-n="3">
+          <b>根拠</b>ヒアリングで営業部が繰り返した「うちは何ができるか説明する前に切られている」という課題への回答。製品名ではなく顧客の課題語で入口を作る。
+        </div>
+      </div>
+    </section>
+
+    <!-- 導入事例 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">CASE STUDY</span>
+          <h2 class="wf-h2">導入事例</h2>
+        </div>
+        <div class="wf-filter"><span>すべて</span><span>業種</span><span>加工内容</span><span>ロット規模</span><span>課題</span></div>
+        <div class="wf-grid wf-grid--3">
+          <a href="#" class="wf-card" style="text-decoration:none;color:inherit">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <div class="wf-card__body">
+              <span class="wf-tag">医療機器</span>
+              <h3 class="wf-h3">試作リードタイムを14日→4日に短縮</h3>
+              <p class="wf-p">工程を内製に統合し外注待ちを解消。</p>
+            </div>
+          </a>
+          <a href="#" class="wf-card" style="text-decoration:none;color:inherit">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <div class="wf-card__body">
+              <span class="wf-tag">自動車部品</span>
+              <h3 class="wf-h3">不良率を0.8%→0.05%に改善</h3>
+              <p class="wf-p">全数検査体制と工程内計測の導入。</p>
+            </div>
+          </a>
+          <a href="#" class="wf-card" style="text-decoration:none;color:inherit">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <div class="wf-card__body">
+              <span class="wf-tag">半導体製造装置</span>
+              <h3 class="wf-h3">4社発注を1社に集約しコスト12%減</h3>
+              <p class="wf-p">加工から表面処理まで一貫対応。</p>
+            </div>
+          </a>
+        </div>
+        <div class="wf-note" data-n="4">
+          <b>意図</b>事例カードの見出しは会社名ではなく「数値成果」にする。現行サイトは「株式会社◯◯様」が見出しで、開かないと成果が分からない。
+          <br>【梅】事例10件を静的ページ／【竹】CMS化＋絞り込み5軸／【松】課題別診断から事例へ誘導
+        </div>
+      </div>
+    </section>
+
+    <!-- 導入の流れ -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead wf-center">
+          <span class="wf-en">FLOW</span>
+          <h2 class="wf-h2">ご発注までの流れ</h2>
+        </div>
+        <div class="wf-steps wf-steps--row">
+          <div class="wf-step"><h3 class="wf-h4">図面送付</h3><p class="wf-p">フォームまたはメール</p></div>
+          <div class="wf-step"><h3 class="wf-h4">お見積り</h3><p class="wf-p">24時間以内に回答</p></div>
+          <div class="wf-step"><h3 class="wf-h4">試作</h3><p class="wf-p">最短4営業日</p></div>
+          <div class="wf-step"><h3 class="wf-h4">量産</h3><p class="wf-p">検査成績書を添付</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead"><span class="wf-en">FAQ</span><h2 class="wf-h2">よくあるご質問</h2></div>
+        <div class="wf-faq">
+          <details open><summary>1個からでも対応してもらえますか</summary>
+            <div class="wf-faq__a">試作1個から対応しています。量産を前提としないご依頼も承ります。</div></details>
+          <details><summary>対応可能な材質を教えてください</summary>
+            <div class="wf-faq__a">回答が入ります。</div></details>
+          <details><summary>秘密保持契約は締結できますか</summary>
+            <div class="wf-faq__a">回答が入ります。</div></details>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <section class="wf-sec wf-sec--fill">
+    <div class="wf-inner wf-center">
+      <h2 class="wf-h2">図面をお持ちなら、24時間以内にお見積りします</h2>
+      <p class="wf-lead">技術的な相談だけでも構いません。</p>
+      <div class="wf-btns wf-btns--center">
+        <a href="#" class="wf-btn wf-btn--lg">図面から見積依頼</a>
+        <a href="#" class="wf-btn wf-btn--lg wf-btn--ghost">技術資料をダウンロード</a>
+      </div>
+      <div class="wf-note" data-n="5">
+        <b>要確認</b>現行の問い合わせフォームは18項目。必須を6項目に削減する前提で設計。削減可否を先方の営業部にご確認いただきたい。
+      </div>
+    </div>
+  </section>
+
+  <footer class="wf-footer">
+    <div class="wf-inner">
+      <div class="wf-footer__nav">
+        <div><h4 class="wf-h4">課題から探す</h4><ul><li><a href="#">納期を短縮したい</a></li><li><a href="#">品質を安定させたい</a></li></ul></div>
+        <div><h4 class="wf-h4">製品・サービス</h4><ul><li><a href="#">精密切削加工</a></li><li><a href="#">表面処理</a></li></ul></div>
+        <div><h4 class="wf-h4">会社情報</h4><ul><li><a href="#">会社概要</a></li><li><a href="#">沿革</a></li></ul></div>
+        <div><h4 class="wf-h4">その他</h4><ul><li><a href="#">採用情報</a></li><li><a href="#">個人情報保護方針</a></li></ul></div>
+      </div>
+      <p class="wf-copy">© サンプル製作所</p>
+    </div>
+  </footer>
+
+  <div class="wf-fixcta">
+    <a href="#" class="is-sub">電話</a>
+    <a href="#">見積依頼</a>
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll('[data-wf]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var k = b.dataset.wf, d = document.body;
+    if (k === 'notes'){
+      var on = d.dataset.notes === 'on';
+      d.dataset.notes = on ? 'off' : 'on';
+      b.setAttribute('aria-pressed', String(!on));
+    } else {
+      d.dataset.device = k;
+      document.querySelectorAll('[data-wf="pc"],[data-wf="sp"]').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x.dataset.wf === k));
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>
