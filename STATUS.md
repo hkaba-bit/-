@@ -19,6 +19,19 @@
 
 ## 直近
 
+### [2026-08-30] Windows ローカル環境の構築完了と、依存の脆弱性対応 — 蒲 / Claude
+- 成果物: `AGENTS.md` 第8章（環境情報を実測値で記入）/ `package.json`・`package-lock.json`（sharp を ^0.35.4 へ）
+- 検証:
+  - 蒲さんのローカルで clone → `sync-skills.ps1` → `npm ci` まで通過。Skill 6本が `C:\Users\hero\.claude\skills` に配置され、`added 31 packages` ＝ **OK**
+  - sharp 更新後に `deck-template.json`（40枚）から PPTX を再生成し、`validate.py` が **All validations PASSED** ＝ **OK**（回帰なし）
+- 判断メモ:
+  - **実測値**：作業ルート `C:\Users\hero\gg-workspace` / Node v22.14.0 / Git 2.48.1 / Python 未導入
+  - OneDrive 配下（デスクトップ）は避けた。`node_modules` と `.git` を OneDrive が同期しようとして壊れるため。規約として第8章に明記
+  - 開発者モードが無効でシンボリックリンクを張れないため、Skill はコピー同期。`skills/` 編集のたびに `sync-skills.ps1` の再実行が要る
+  - `npm audit` の high 3件のうち、**sharp（libvips CVE 4件）は ^0.35.4 へ上げて解消**。残る `image-size`（pptxgenjs の推移依存）は**対応しない**：不正な ICNS ファイルを読ませたときの DoS で、提案書に使うのは PNG/JPG。修正には推移依存のメジャー更新を強制する必要があり、PPTX 生成が壊れるリスクの方が大きい
+  - Windows 特有のつまずきを2つ踏んだ：`.ps1` の BOM 問題（修正済み）と、実行ポリシーによる `npm` ブロック（`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` で解消）
+- 残課題: Python 未導入（仕様書 Excel の生成が使えない）。Codex 側の確認（T5-2）
+
 ### [2026-08-30] `.ps1` が Windows で実行できないバグを修正 — Claude
 - 成果物: `scripts/sync-skills.ps1` / `scripts/new-project.ps1`（UTF-8 BOM を付与）/ `AGENTS.md` 第6章のコード規約に1行
 - 検証: 両ファイルの先頭3バイトが `EF BB BF` であること、UTF-8 として波括弧の対応が取れていること（9対 / 10対）を確認 ＝ **OK**
