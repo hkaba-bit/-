@@ -1,0 +1,10 @@
+{
+  "name": "gg-agents-workspace",
+  "private": true,
+  "description": "提案成果物の生成に使う共通依存（AGENTS.md 第6章）",
+  "dependencies": {
+    "pptxgenjs": "^3.12.0",
+    "react-icons": "^5.4.0",
+    "sharp": "^0.33.5"
+  }
+}

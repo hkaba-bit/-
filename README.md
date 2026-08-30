@@ -14,15 +14,21 @@
 ## セットアップ
 
 ```bash
-# 1. Skill を Claude Code 側へ配布
+# 1. 依存の導入
+npm ci                                   # pptxgenjs / react-icons / sharp
+pip install -r requirements.txt          # openpyxl
+
+# 2. Skill を Claude Code 側へ配布
 bash scripts/sync-skills.sh              # Windows: scripts\sync-skills.ps1
 
-# 2. 認証情報
+# 3. 認証情報
 cp .env.example .env                     # 値は人間が手で入れる。.env は Git 追跡外
 
-# 3. 案件を始める
+# 4. 案件を始める
 bash scripts/new-project.sh <案件スラッグ> "案件名"
 ```
+
+PDF 変換・目視 QA には LibreOffice（`soffice`）と poppler（`pdftoppm`）が別途必要。
 
 ## ディレクトリ
 

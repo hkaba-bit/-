@@ -19,6 +19,19 @@
 
 ## 直近
 
+### [2026-08-30] スキル同梱スクリプトの実行検証と依存の明文化 — Claude
+- 成果物: `package.json` / `package-lock.json` / `requirements.txt` / `scripts/find-skill-script.py` / `README.md`（導入手順）/ `AGENTS.md` 第2章の環境スクリプト表に1行追加
+- 検証:
+  - **仕様書 Excel の生成**：`skills/gg-sitemap-spec/scripts/build_sitemap_xlsx.py` に同梱の `sitemap_spec_example.json` を通し、6行・工程列14 の xlsx を生成 ＝ **OK**
+  - **検証スクリプト**：`verify_sitemap_xlsx.py` が「集計行にキャッシュ値がない（recalc 未実施）」を正しく FAIL として検出 ＝ **OK**（スクリプトは意図どおり動く）
+  - **PPTX 生成**：`npm ci` → pptxgenjs でスライド1枚を生成 ＝ **OK**（pptxgenjs 3.12.0 / react-icons 5.7.0 / sharp 0.33.5）
+  - **PDF 変換**：**NG**。下の申し送り6を参照
+  - `find-skill-script.py` が xlsx / pptx / gg-* のいずれもパス解決できること、未存在時に探索パスを出して終了コード1になることを確認 ＝ **OK**
+- 判断メモ:
+  - 依存が口伝だと案件ごとに再インストールになるため、`AGENTS.md` 第6章の技術スタックをそのまま `package.json` と `requirements.txt` に落とした。`npm ci` が通ることまで確認済み
+  - `skills/` は「人間承認のうえ可」なので**書き換えていない**。下の要承認事項に修正案だけ置いた
+- 残課題: 要承認事項1（`/mnt/skills` の直書き3箇所）
+
 ### [2026-08-30] T5 動作確認 — Claude
 - 成果物: なし（検証のみ）
 - 検証:
@@ -83,6 +96,26 @@
 | 3 | Skill の正本は `skills/` のみ。`~/.claude/skills/` 側を直接編集しない | 2026-08-30 |
 | 4 | 案件ディレクトリは手で作らず `scripts/new-project.*` で作る | 2026-08-30 |
 | 5 | `outputs/` と `.env` は Git 追跡外。納品物の実体をリポジトリに載せない | 2026-08-30 |
+| 6 | **リモート実行環境（Claude Code on the web）では PDF 変換・目視 QA ができない。**LibreOffice が core のみで calc/impress/writer 未導入のため xlsx・pptx を読み込めず（`Error: source file could not be loaded`）、`pdftoppm` も無い。`AGENTS.md` 第6章の「生成 → PDF 変換 → 画像化して目視確認」まで完結できるのは Windows ローカルのみ | 2026-08-30 |
+| 7 | 依存は `npm ci` と `pip install -r requirements.txt` で入れる。案件ディレクトリごとに個別インストールしない | 2026-08-30 |
+| 8 | Skill 同梱スクリプトのパスを直書きしない。`python scripts/find-skill-script.py <skill> <スクリプト>` で解決する | 2026-08-30 |
+
+---
+
+## 要承認事項（`skills/` の変更は人間承認が要る）
+
+### 1. Skill 内に `/mnt/skills/public/...` が直書きされている（3箇所）
+
+このパスは Anthropic の管理サンドボックスにしか存在しない。Windows ローカルにも Codex にも無いので、
+書かれたとおりに実行すると必ず落ちる。`scripts/find-skill-script.py` を用意したので、次の置換を提案する。
+
+| ファイル | 現状 | 置換案 |
+|---|---|---|
+| `skills/gg-proposal-deck/SKILL.md:54` | `python /mnt/skills/public/pptx/scripts/office/validate.py out.pptx` | `python "$(python scripts/find-skill-script.py pptx scripts/office/validate.py)" out.pptx` |
+| `skills/gg-sitemap-spec/SKILL.md:100` | `python /mnt/skills/public/xlsx/scripts/recalc.py "$OUT"` | `python "$(python scripts/find-skill-script.py xlsx scripts/recalc.py)" "$OUT"` |
+| `skills/gg-sitemap-spec/scripts/build_sitemap_xlsx.py:11`（docstring） | 同上 | 同上 |
+
+承認をもらえれば適用する。
 
 ---
 
