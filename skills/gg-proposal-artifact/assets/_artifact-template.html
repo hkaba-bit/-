@@ -1,0 +1,126 @@
+<!--
+  提案用Artifact 雛形
+  - Artifact として出力する際は DOCTYPE / html / head / body タグを含めない
+  - localStorage / sessionStorage は使用不可
+  - 画面共有前提：本文16px以上、結果の数値32px以上
+  - 有彩色は「動く数字」と「推奨案」のみ
+-->
+<style>
+  .pa {
+    --ink: #1a1a1a;
+    --sub: #6b6b6b;
+    --line: #e0e0e0;
+    --bg-soft: #f7f7f7;
+    --accent: #0f62d6;      /* 動く数字・推奨案のみ */
+    font-family: -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 900px;
+  }
+  .pa h2 { font-size: 20px; margin: 0 0 4px; }
+  .pa .pa-lead { color: var(--sub); font-size: 14px; margin: 0 0 20px; }
+
+  /* 操作エリア：5個以下 */
+  .pa-controls {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .pa-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pa-tab {
+    padding: 10px 18px; border: 1px solid var(--line); border-radius: 6px;
+    background: #fff; cursor: pointer; font-size: 15px;
+  }
+  .pa-tab[aria-selected="true"] {
+    border-color: var(--accent); color: var(--accent); font-weight: 600;
+  }
+  .pa-check { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; }
+  .pa-check input { width: 20px; height: 20px; margin-top: 2px; }
+
+  /* 内訳 */
+  .pa-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .pa-table th, .pa-table td {
+    border-bottom: 1px solid var(--line); padding: 10px 8px; text-align: left;
+  }
+  .pa-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .pa-badge {
+    font-size: 12px; padding: 2px 8px; border-radius: 4px;
+    background: var(--bg-soft); color: var(--sub); border: 1px solid var(--line);
+  }
+
+  /* 結果：32px以上 */
+  .pa-result {
+    display: flex; gap: 32px; flex-wrap: wrap;
+    border-top: 2px solid var(--ink); padding-top: 16px; margin-top: 16px;
+  }
+  .pa-result dt { font-size: 13px; color: var(--sub); }
+  .pa-result dd {
+    margin: 2px 0 0; font-size: 34px; font-weight: 700;
+    color: var(--accent); font-variant-numeric: tabular-nums;
+  }
+  .pa-result dd small { font-size: 15px; font-weight: 400; color: var(--sub); }
+
+  /* 影響の明示：金額だけ動かさない */
+  .pa-impact {
+    margin-top: 16px; padding: 12px 14px;
+    border-left: 3px solid var(--line); background: var(--bg-soft); font-size: 14px;
+  }
+
+  /* 出所・前提 */
+  .pa-note { margin-top: 20px; font-size: 12px; color: var(--sub); line-height: 1.8; }
+  .pa-tentative { color: #b45309; font-weight: 600; }
+</style>
+
+<div class="pa">
+  <h2>{案件名}｜{型の名前}</h2>
+  <p class="pa-lead">{この画面で何を検討できるかを1行で}</p>
+
+  <!-- 操作：5個以下。初期値は先方の現実の条件 -->
+  <div class="pa-controls">
+    <div class="pa-tabs" role="tablist">
+      <button class="pa-tab" role="tab" aria-selected="true">第1期</button>
+      <button class="pa-tab" role="tab" aria-selected="false">第2期</button>
+    </div>
+    <label class="pa-check">
+      <input type="checkbox" checked>
+      <span>{任意項目}<br><small>外すと：{何ができなくなるか}</small></span>
+    </label>
+  </div>
+
+  <!-- 内訳 -->
+  <table class="pa-table">
+    <thead>
+      <tr><th>項目</th><th>区分</th><th class="num">金額</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{項目名}</td>
+        <td><span class="pa-badge">必須</span></td>
+        <td class="num">{金額}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 結果 -->
+  <dl class="pa-result">
+    <div><dt>初期費用</dt><dd>0<small> 万円（税別）</small></dd></div>
+    <div><dt>月額</dt><dd>0<small> 万円（税別）</small></dd></div>
+    <div><dt>3年総額</dt><dd>0<small> 万円（税別）</small></dd></div>
+  </dl>
+
+  <!-- 金額だけでなく影響を出す -->
+  <div class="pa-impact">
+    <strong>この構成で実現できること</strong>：{内容}<br>
+    <strong>今回見送るもの</strong>：{内容（第2期へ、など）}
+  </div>
+
+  <!-- 出所は必ず画面内に -->
+  <div class="pa-note">
+    前提：{試算の前提条件}<br>
+    出所：{ヒアリング（2026-00-00）／公開情報／GrowGroup実績}<br>
+    <span class="pa-tentative">仮</span> の項目は確定後に差し替えます。金額は全て税別です。
+  </div>
+</div>

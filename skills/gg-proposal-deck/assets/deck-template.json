@@ -1,0 +1,363 @@
+{
+  "meta": {
+    "client": "〔クライアント名〕",
+    "title": "〔提案タイトル〕",
+    "date": "〔提出日〕",
+    "author": "GrowGroup株式会社"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "title": "〔提案タイトル〕",
+      "subtitle": "〔案件の一行説明〕"
+    },
+    {
+      "type": "summary",
+      "title": "本提案の全体像",
+      "lead": "本提案は3つの論点で構成しています。※P2は全章確定後に書く",
+      "points": [
+        {
+          "heading": "〔論点01の見出し〕",
+          "current": "〔現在地〕",
+          "proposal": "〔本提案〕",
+          "refs": "〔参照章〕"
+        },
+        {
+          "heading": "〔論点02の見出し〕",
+          "current": "〔現在地〕",
+          "proposal": "〔本提案〕",
+          "refs": "〔参照章〕"
+        },
+        {
+          "heading": "〔論点03の見出し〕",
+          "current": "〔現在地〕",
+          "proposal": "〔本提案〕",
+          "refs": "〔参照章〕"
+        }
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "01",
+      "label": "Requirement",
+      "name": "与件整理"
+    },
+    {
+      "type": "content",
+      "chapter": "01 Requirement",
+      "title": "〔与件整理：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=可変（正本 P3–8）／毎回ゼロから書く。3つの論点のいずれかに属させる〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "02",
+      "label": "Analysis",
+      "name": "現状分析"
+    },
+    {
+      "type": "content",
+      "chapter": "02 Analysis",
+      "title": "〔現状分析：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=可変（正本 P9–21）／毎回ゼロから書く。3つの論点のいずれかに属させる〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "03",
+      "label": "Strategy Design",
+      "name": "戦略設計"
+    },
+    {
+      "type": "content",
+      "chapter": "03 Strategy Design",
+      "title": "〔戦略設計：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=可変（正本 P22–30）／毎回ゼロから書く。3つの論点のいずれかに属させる〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "04",
+      "label": "KPI",
+      "name": "数値目標"
+    },
+    {
+      "type": "content",
+      "chapter": "04 KPI",
+      "title": "〔数値目標：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=可変（正本 P31–34）／毎回ゼロから書く。3つの論点のいずれかに属させる〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "05",
+      "label": "SEO / Acquisition",
+      "name": "集客・SEO"
+    },
+    {
+      "type": "content",
+      "chapter": "05 SEO / Acquisition",
+      "title": "〔集客・SEO：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=可変（正本 P35–39）／毎回ゼロから書く。3つの論点のいずれかに属させる〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "06",
+      "label": "Contents",
+      "name": "コンテンツ"
+    },
+    {
+      "type": "content",
+      "chapter": "06 Contents",
+      "title": "〔コンテンツ：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=可変（正本 P40–49）／毎回ゼロから書く。3つの論点のいずれかに属させる〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "07",
+      "label": "Design",
+      "name": "デザイン"
+    },
+    {
+      "type": "content",
+      "chapter": "07 Design",
+      "title": "〔デザイン：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=別紙送り（正本 P50–51）／別紙（gg-wireframe / gg-sitemap-spec）へ送る〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "08",
+      "label": "Function",
+      "name": "機能"
+    },
+    {
+      "type": "content",
+      "chapter": "08 Function",
+      "title": "〔機能：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=半可変（正本 P52–64）／要否判断＋数値差し替え。既存ライブラリから選ぶ〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "09",
+      "label": "Tools",
+      "name": "導入ツール"
+    },
+    {
+      "type": "content",
+      "chapter": "09 Tools",
+      "title": "〔導入ツール：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=半可変（正本 P65–68）／要否判断＋数値差し替え。既存ライブラリから選ぶ〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "10",
+      "label": "Server",
+      "name": "サーバー"
+    },
+    {
+      "type": "content",
+      "chapter": "10 Server",
+      "title": "〔サーバー：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=半可変（正本 P69–70）／要否判断＋数値差し替え。既存ライブラリから選ぶ〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "11",
+      "label": "Support",
+      "name": "アフターサポート"
+    },
+    {
+      "type": "content",
+      "chapter": "11 Support",
+      "title": "〔アフターサポート：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=半可変（正本 P71–80）／要否判断＋数値差し替え。既存ライブラリから選ぶ〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "12",
+      "label": "Schedule",
+      "name": "スケジュール"
+    },
+    {
+      "type": "content",
+      "chapter": "12 Schedule",
+      "title": "〔スケジュール：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=半可変（正本 P81–90）／要否判断＋数値差し替え。既存ライブラリから選ぶ〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "13",
+      "label": "Appendix",
+      "name": "補足（FAQ・契約諸条件）"
+    },
+    {
+      "type": "content",
+      "chapter": "13 Appendix",
+      "title": "〔補足（FAQ・契約諸条件）：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=**特記事項の反映先**（正本 P91–93）／**特記事項の反映先**〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "14",
+      "label": "About Company",
+      "name": "会社紹介"
+    },
+    {
+      "type": "content",
+      "chapter": "14 About Company",
+      "title": "〔会社紹介：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=固定（正本 P94–99）／確定文言。references/fixed-blocks.md を参照（未記入）〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "15",
+      "label": "Our Strengths",
+      "name": "GrowGroupの強み"
+    },
+    {
+      "type": "content",
+      "chapter": "15 Our Strengths",
+      "title": "〔GrowGroupの強み：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=固定（正本 P100–104）／確定文言。references/fixed-blocks.md を参照（未記入）〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "16",
+      "label": "Team",
+      "name": "チーム体制"
+    },
+    {
+      "type": "content",
+      "chapter": "16 Team",
+      "title": "〔チーム体制：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=固定（正本 P105–111）／確定文言。references/fixed-blocks.md を参照（未記入）〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "17",
+      "label": "Comparison",
+      "name": "他社との違い"
+    },
+    {
+      "type": "content",
+      "chapter": "17 Comparison",
+      "title": "〔他社との違い：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=固定（正本 P112–115）／確定文言。references/fixed-blocks.md を参照（未記入）〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "18",
+      "label": "Works",
+      "name": "実績資料"
+    },
+    {
+      "type": "content",
+      "chapter": "18 Works",
+      "title": "〔実績資料：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=固定（正本 P116）／確定文言。references/fixed-blocks.md を参照（未記入）〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    },
+    {
+      "type": "chapter",
+      "no": "19",
+      "label": "Profile",
+      "name": "担当紹介"
+    },
+    {
+      "type": "content",
+      "chapter": "19 Profile",
+      "title": "〔担当紹介：先頭スライドのタイトル〕",
+      "lead": "〔リード文。区分=固定（正本 P117–118）／確定文言。references/fixed-blocks.md を参照（未記入）〕",
+      "elements": [
+        "〔要素1〕",
+        "〔要素2〕",
+        "〔要素3〕"
+      ]
+    }
+  ]
+}
