@@ -175,6 +175,8 @@
 | 6 | **リモート実行環境（Claude Code on the web）では PDF 変換・目視 QA ができない。**LibreOffice が core のみで calc/impress/writer 未導入のため xlsx・pptx を読み込めず（`Error: source file could not be loaded`）、`pdftoppm` も無い。`AGENTS.md` 第6章の「生成 → PDF 変換 → 画像化して目視確認」まで完結できるのは Windows ローカルのみ | 2026-08-30 |
 | 7 | 依存は `npm ci` と `pip install -r requirements.txt` で入れる。案件ディレクトリごとに個別インストールしない | 2026-08-30 |
 | 8 | Skill 同梱スクリプトのパスを直書きしない。`python scripts/find-skill-script.py <skill> <スクリプト>` で解決する | 2026-08-30 |
+| 9 | 案件の立ち上げは `skills/gg-project-kickoff/SKILL.md` の手順に従う。回すのは `type` が「Webサイト制作」で始まる案件だけ | 2026-09-18 |
+| 10 | **定期実行「新規Web制作案件の自動キックオフ」には MCP コネクタが付いていない。**このままでは gg-manager を呼べず検知できない。claude.ai の Routines 画面でコネクタを付ける必要がある | 2026-09-18 |
 
 ---
 
