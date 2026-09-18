@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>入試情報（中学受験） | 城北埼玉中学・高等学校 ワイヤーフレーム</title>
+<link rel="stylesheet" href="wireframe.css">
+</head>
+<body data-device="pc" data-notes="on">
+
+<div class="wf-bar">
+  <span class="wf-bar__title">城北埼玉 WF</span>
+  <span class="wf-bar__meta">admission-junior / 入試情報（中学受験） ※デザインではなく構成案です</span>
+  <span class="wf-bar__spacer"></span>
+  <a href="index.html">サイトマップ</a>
+  <button type="button" data-wf="pc" aria-pressed="true">PC</button>
+  <button type="button" data-wf="sp" aria-pressed="false">SP</button>
+  <button type="button" data-wf="notes" aria-pressed="true">注釈</button>
+</div>
+
+<div class="wf-canvas">
+
+  <header class="wf-header">
+    <div class="wf-logo"><span>LOGO</span></div>
+    <ul class="wf-gnav">
+      <li><a href="junior-high.html">中学校</a></li>
+      <li><a href="frontier.html">高等学校</a></li>
+      <li><a href="school-life.html">学校生活</a></li>
+      <li><a href="admission-junior.html">入試・説明会</a></li>
+      <li><a href="#">学校案内</a></li>
+      <li><a href="#">アクセス</a></li>
+    </ul>
+    <div class="wf-header__cta">
+      <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">資料請求</a>
+      <a href="#" class="wf-btn wf-btn--sm">説明会予約</a>
+    </div>
+    <div class="wf-burger">≡</div>
+  </header>
+
+  <div class="wf-pagehead">
+    <div class="wf-inner">
+      <span class="wf-en">ADMISSION</span>
+      <h1 class="wf-h1">入試情報（中学受験）</h1>
+      <p class="wf-cap">募集要項・入試日程・説明会のご案内</p>
+    </div>
+  </div>
+  <div class="wf-inner"><nav class="wf-crumb"><a href="index.html">HOME</a> ＞ <a href="junior-high.html">中学校</a> ＞ 入試情報</nav></div>
+
+  <main>
+
+    <div class="wf-inner">
+      <div class="wf-note" data-n="1">
+        <b>意図</b>このページは<strong>論点02「最新の姿を、探さずに受け取れるか」</strong>に対応し、更新の仕組みの部分で<strong>論点03「学校が自分で更新し続けられるか」</strong>に接続する。ヒアリングで「入試要項が最新化されていない」ことが喫緊の課題として挙がった面。
+      </div>
+      <div class="wf-note" data-n="2">
+        <b>差別化</b>設計上の答えは<strong>「PDFを配るのをやめ、要項そのものをページにする」</strong>こと。現行は情報がPDFに閉じており、SPでは拡大しないと読めず、検索にも乗らない。要項をHTMLの表で持ち、PDFは印刷用の補助として併置する。
+      </div>
+    </div>
+
+    <!-- 年度切替＋更新日 -->
+    <section class="wf-sec wf-sec--tight">
+      <div class="wf-inner">
+        <nav class="wf-tabs">
+          <a href="#" aria-current="true">2027年度入試</a><a href="#">2026年度入試（参考）</a>
+        </nav>
+        <p class="wf-cap">最終更新日：CMSから自動出力</p>
+        <p class="wf-lead">2027年度（令和9年度）中学入試の募集要項です。変更が生じた場合は、このページを更新してお知らせします。</p>
+        <div class="wf-grid wf-grid--3">
+          <a href="#" class="wf-navcard">募集要項を見る</a>
+          <a href="#" class="wf-navcard">説明会に申し込む</a>
+          <a href="#" class="wf-navcard">過去の入試結果</a>
+        </div>
+        <div class="wf-note" data-n="3">
+          <b>意図</b>年度タブで「今年度」と「前年度（参考）」を切り替える。受験生の保護者は前年度の情報と見比べるため、前年度を消さずに残す。<strong>年度が切り替わる作業は、学校側では「新しい年度のタブを作って表を埋める」だけで済む形にする。</strong>
+        </div>
+        <div class="wf-note" data-n="4">
+          <b>要確認</b>前年度の要項を公開し続けてよいか（学校によっては非公開にする方針がある）。
+        </div>
+      </div>
+    </section>
+
+    <!-- 募集要項 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">REQUIREMENTS</span>
+          <h2 class="wf-h2">募集要項</h2>
+        </div>
+        <table class="wf-table">
+          <tr><th>募集人員</th><td>学校確認のうえ記入（回次ごとに行を分ける）</td></tr>
+          <tr><th>出願期間</th><td>学校確認のうえ記入</td></tr>
+          <tr><th>試験日</th><td>学校確認のうえ記入</td></tr>
+          <tr><th>試験科目・配点</th><td>学校確認のうえ記入</td></tr>
+          <tr><th>試験会場</th><td>学校確認のうえ記入</td></tr>
+          <tr><th>合格発表</th><td>学校確認のうえ記入（日時・方法）</td></tr>
+          <tr><th>入学手続</th><td>学校確認のうえ記入（締切・手続方法）</td></tr>
+          <tr><th>受験料・納入金</th><td>学校確認のうえ記入</td></tr>
+          <tr><th>問い合わせ先</th><td>学校確認のうえ記入</td></tr>
+        </table>
+        <div class="wf-btns">
+          <a href="#" class="wf-btn wf-btn--ghost">募集要項（PDF・印刷用）</a>
+        </div>
+        <div class="wf-note" data-n="5">
+          <b>意図</b>SPでは表が自動で縦積みになる（SPボタンで確認できます）。PDFのままでは起きない挙動で、<strong>これが「PDFをやめる」ことの実利</strong>。項目名がそのまま見出しになるため、拡大操作なしで上から読める。
+        </div>
+        <div class="wf-note" data-n="6">
+          <b>差別化</b>9つの行ラベルを先に固定する。ラベルが毎年同じなら、学校側の更新は「値を書き換えるだけ」になり、抜け漏れが起きない。<strong>入試要項が古くなる原因は、原稿を作り直す前提の作りにある。</strong>
+        </div>
+        <div class="wf-note" data-n="7">
+          <b>要確認</b>入試の回次（第1回・第2回…）が何回あるか。回次ごとに表を分けるか、1つの表に列として持つかで、CMSの項目設計が変わる。<strong>ここは見積に効くため早めに確定したい。</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- 出願の流れ -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">FLOW</span>
+          <h2 class="wf-h2">出願から入学までの流れ</h2>
+        </div>
+        <div class="wf-steps wf-steps--row">
+          <div class="wf-step"><h3 class="wf-h4">説明会に参加する</h3><p class="wf-p">日程はこのページから申し込めます。</p></div>
+          <div class="wf-step"><h3 class="wf-h4">出願する</h3><p class="wf-p">出願方法・期間は募集要項のとおり。</p></div>
+          <div class="wf-step"><h3 class="wf-h4">受験する</h3><p class="wf-p">試験日・会場・持ち物を掲載します。</p></div>
+          <div class="wf-step"><h3 class="wf-h4">合格発表・入学手続</h3><p class="wf-p">発表方法と手続の締切を掲載します。</p></div>
+        </div>
+        <div class="wf-note" data-n="8">
+          <b>意図</b>要項の表は「調べる人」向け、この流れは「はじめての人」向け。同じ情報を2つの粒度で持つ。中学受験は保護者がはじめて経験する場合が多く、全体像を先に置くと要項の読み違いが減る。
+        </div>
+        <div class="wf-note" data-n="9">
+          <b>要確認</b>Web出願システムの有無。外部サービスを使う場合、この流れの「出願する」から外部サイトへ遷移する設計になる。現時点で未確認のため、当社からシステム名は書いていない。
+        </div>
+      </div>
+    </section>
+
+    <!-- 説明会 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">BRIEFING</span>
+          <h2 class="wf-h2">学校説明会の日程</h2>
+        </div>
+        <div class="wf-filter"><span>すべて</span><span>中学校</span><span>高等学校</span><span>受付中のみ</span></div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card"><div class="wf-card__body">
+            <span class="wf-tag">中学校</span>
+            <h3 class="wf-h3">学校説明会</h3>
+            <p class="wf-cap">開催日・時間・会場・定員はCMSから出力</p>
+            <a href="#" class="wf-btn wf-btn--sm wf-btn--block">申し込む</a>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <span class="wf-tag">中学校</span>
+            <h3 class="wf-h3">学校説明会</h3>
+            <p class="wf-cap">開催日・時間・会場・定員はCMSから出力</p>
+            <a href="#" class="wf-btn wf-btn--sm wf-btn--block">申し込む</a>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <span class="wf-tag">中学校</span>
+            <h3 class="wf-h3">学校説明会</h3>
+            <p class="wf-cap">受付終了の回はボタンを無効表示に切り替え</p>
+            <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost wf-btn--block">受付終了</a>
+          </div></div>
+        </div>
+        <div class="wf-note" data-n="10">
+          <b>意図</b>現行サイトの `/briefings`（説明会のカスタム投稿）を引き継ぎ、絞り込みを4軸だけ置く。軸が多いと選べなくなる。「受付中のみ」は受験期に最も押されるフィルタ。
+        </div>
+        <div class="wf-note" data-n="11">
+          <b>差別化</b>満席の回を消さずに「受付終了」として残す。消すと「開催されていない学校」に見え、残すと「人が集まっている学校」に見える。
+        </div>
+      </div>
+    </section>
+
+    <!-- 入試結果 -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">RESULT</span>
+          <h2 class="wf-h2">過去の入試結果</h2>
+        </div>
+        <table class="wf-table">
+          <tr><th>2026年度</th><td>志願者数・受験者数・合格者数（学校確認のうえ記入）</td></tr>
+          <tr><th>2025年度</th><td>志願者数・受験者数・合格者数（学校確認のうえ記入）</td></tr>
+          <tr><th>2024年度</th><td>志願者数・受験者数・合格者数（学校確認のうえ記入）</td></tr>
+        </table>
+        <div class="wf-note" data-n="12">
+          <b>要確認</b>入試結果を公開するかどうかは学校の方針次第。<strong>公開すると、塾・受験情報サイト経由ではなく学校の公式ページが検索で参照されるようになる</strong>ため、公開を推奨したい。公開しない場合はこのセクションごと削除する。
+        </div>
+      </div>
+    </section>
+
+    <!-- 資料請求 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">REQUEST</span>
+          <h2 class="wf-h2">資料請求</h2>
+        </div>
+        <div class="wf-form">
+          <div class="wf-field">
+            <label class="wf-label">保護者氏名<span class="wf-req">必須</span></label>
+            <div class="wf-input">山田 太郎</div>
+          </div>
+          <div class="wf-field">
+            <label class="wf-label">メールアドレス<span class="wf-req">必須</span></label>
+            <div class="wf-input">example@example.com</div>
+          </div>
+          <div class="wf-field">
+            <label class="wf-label">郵便番号・住所<span class="wf-req">必須</span></label>
+            <div class="wf-input">郵便番号から自動入力</div>
+          </div>
+          <div class="wf-field">
+            <label class="wf-label">お子様の学年<span class="wf-req">必須</span></label>
+            <div class="wf-input wf-input--select">選択してください</div>
+          </div>
+          <div class="wf-privacy">個人情報の取り扱いに同意する（チェックボックス）</div>
+          <div class="wf-btns wf-btns--center"><a href="#" class="wf-btn wf-btn--lg">確認画面へ</a></div>
+        </div>
+        <div class="wf-note" data-n="13">
+          <b>差別化</b>入力項目は4つに絞る。SPで入力する前提では、項目が増えるほど途中離脱する。電話番号は資料送付に必須ではないため外した。
+        </div>
+        <div class="wf-note" data-n="14">
+          <b>要確認</b>現行の資料請求フォームの項目数と、学校側が実際に使っている項目。使っていない項目があれば削る。
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <section class="wf-sec wf-sec--fill">
+    <div class="wf-inner wf-center">
+      <h2 class="wf-h2">ご不明な点は、お気軽にお問い合わせください。</h2>
+      <p class="wf-lead">入試に関するお問い合わせ先を掲載します。</p>
+      <div class="wf-btns wf-btns--center">
+        <a href="#" class="wf-btn wf-btn--lg">説明会に申し込む</a>
+        <a href="junior-high.html" class="wf-btn wf-btn--lg wf-btn--ghost">中学校のことを知る</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="wf-footer">
+    <div class="wf-inner">
+      <div class="wf-footer__nav">
+        <div><h4 class="wf-h4">中学校</h4><ul>
+          <li><a href="junior-high.html">中学校トップ</a></li>
+          <li><a href="admission-junior.html">入試情報（中学）</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">高等学校</h4><ul>
+          <li><a href="#">高等学校トップ</a></li>
+          <li><a href="frontier.html">フロンティアコース</a></li>
+          <li><a href="#">入試情報（高校）</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">学校生活</h4><ul>
+          <li><a href="school-life.html">学校生活</a></li>
+          <li><a href="school-life.html">部活動</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">学校案内・その他</h4><ul>
+          <li><a href="top.html">TOP</a></li>
+          <li><a href="#">理事長挨拶</a></li>
+          <li><a href="#">アクセス</a></li>
+          <li><a href="index.html">サイトマップ</a></li>
+        </ul></div>
+      </div>
+      <p class="wf-copy">© 城北埼玉中学・高等学校（ワイヤーフレーム／構成案）</p>
+    </div>
+  </footer>
+
+  <div class="wf-fixcta">
+    <a href="#" class="is-sub">資料請求</a>
+    <a href="#">説明会に申し込む</a>
+  </div>
+
+</div><!-- /.wf-canvas -->
+
+<script>
+document.querySelectorAll('[data-wf]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var k = b.dataset.wf, d = document.body;
+    if (k === 'notes'){
+      var on = d.dataset.notes === 'on';
+      d.dataset.notes = on ? 'off' : 'on';
+      b.setAttribute('aria-pressed', String(!on));
+    } else {
+      d.dataset.device = k;
+      document.querySelectorAll('[data-wf="pc"],[data-wf="sp"]').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x.dataset.wf === k));
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>サイトマップ | 城北埼玉中学・高等学校 ワイヤーフレーム</title>
+<link rel="stylesheet" href="wireframe.css">
+</head>
+<body data-device="pc" data-notes="on">
+
+<div class="wf-bar">
+  <span class="wf-bar__title">城北埼玉 WF</span>
+  <span class="wf-bar__meta">index / サイトマップ兼ハブ ※デザインではなく構成案です</span>
+  <span class="wf-bar__spacer"></span>
+  <a href="index.html">サイトマップ</a>
+  <button type="button" data-wf="pc" aria-pressed="true">PC</button>
+  <button type="button" data-wf="sp" aria-pressed="false">SP</button>
+  <button type="button" data-wf="notes" aria-pressed="true">注釈</button>
+</div>
+
+<div class="wf-canvas">
+
+  <main>
+
+    <section class="wf-sec wf-sec--tight">
+      <div class="wf-inner">
+        <span class="wf-en">JOHOKU SAITAMA / WIREFRAME</span>
+        <h1 class="wf-h1">城北埼玉中学・高等学校<br>サイト構成案（ワイヤーフレーム）</h1>
+        <p class="wf-lead">サイト全体の構成と、主要5ページの画面設計です。色・書体・写真は入っていません。<strong>情報の順序と導線だけを見ていただくための資料</strong>です。</p>
+
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card"><div class="wf-card__body">
+            <h3 class="wf-h3">PC / SP</h3>
+            <p class="wf-p">画面上部のボタンで表示幅が切り替わります。<strong>SPを押すと段組みが実際に組み替わります。</strong></p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <h3 class="wf-h3">注釈</h3>
+            <p class="wf-p">赤い破線の枠は、そこにその要素を置いた理由です。ボタンで表示／非表示を切り替えられます。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <h3 class="wf-h3">画像枠</h3>
+            <p class="wf-p">斜線の入ったグレーの箱は写真が入る位置です。実際の写真は制作フェーズで決めます。</p>
+          </div></div>
+        </div>
+
+        <div class="wf-note" data-n="1">
+          <b>意図</b>この資料は<strong>SP（スマートフォン）を基準に設計しています。</strong>ヒアリングでいただいた「ユーザーの9割以上がスマホ」（推定・GA4未検証）という前提に立ち、SPで縦に読んだときの順序を先に決め、PCはその横展開として組んでいます。<strong>まずSPボタンを押した状態でご覧ください。</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3つの論点 -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">ISSUE</span>
+          <h2 class="wf-h2">3つの論点と、対応するページ</h2>
+        </div>
+        <table class="wf-table">
+          <tr>
+            <th>論点01<br>スマホで受験生と保護者に出会えているか</th>
+            <td>SPを基準に情報量と導線を設計し直し、受験生・保護者の入口を分ける。<br><a href="top.html" class="wf-tlink">TOP</a> ／ <a href="junior-high.html" class="wf-tlink">中学校トップ</a></td>
+          </tr>
+          <tr>
+            <th>論点02<br>最新の姿を、探さずに受け取れるか</th>
+            <td>フロンティアコースと入試要項をページ化し、PDFに閉じた情報を開く。<br><a href="frontier.html" class="wf-tlink">フロンティアコース</a> ／ <a href="admission-junior.html" class="wf-tlink">入試情報（中学受験）</a></td>
+          </tr>
+          <tr>
+            <th>論点03<br>学校が自分で更新し続けられるか</th>
+            <td>更新頻度でページを分類し、学校が直接触れる範囲を定義する。<br><a href="school-life.html" class="wf-tlink">学校生活</a></td>
+          </tr>
+        </table>
+        <div class="wf-note" data-n="2">
+          <b>意図</b>ワイヤーを作る5ページは、網羅ではなく<strong>3つの論点に1枚以上ずつ当たるように選んでいます。</strong>各ページの冒頭に、そのページがどの論点に属するかを注釈で明記しています。
+        </div>
+      </div>
+    </section>
+
+    <!-- 今回作成したページ -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">WIREFRAME</span>
+          <h2 class="wf-h2">今回ワイヤーを作成した5ページ</h2>
+        </div>
+        <div class="wf-grid wf-grid--2">
+          <a href="top.html" class="wf-navcard">TOP<span class="wf-tag">論点01</span></a>
+          <a href="junior-high.html" class="wf-navcard">中学校トップ<span class="wf-tag">論点01</span></a>
+          <a href="frontier.html" class="wf-navcard">高等学校 フロンティアコース<span class="wf-tag">論点02</span></a>
+          <a href="admission-junior.html" class="wf-navcard">入試情報（中学受験）<span class="wf-tag">論点02・03</span></a>
+          <a href="school-life.html" class="wf-navcard">学校生活<span class="wf-tag">論点03</span></a>
+        </div>
+        <div class="wf-note" data-n="3">
+          <b>意図</b>ワイヤーは全ページ分は作りません。<strong>密度を論点に直結するページへ集中させる</strong>ほうが、構成の合意が早く取れるためです。他のページは下のサイトマップで役割だけを確定させ、要件定義の中で順次詰めます。
+        </div>
+      </div>
+    </section>
+
+    <!-- サイトマップ -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">SITEMAP</span>
+          <h2 class="wf-h2">サイトマップ（設計対象16ページの想定内訳）</h2>
+        </div>
+        <p class="wf-lead">受注条件の「設計16P／デザイン11P」に対する内訳案です。<strong>記事（約2,300〜2,400件）は流し込み対象で、この16Pには含みません。</strong></p>
+
+        <h3 class="wf-h3">1. 全体・入口</h3>
+        <div class="wf-grid wf-grid--3">
+          <a href="top.html" class="wf-navcard">TOP<span class="wf-tag">WF作成済</span></a>
+          <span class="wf-navcard">更新情報 一覧／記事詳細<span class="wf-tag">今回WF未作成</span></span>
+          <span class="wf-navcard">サイトマップ・各種規程<span class="wf-tag">今回WF未作成</span></span>
+        </div>
+
+        <h3 class="wf-h3">2. 中学校</h3>
+        <div class="wf-grid wf-grid--3">
+          <a href="junior-high.html" class="wf-navcard">中学校トップ<span class="wf-tag">WF作成済</span></a>
+          <span class="wf-navcard">中学校の学び（一貫カリキュラム／JSプログラム／英語）<span class="wf-tag">今回WF未作成</span></span>
+          <a href="admission-junior.html" class="wf-navcard">入試情報（中学受験）<span class="wf-tag">WF作成済</span></a>
+        </div>
+
+        <h3 class="wf-h3">3. 高等学校</h3>
+        <div class="wf-grid wf-grid--3">
+          <span class="wf-navcard">高等学校トップ<span class="wf-tag">今回WF未作成</span></span>
+          <span class="wf-navcard">本科コース<span class="wf-tag">今回WF未作成</span></span>
+          <a href="frontier.html" class="wf-navcard">フロンティアコース<span class="wf-tag">WF作成済</span></a>
+          <span class="wf-navcard">入試情報（高校受験）<span class="wf-tag">今回WF未作成</span></span>
+        </div>
+
+        <h3 class="wf-h3">4. 学校生活・進路</h3>
+        <div class="wf-grid wf-grid--3">
+          <a href="school-life.html" class="wf-navcard">学校生活<span class="wf-tag">WF作成済</span></a>
+          <span class="wf-navcard">部活動（運動部／文化部）<span class="wf-tag">今回WF未作成</span></span>
+          <span class="wf-navcard">進路・進学実績<span class="wf-tag">今回WF未作成</span></span>
+        </div>
+
+        <h3 class="wf-h3">5. 学校案内・共通</h3>
+        <div class="wf-grid wf-grid--3">
+          <span class="wf-navcard">学校案内（理事長挨拶／教育方針／沿革／施設）<span class="wf-tag">今回WF未作成</span></span>
+          <span class="wf-navcard">説明会・イベント一覧<span class="wf-tag">今回WF未作成</span></span>
+          <span class="wf-navcard">アクセス（本川越／ふじみ野／南古谷）<span class="wf-tag">今回WF未作成</span></span>
+          <span class="wf-navcard">お問い合わせ・資料請求<span class="wf-tag">今回WF未作成</span></span>
+        </div>
+
+        <div class="wf-note" data-n="4">
+          <b>要確認</b>16ページの内訳は<strong>受注プラン（梅／竹／松）が未確定のままの暫定案</strong>です。設計16P・デザイン11Pは竹に近いものの完全には一致していないため、どの行を採るかの確定が必要です（社内確認中）。
+        </div>
+        <div class="wf-note" data-n="5">
+          <b>要確認</b>2026年の<strong>中学校創立25周年</strong>（および2030年の高校創立50周年）をサイトで扱うかどうか。扱う場合は特設ページが必要となり、ページ数と設計が変わります。
+        </div>
+        <div class="wf-note" data-n="6">
+          <b>意図</b>グローバルナビは<strong>6項目（中学校／高等学校／学校生活／入試・説明会／学校案内／アクセス）</strong>に固定しました。現行サイトは学部区分（/junior-high-school 等）とコース区分（/division_category/*）が並立し、同じ内容に複数の入口がある状態です。入口を1本にすることが構造改善の起点になります。
+        </div>
+      </div>
+    </section>
+
+    <!-- 現行サイトからの変更点 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">CHANGE</span>
+          <h2 class="wf-h2">現行サイトから変えること</h2>
+        </div>
+        <table class="wf-table">
+          <tr><th>入口</th><td>受験生（中学／高校）・在校生保護者で入口を分ける。現行の二重導線を1本に統合する。</td></tr>
+          <tr><th>PDF</th><td>募集要項・年間行事はHTMLの表とテキストで持つ。PDFは印刷用の補助として併置する。</td></tr>
+          <tr><th>更新</th><td>更新頻度で「随時・学校／年1回・学校／数年に1回・当社」に分類し、管理画面の項目を分ける。</td></tr>
+          <tr><th>URL</th><td>命名の不統一（syllabus と syllabus_m、result-high と result-junior）を整理し、新しい体系で構築する。</td></tr>
+          <tr><th>旧ページ</th><td>現行テンプレートのコメント崩れで露出している旧URL（/education/*・/activity/*）は<strong>移行対象にしない。</strong></td></tr>
+        </table>
+        <div class="wf-note" data-n="7">
+          <b>根拠</b>現行サイトのHTMLソースには、コメントアウトしたはずの旧ナビゲーションが<strong>生きたリンクとして出力される不具合</strong>があります（内部リンクの約47%が不正URLを経由し、301リダイレクトで正規URLへ転送されている状態）。新サイトはこの構造を引き継がず、公開前チェック項目にも入れます。
+        </div>
+        <div class="wf-note" data-n="8">
+          <b>要確認</b>GA4のアクセス権をいただきたい。「9割以上がスマホ」は現時点で<strong>推定</strong>であり、実数が分かると、SP基準の設計判断とリニューアル後の効果測定の両方に根拠が付きます。
+        </div>
+      </div>
+    </section>
+
+    <!-- 確認事項まとめ -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">TO BE CONFIRMED</span>
+          <h2 class="wf-h2">学校にご確認いただきたいこと</h2>
+        </div>
+        <table class="wf-table">
+          <tr><th>数値</th><td>進学実績（出す指標と年度）、入試結果の公開可否。いずれもワイヤー内は「—」または空欄のままにしています。</td></tr>
+          <tr><th>入試</th><td>入試の回次（第1回・第2回…）の数、Web出願システムの有無。</td></tr>
+          <tr><th>コース</th><td>本科とフロンティアの違い（比較表4行分の原稿）、内進生がフロンティアを選べるか。</td></tr>
+          <tr><th>行事</th><td>年間行事の一覧（中学／高校）。当社では書けないため空けています。</td></tr>
+          <tr><th>掲載</th><td>生徒の写真・氏名の掲載範囲、同好会の扱い。</td></tr>
+          <tr><th>運用</th><td>更新を担当される方の体制と、1週間に割ける時間。</td></tr>
+        </table>
+        <div class="wf-note" data-n="9">
+          <b>意図</b>ワイヤー内で学校の事実にあたる箇所（実績数値・行事名・コースの詳細）は、<strong>確認が取れていないものを当社で創作せず空欄にしています。</strong>ここを埋めることが、要件定義の最初の作業になります。
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="wf-footer">
+    <div class="wf-inner">
+      <div class="wf-footer__nav">
+        <div><h4 class="wf-h4">ワイヤー</h4><ul>
+          <li><a href="top.html">TOP</a></li>
+          <li><a href="junior-high.html">中学校トップ</a></li>
+          <li><a href="frontier.html">フロンティアコース</a></li>
+          <li><a href="admission-junior.html">入試情報（中学受験）</a></li>
+          <li><a href="school-life.html">学校生活</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">論点01</h4><ul>
+          <li><a href="top.html">TOP</a></li>
+          <li><a href="junior-high.html">中学校トップ</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">論点02</h4><ul>
+          <li><a href="frontier.html">フロンティアコース</a></li>
+          <li><a href="admission-junior.html">入試情報（中学受験）</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">論点03</h4><ul>
+          <li><a href="school-life.html">学校生活</a></li>
+          <li><a href="admission-junior.html">入試情報（中学受験）</a></li>
+        </ul></div>
+      </div>
+      <p class="wf-copy">© 城北埼玉中学・高等学校 Webサイトリニューアル ワイヤーフレーム（構成案）／GrowGroup</p>
+    </div>
+  </footer>
+
+</div><!-- /.wf-canvas -->
+
+<script>
+document.querySelectorAll('[data-wf]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var k = b.dataset.wf, d = document.body;
+    if (k === 'notes'){
+      var on = d.dataset.notes === 'on';
+      d.dataset.notes = on ? 'off' : 'on';
+      b.setAttribute('aria-pressed', String(!on));
+    } else {
+      d.dataset.device = k;
+      document.querySelectorAll('[data-wf="pc"],[data-wf="sp"]').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x.dataset.wf === k));
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>
