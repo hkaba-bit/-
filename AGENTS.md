@@ -43,6 +43,7 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 | `python scripts/find-skill-script.py <skill> <スクリプト>` | Skill 同梱スクリプトの実パスを解決（環境ごとに置き場所が違うため直書きしない） |
 | `python scripts/check-skill-assets.py` | SKILL.md が参照する assets / scripts / references が実在するか検証 |
 | `python scripts/qa-wireframe.py <HTML...>` | ワイヤーを実際に開いて検品（JSエラー・SP切替・組み替わり・リンク切れ） |
+| `python scripts/kickoff-project.py --slug <slug> --json <案件.json>` | 案件ディレクトリを作り、gg-manager の案件JSONから与件の骨組みを書き出す |
 
 ---
 
@@ -85,6 +86,7 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 | `gg-sitemap-spec` | 仕様書（サイトマップ Excel）・見積の下地 | `skills/gg-sitemap-spec/SKILL.md` |
 | `gg-proposal-artifact` | 商談で触ってもらうインタラクティブ資料 | `skills/gg-proposal-artifact/SKILL.md` |
 | `gg-calendar-task` | 議事録からのタスク化・カレンダー登録 | `skills/gg-calendar-task/SKILL.md` |
+| `gg-project-kickoff` | 新規案件の立ち上げ（与件整理→分割→検品・統合） | `skills/gg-project-kickoff/SKILL.md` |
 
 > Skill を追加・改訂したら **この表も同時に更新する**。表と実体がずれた時点で Codex 側は機能しない。
 
