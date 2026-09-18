@@ -1,4 +1,4 @@
-# skills/ を正本として Claude Code 側（%USERPROFILE%\.claude\skills）へ配布する。
+﻿# skills/ を正本として Claude Code 側（%USERPROFILE%\.claude\skills）へ配布する。
 # シンボリックリンクを試み、権限不足なら robocopy でミラーコピーに切り替える。
 #
 #   powershell -ExecutionPolicy Bypass -File scripts\sync-skills.ps1

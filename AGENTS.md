@@ -104,6 +104,7 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 - TypeScript を使う場合は `any` 禁止
 - スクリプトは `scripts/` に置き、案件ディレクトリにコピーしない
 - 生成スクリプトは必ず「生成 → PDF 変換 → 画像化して目視確認」まで実行してから完了とする
+- **`.ps1` は UTF-8 **BOM付き** で保存する。**Windows PowerShell 5.1 は BOM がない `.ps1` を ANSI（CP932）として読むため、日本語コメントが化けてパースが壊れる（`MissingEndCurlyBrace`）
 
 ---
 
@@ -122,12 +123,14 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 
 | 環境 | 作業ルート | Node.js | Python |
 |---|---|---|---|
-| Windows ローカル（蒲） | `<初回起動時に実測値を記入>` | `<未計測>` | `<未計測>` |
+| Windows ローカル（蒲） | `C:\Users\hero\gg-workspace` | v22.14.0 | **未導入**（仕様書 Excel の生成のみ不可） |
 | Claude Code on the web | `/home/user/-` | v22.22.2 | 3.11.15 |
 
 - Git：`hkaba-bit/-`（private）。ローカルとリモートはこのリポジトリ経由で同期する
 - OS：ローカルは Windows、リモート実行環境は Linux。スクリプトは `.ps1` と `.sh` を対で置く
 - `outputs/` は Git 追跡外（`.gitignore` 済み）。納品物の実体はリポジトリに載せない
+- Windows ローカルは Git 2.48.1。**OneDrive 配下に作業ルートを置かない**（`node_modules` と `.git` の同期でトラブルになる）
+- Windows ローカルは開発者モードが無効のため、`sync-skills.ps1` はコピー同期で動く。**`skills/` を編集したら毎回実行し直す**
 
 ---
 
