@@ -44,6 +44,7 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 | `python scripts/check-skill-assets.py` | SKILL.md が参照する assets / scripts / references が実在するか検証 |
 | `python scripts/qa-wireframe.py <HTML...>` | ワイヤーを実際に開いて検品（JSエラー・SP切替・組み替わり・リンク切れ） |
 | `python scripts/kickoff-project.py --slug <slug> --json <案件.json>` | 案件ディレクトリを作り、gg-manager の案件JSONから与件の骨組みを書き出す |
+| `python scripts/recalc-countif-fallback.py <xlsx>` | LibreOffice が使えない環境で COUNTIF のキャッシュ値だけを埋める代替。**使えるなら `recalc.py` を優先** |
 
 ---
 
