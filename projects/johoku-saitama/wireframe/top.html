@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TOP | 城北埼玉中学・高等学校 ワイヤーフレーム</title>
+<link rel="stylesheet" href="wireframe.css">
+</head>
+<body data-device="pc" data-notes="on">
+
+<div class="wf-bar">
+  <span class="wf-bar__title">城北埼玉 WF</span>
+  <span class="wf-bar__meta">top / TOP ※デザインではなく構成案です</span>
+  <span class="wf-bar__spacer"></span>
+  <a href="index.html">サイトマップ</a>
+  <button type="button" data-wf="pc" aria-pressed="true">PC</button>
+  <button type="button" data-wf="sp" aria-pressed="false">SP</button>
+  <button type="button" data-wf="notes" aria-pressed="true">注釈</button>
+</div>
+
+<div class="wf-canvas">
+
+  <header class="wf-header">
+    <div class="wf-logo"><span>LOGO</span></div>
+    <ul class="wf-gnav">
+      <li><a href="junior-high.html">中学校</a></li>
+      <li><a href="frontier.html">高等学校</a></li>
+      <li><a href="school-life.html">学校生活</a></li>
+      <li><a href="admission-junior.html">入試・説明会</a></li>
+      <li><a href="#">学校案内</a></li>
+      <li><a href="#">アクセス</a></li>
+    </ul>
+    <div class="wf-header__cta">
+      <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">資料請求</a>
+      <a href="#" class="wf-btn wf-btn--sm">説明会予約</a>
+    </div>
+    <div class="wf-burger">≡</div>
+  </header>
+
+  <main>
+
+    <!-- FV -->
+    <section class="wf-hero wf-hero--split">
+      <div class="wf-hero__copy">
+        <span class="wf-en">JOHOKU SAITAMA</span>
+        <h1 class="wf-h1">着実・勤勉・自主。<br>6年間で、進路を選びきる。</h1>
+        <p class="wf-lead">埼玉の私立男子中高一貫校、城北埼玉中学・高等学校です。中学受験・高校受験それぞれの入口から、いまの学校の姿をご覧いただけます。</p>
+        <div class="wf-btns">
+          <a href="admission-junior.html" class="wf-btn wf-btn--lg">学校説明会に申し込む</a>
+          <a href="#" class="wf-btn wf-btn--lg wf-btn--ghost">資料を請求する</a>
+        </div>
+      </div>
+      <div class="wf-img wf-img--hero"><span>KEY VISUAL</span></div>
+    </section>
+
+    <div class="wf-inner">
+      <div class="wf-note" data-n="1">
+        <b>意図</b>このページは<strong>論点01「スマホで受験生と保護者に出会えているか」</strong>に対応する。ユーザーの9割以上がスマホ（推定・GA4未検証）という前提に立ち、SPで縦に読んだときの順序を設計の基準にしている。PCはその横展開として組む。
+      </div>
+      <div class="wf-note" data-n="2">
+        <b>意図</b>FVは写真上に文字を重ねる型ではなく上下分割にした。SPで文字がキービジュアルに重なると、見出し・リード・ボタンの3点が画面外に押し出される。分割型ならSPで「見出し→CTA→写真」の順に必ず読める。
+      </div>
+      <div class="wf-note" data-n="3">
+        <b>根拠</b>校訓「着実・勤勉・自主」をFVの見出しに置く。現行サイトのFVはスライドショーで、学校名以外に何も言い切っていない。一文目で学校の性格が伝わる状態にする。
+      </div>
+    </div>
+
+    <!-- 入口の分岐 -->
+    <section class="wf-sec wf-sec--tight">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">FOR YOU</span>
+          <h2 class="wf-h2">はじめての方へ</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <a href="junior-high.html" class="wf-navcard">中学受験をお考えの方</a>
+          <a href="frontier.html" class="wf-navcard">高校受験をお考えの方</a>
+          <a href="school-life.html" class="wf-navcard">在校生・保護者の方</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="wf-inner">
+      <div class="wf-note" data-n="4">
+        <b>差別化</b>論点01の中心。中学受験・高校受験・在校生で、必要な情報も来訪の頻度もまったく違う。SPのファーストビュー直下でこの3つに分岐させ、以降の回遊をそれぞれの世界に閉じる。現行サイトはこの分岐がなく、学部区分（/junior-high-school 等）とコース区分（/division_category/*）が並立して導線が二重になっている。
+      </div>
+      <div class="wf-note" data-n="5">
+        <b>要確認</b>3分岐でよいか。「卒業生」「寄付をお考えの方」「教員採用」は頻度が低いためフッターに寄せる想定（現行 /graduate・/donations・/recruit）。ここに並べる必要があるかは学校側の判断を仰ぎたい。
+      </div>
+    </div>
+
+    <!-- 説明会 -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">BRIEFING</span>
+          <h2 class="wf-h2">開催予定の学校説明会</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card"><div class="wf-card__body">
+            <span class="wf-tag">中学校</span>
+            <h3 class="wf-h3">学校説明会</h3>
+            <p class="wf-cap">開催日・会場・定員はCMSから出力</p>
+            <p class="wf-p">申込はこのカードから直接。学年・回次でフィルタできる一覧へも進めます。</p>
+            <a href="admission-junior.html" class="wf-tlink">日程を見て申し込む</a>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <span class="wf-tag">高等学校</span>
+            <h3 class="wf-h3">学校説明会</h3>
+            <p class="wf-cap">開催日・会場・定員はCMSから出力</p>
+            <p class="wf-p">高校受験の方向け。フロンティアコース・本科コースの説明を含みます。</p>
+            <a href="frontier.html" class="wf-tlink">コースの内容を見る</a>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <span class="wf-tag">中学校</span>
+            <h3 class="wf-h3">学校説明会</h3>
+            <p class="wf-cap">開催日・会場・定員はCMSから出力</p>
+            <p class="wf-p">満席の回は「受付終了」を自動表示し、次の回へ誘導します。</p>
+            <a href="admission-junior.html" class="wf-tlink">日程を見て申し込む</a>
+          </div></div>
+        </div>
+        <div class="wf-note" data-n="6">
+          <b>意図</b>TOPの上から2番目のブロックに説明会を置く。学校サイトで最も強いCVは説明会申込であり、受験期は「次にいつ行けるか」だけを見に来る。現行サイトの `/briefings`（説明会のカスタム投稿）をそのまま構造化して流用できる。
+        </div>
+        <div class="wf-note" data-n="7">
+          <b>要確認</b>掲載する会の種類（学校説明会以外に何を出すか）と、申込システム。外部予約サービスを使うか、WordPress内で受け付けるかで工数が変わる。
+        </div>
+      </div>
+    </section>
+
+    <!-- 校訓 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">OUR MOTTO</span>
+          <h2 class="wf-h2">城北埼玉が大切にしていること</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--icon"><span></span></div>
+            <h3 class="wf-h3">着実</h3>
+            <p class="wf-p">校訓の一つ目。説明文は学校からの原稿を反映します。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--icon"><span></span></div>
+            <h3 class="wf-h3">勤勉</h3>
+            <p class="wf-p">校訓の二つ目。説明文は学校からの原稿を反映します。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--icon"><span></span></div>
+            <h3 class="wf-h3">自主</h3>
+            <p class="wf-p">校訓の三つ目。説明文は学校からの原稿を反映します。</p>
+          </div></div>
+        </div>
+        <div class="wf-btns"><a href="#" class="wf-btn wf-btn--ghost">理事長挨拶・教育方針を見る</a></div>
+        <div class="wf-note" data-n="8">
+          <b>意図</b>理念は「読ませる」より「一言で置く」。校訓の3語だけをTOPに出し、本文は学校案内（現行 /info/philosophy・/info/president）へ送る。SPで長文の理念文をTOPに置くと、その下の学び・進路まで到達しない。
+        </div>
+      </div>
+    </section>
+
+    <!-- 学び -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">LEARNING</span>
+          <h2 class="wf-h2">城北埼玉の学び</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <span class="wf-tag">中学校</span>
+            <h3 class="wf-h3">JSプログラム</h3>
+            <p class="wf-p">体験を軸にした中学の学び。内容は学校の原稿を反映します。</p>
+            <a href="junior-high.html" class="wf-tlink">中学校の学びを見る</a>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <span class="wf-tag">中学校・高等学校</span>
+            <h3 class="wf-h3">イングリッシュキャンプ</h3>
+            <p class="wf-p">英語の取り組み。対象学年・実施時期は学校に確認して記載します。</p>
+            <a href="junior-high.html" class="wf-tlink">英語の学びを見る</a>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <span class="wf-tag">高等学校</span>
+            <h3 class="wf-h3">フロンティアコース</h3>
+            <p class="wf-p">探究・PBL型のコース。フィールドワークとプロジェクト学習で進めます。</p>
+            <a href="frontier.html" class="wf-tlink">フロンティアコースを見る</a>
+          </div></div>
+        </div>
+        <div class="wf-note" data-n="9">
+          <b>根拠</b>ヒアリングで学校の特色として挙がった3つ（JSプログラム／イングリッシュキャンプ／フロンティアコース）だけをTOPに出す。ここに載せていない取り組みは各下層ページで扱う。<b>要確認</b>この3つで学校として異論がないか。
+        </div>
+      </div>
+    </section>
+
+    <!-- 進路 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">CAREER</span>
+          <h2 class="wf-h2">進学実績</h2>
+        </div>
+        <div class="wf-stats">
+          <div class="wf-stat"><span class="wf-stat__num">—</span><span class="wf-stat__label">国公立大学 合格者数</span></div>
+          <div class="wf-stat"><span class="wf-stat__num">—</span><span class="wf-stat__label">早慶上理 合格者数</span></div>
+          <div class="wf-stat"><span class="wf-stat__num">—</span><span class="wf-stat__label">GMARCH 合格者数</span></div>
+          <div class="wf-stat"><span class="wf-stat__num">—</span><span class="wf-stat__label">現役進学率</span></div>
+        </div>
+        <div class="wf-btns"><a href="#" class="wf-btn wf-btn--ghost">進路・進学実績を見る</a></div>
+        <div class="wf-note" data-n="10">
+          <b>要確認</b>数値は未取得のため「—」のまま置いている。<strong>ここに入る実数は学校からの提供が必要</strong>。出す指標（4項目の選び方）と、何年度分を並べるかを決めていただきたい。数値は年に1度必ず更新される情報なので、CMSの項目として持たせる（論点03）。
+        </div>
+      </div>
+    </section>
+
+    <!-- 学校生活 -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">SCHOOL LIFE</span>
+          <h2 class="wf-h2">学校生活</h2>
+        </div>
+        <div class="wf-grid wf-grid--2">
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <h3 class="wf-h3">行事とふだんの一日</h3>
+            <p class="wf-p">年間行事と日常の様子。写真と短い記事を学校が随時追加します。</p>
+            <a href="school-life.html" class="wf-tlink">学校生活を見る</a>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <h3 class="wf-h3">部活動</h3>
+            <p class="wf-p">運動部・文化部の一覧と活動の記録。</p>
+            <a href="school-life.html" class="wf-tlink">部活動を見る</a>
+          </div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ニュース -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">NEWS</span>
+          <h2 class="wf-h2">更新情報</h2>
+        </div>
+        <nav class="wf-tabs">
+          <a href="#" aria-current="true">すべて</a><a href="#">中学校</a><a href="#">高等学校（本科）</a><a href="#">高等学校（フロンティア）</a><a href="#">その他</a>
+        </nav>
+        <ul class="wf-newslist">
+          <li><a href="#"><span class="wf-date">日付（CMS）</span><span class="wf-tag">中学校</span>記事タイトルが入ります</a></li>
+          <li><a href="#"><span class="wf-date">日付（CMS）</span><span class="wf-tag">高等学校</span>記事タイトルが入ります</a></li>
+          <li><a href="#"><span class="wf-date">日付（CMS）</span><span class="wf-tag">フロンティア</span>記事タイトルが入ります</a></li>
+          <li><a href="#"><span class="wf-date">日付（CMS）</span><span class="wf-tag">お知らせ</span>記事タイトルが入ります</a></li>
+          <li><a href="#"><span class="wf-date">日付（CMS）</span><span class="wf-tag">部活動</span>記事タイトルが入ります</a></li>
+        </ul>
+        <div class="wf-btns"><a href="#" class="wf-btn wf-btn--ghost">更新情報をすべて見る</a></div>
+        <div class="wf-note" data-n="11">
+          <b>意図</b>タブの軸は現行の区分（中学校／高等学校・本科／高等学校・フロンティア／その他）をそのまま引き継ぐ。移行対象の記事は約2,300〜2,400件あり、この区分が既に付いているため、分類をやり直さずに移行できる。
+        </div>
+        <div class="wf-note" data-n="12">
+          <b>要確認</b>記事の実数。仕様書は2,365件、サイト情報は2,321件で44件の差がある。移行対象の確定が必要（社内照合中）。
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <section class="wf-sec wf-sec--fill">
+    <div class="wf-inner wf-center">
+      <h2 class="wf-h2">まずは、学校を見に来てください。</h2>
+      <p class="wf-lead">説明会の申込と資料請求は、スマートフォンから1分で完了します。</p>
+      <div class="wf-btns wf-btns--center">
+        <a href="admission-junior.html" class="wf-btn wf-btn--lg">学校説明会に申し込む</a>
+        <a href="#" class="wf-btn wf-btn--lg wf-btn--ghost">資料を請求する</a>
+      </div>
+      <div class="wf-note" data-n="13">
+        <b>意図</b>全ページ共通のCTAバンド。申込導線を各ページの末尾に必ず置き、SPでは加えて画面下部に固定CTAを常駐させる（SP表示に切り替えると出ます）。現行サイトは受験生向けCTAが旧ナビの不具合で壊れた状態にあり、まずここを確実に機能させる。
+      </div>
+    </div>
+  </section>
+
+  <footer class="wf-footer">
+    <div class="wf-inner">
+      <div class="wf-footer__nav">
+        <div><h4 class="wf-h4">中学校</h4><ul>
+          <li><a href="junior-high.html">中学校トップ</a></li>
+          <li><a href="junior-high.html">中高一貫の学び</a></li>
+          <li><a href="admission-junior.html">入試情報（中学）</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">高等学校</h4><ul>
+          <li><a href="#">高等学校トップ</a></li>
+          <li><a href="#">本科コース</a></li>
+          <li><a href="frontier.html">フロンティアコース</a></li>
+          <li><a href="#">入試情報（高校）</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">学校生活</h4><ul>
+          <li><a href="school-life.html">学校生活</a></li>
+          <li><a href="school-life.html">部活動</a></li>
+          <li><a href="#">施設紹介</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">学校案内・その他</h4><ul>
+          <li><a href="#">理事長挨拶</a></li>
+          <li><a href="#">アクセス</a></li>
+          <li><a href="#">卒業生の方へ</a></li>
+          <li><a href="#">ご寄付のお願い</a></li>
+          <li><a href="#">教員採用</a></li>
+        </ul></div>
+      </div>
+      <p class="wf-copy">© 城北埼玉中学・高等学校（ワイヤーフレーム／構成案）</p>
+    </div>
+  </footer>
+
+  <div class="wf-fixcta">
+    <a href="#" class="is-sub">資料請求</a>
+    <a href="admission-junior.html">説明会に申し込む</a>
+  </div>
+
+</div><!-- /.wf-canvas -->
+
+<script>
+document.querySelectorAll('[data-wf]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var k = b.dataset.wf, d = document.body;
+    if (k === 'notes'){
+      var on = d.dataset.notes === 'on';
+      d.dataset.notes = on ? 'off' : 'on';
+      b.setAttribute('aria-pressed', String(!on));
+    } else {
+      d.dataset.device = k;
+      document.querySelectorAll('[data-wf="pc"],[data-wf="sp"]').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x.dataset.wf === k));
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>

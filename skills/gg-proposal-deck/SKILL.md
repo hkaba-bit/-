@@ -19,11 +19,11 @@ description: GrowGroupのWebサイト提案書（PPTX）を、日拓グループ
 | `references/structure.md` | 骨子を組むとき（章別スライド定義・全118Pの型） | 骨格のみ。章別スライド定義は未記入 |
 | `references/copy-rules.md` | 原稿を書くとき（版面・文言・数字の規約） | 記入済み（版面数値は暫定） |
 | `references/policy-rules.md` | **毎回必ず**（特記事項＝社内の政策ルール） | 台帳は空（ルール0件） |
-| `references/fixed-blocks.md` | 章13〜19の確定文言が要るとき | **未記入** |
+| `references/fixed-blocks.md` | 章13〜19の確定文言が要るとき | 記入済み（正本 P91–118 から転記） |
 | `references/variants.md` | 案件類型で章を増減させるとき | **未記入** |
 
-> 正本（日拓提案118P）の現物が手元にないため、上記のうち会社の確定文言・運用判断にあたる部分は
-> 空欄にしてある。**モードA・Bはこの空欄が埋まるまで完全には回らない。**埋め方は各ファイルの冒頭に書いた。
+> `variants.md` は未記入。案件類型による章の増減は、案件を通すたびに1行ずつ足していく。
+> 空欄の埋め方は各ファイルの冒頭に書いてある。
 
 ---
 
@@ -62,12 +62,16 @@ python "$(python scripts/find-skill-script.py pptx scripts/office/validate.py)" 
 
 ### テンプレートPPTX
 
-`assets/deck-template.json` は、上の章構成表から機械的に起こした**40枚の枠**
-（表紙＋全体像＋19章分の章扉と先頭スライド）。全スライドが `〔　〕` のプレースホルダで、
-各枠のリード文に区分と正本Pレンジが入れてある。
+`assets/deck-template.json` は **54枚**。内訳は次のとおり。
 
-固定ブロック（章13〜19）の確定文言は `references/fixed-blocks.md` が未記入のため**まだ入っていない**。
-埋まり次第、このテンプレートにも反映する。
+| 範囲 | 枚数 | 中身 |
+|---|---|---|
+| 表紙・全体像 | 2 | `〔　〕` のプレースホルダ |
+| 章01〜12（可変・半可変） | 24 | 章扉＋先頭スライドの枠。リード文に区分と正本Pレンジを記載 |
+| 章13〜19（固定） | 28 | **`references/fixed-blocks.md` の確定文言入り。**そのまま使う |
+
+章構成表と `fixed-blocks.md` から機械的に生成しているので、どちらかを直したら
+テンプレートも作り直す（手で並べ替えない）。
 
 ```bash
 node skills/gg-proposal-deck/scripts/build_deck.js skills/gg-proposal-deck/assets/deck-template.json テンプレート.pptx

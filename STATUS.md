@@ -19,6 +19,39 @@
 
 ## 直近
 
+### [2026-08-30] 固定ブロックの検品と、テンプレートへの反映 — Claude
+- 成果物: `skills/gg-proposal-deck/assets/deck-template.json`（40枚 → **54枚**）/ `SKILL.md` のテンプレート節・参照ファイル表
+- 検証:
+  - **転記内容の検品（実装者と別の目）**：クライアント実名・個別見積金額・個人名の混入は **なし** ＝ **OK**。日拓の社名は出ていない。P113 の価格感は「相場観であり個別見積ではない」と自ら注記済み。章19 担当紹介は版面のみ固定で氏名・写真は差し替え扱い
+  - `deck-template.json` を再生成し 54枚の PPTX を出力 → `validate.py` が **All validations PASSED** ＝ **OK**
+- 判断メモ:
+  - `fixed-blocks.md` が埋まったので、`SKILL.md` に「埋まり次第反映する」と書いた分を実行した。章13〜19 の28枚に確定文言が入り、**新規案件はこのテンプレートを複製して章01〜12 の `〔　〕` を埋めるだけ**で骨格が立つ
+  - テンプレートは章構成表と `fixed-blocks.md` から**機械的に生成**している。どちらかを直したら作り直す（手で並べ替えない）。この方針を SKILL.md に明記した
+  - `出典・注記` と `差し替え条件` は執筆者向けのメモなので、スライドには載せていない
+- 残課題: 下の「蒲さんの判断待ち」に社員数の表記ゆれを追加
+
+### [2026-08-30] Windows ローカル環境の構築完了と、依存の脆弱性対応 — 蒲 / Claude
+- 成果物: `AGENTS.md` 第8章（環境情報を実測値で記入）/ `package.json`・`package-lock.json`（sharp を ^0.35.4 へ）
+- 検証:
+  - 蒲さんのローカルで clone → `sync-skills.ps1` → `npm ci` まで通過。Skill 6本が `C:\Users\hero\.claude\skills` に配置され、`added 31 packages` ＝ **OK**
+  - sharp 更新後に `deck-template.json`（40枚）から PPTX を再生成し、`validate.py` が **All validations PASSED** ＝ **OK**（回帰なし）
+- 判断メモ:
+  - **実測値**：作業ルート `C:\Users\hero\gg-workspace` / Node v22.14.0 / Git 2.48.1 / Python 未導入
+  - OneDrive 配下（デスクトップ）は避けた。`node_modules` と `.git` を OneDrive が同期しようとして壊れるため。規約として第8章に明記
+  - 開発者モードが無効でシンボリックリンクを張れないため、Skill はコピー同期。`skills/` 編集のたびに `sync-skills.ps1` の再実行が要る
+  - `npm audit` の high 3件のうち、**sharp（libvips CVE 4件）は ^0.35.4 へ上げて解消**。残る `image-size`（pptxgenjs の推移依存）は**対応しない**：不正な ICNS ファイルを読ませたときの DoS で、提案書に使うのは PNG/JPG。修正には推移依存のメジャー更新を強制する必要があり、PPTX 生成が壊れるリスクの方が大きい
+  - Windows 特有のつまずきを2つ踏んだ：`.ps1` の BOM 問題（修正済み）と、実行ポリシーによる `npm` ブロック（`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` で解消）
+- 残課題: Python 未導入（仕様書 Excel の生成が使えない）。Codex 側の確認（T5-2）
+
+### [2026-08-30] `.ps1` が Windows で実行できないバグを修正 — Claude
+- 成果物: `scripts/sync-skills.ps1` / `scripts/new-project.ps1`（UTF-8 BOM を付与）/ `AGENTS.md` 第6章のコード規約に1行
+- 検証: 両ファイルの先頭3バイトが `EF BB BF` であること、UTF-8 として波括弧の対応が取れていること（9対 / 10対）を確認 ＝ **OK**
+- 判断メモ:
+  - 蒲さんのローカルで `sync-skills.ps1` が `MissingEndCurlyBrace` で落ちた。原因は**こちらのファイル出力**。UTF-8（BOMなし）で書いたため、Windows PowerShell 5.1 が ANSI（CP932）として読み、日本語コメントが化けて `}` を飲み込んでいた
+  - リモート実行環境（Linux）でしか検証していなかったため見逃した。Windows 固有の挙動は実機でしか出ない
+  - 同じ事故を繰り返さないよう `AGENTS.md` 第6章に規約として明記した
+- 残課題: 蒲さんのローカルで `pip` が未認識。Python の導入状況を確認中
+
 ### [2026-08-30] ワイヤー／Artifact の実物 QA と、検品の自動化 — Claude
 - 成果物: `scripts/qa-wireframe.py` / `AGENTS.md` 第2章の環境スクリプト表に1行
 - 検証（Chromium で実際にレンダリングして確認）:
@@ -189,13 +222,20 @@
 
 ## 記入待ち（蒲の情報が要る）
 
-| # | ファイル | 要るもの | 最短の埋め方 |
+| # | ファイル | 要るもの | 状態 |
 |---|---|---|---|
-| 1 | `skills/gg-proposal-deck/references/fixed-blocks.md` | 章13〜19（約28P）の確定文言。会社紹介・強み・チーム体制・他社比較・実績・担当紹介 | 直近の提出済み提案書 PPTX から該当ページを転記。ファイルを渡してもらえれば読み取って流し込む |
-| 2 | `skills/gg-proposal-deck/references/variants.md` | 案件類型（コンペ／リニューアル／広告）ごとの章の増減と想定P数 | 直近3案件で実際に増減させた章を教えてもらえれば表に起こす |
+| ~~1~~ | ~~`fixed-blocks.md`~~ | ~~章13〜19の確定文言~~ | **2026-08-30 完了**（ローカルの Claude Code が正本 P91–118 から転記） |
+| 2 | `skills/gg-proposal-deck/references/variants.md` | 案件類型（コンペ／リニューアル／広告）ごとの章の増減と想定P数 | 未記入。直近3案件で増減させた章を教えてもらえれば表に起こす |
 | 3 | `skills/gg-proposal-deck/references/policy-rules.md` | 社内の政策ルール（現在0件） | ルールが出た時点で ID・反映先・記載文案の3点で追記 |
 
-1 が埋まるまで、固定ブロックは毎回手作業になる。
+---
+
+## 蒲さんの判断待ち（提案書の中身）
+
+| # | 内容 | 記録日 |
+|---|---|---|
+| 1 | **正本の社員数が3箇所でずれている**（P96=48名 / P111=36名以上 / P114=48名）。`gg-proposal-standard` の「数字の扱い」に照らすと不整合。正しい数を決めて最新の提出済み PPTX 側で一括更新し、`fixed-blocks.md` にも反映する | 2026-08-30 |
+| 2 | P97 の取引先ロゴ15社超について、**掲載の公開許諾が現在も有効か**。`fixed-blocks.md` には「公開可のロゴのみ」と原則を書いてあるが、実際の可否は未確認 | 2026-08-30 |
 
 ---
 

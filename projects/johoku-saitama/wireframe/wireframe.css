@@ -1,0 +1,336 @@
+@charset "UTF-8";
+/* ==========================================================================
+   GrowGroup Monochrome Wireframe Kit
+   すべてのワイヤーページはこの1枚を読み込む。ページ側でCSSを書き足さない。
+   ========================================================================== */
+
+/* --- 1. トークン ------------------------------------------------------- */
+:root{
+  /* グレースケール：この10色以外を使わない。有彩色は --wf-note のみ */
+  --wf-paper:  #ffffff;   /* 背景（白） */
+  --wf-fill:   #f2f2f2;   /* 面（セクション背景・カード地） */
+  --wf-fill-2: #e4e4e4;   /* 濃い面（ダミーテキストバー・画像枠） */
+  --wf-line-2: #e0e0e0;   /* 細い罫線 */
+  --wf-line:   #c4c4c4;   /* 標準罫線・枠線 */
+  --wf-ink-3:  #8a8a8a;   /* 補助テキスト・キャプション */
+  --wf-ink-2:  #5a5a5a;   /* 本文 */
+  --wf-ink:    #1a1a1a;   /* 見出し */
+  --wf-solid:  #333333;   /* 主CTAの塗り */
+  --wf-note:   #c8452a;   /* 注釈専用。デザイン要素には絶対に使わない */
+
+  /* 余白（8pxベース） */
+  --wf-s1: 4px;  --wf-s2: 8px;  --wf-s3: 16px;
+  --wf-s4: 24px; --wf-s5: 40px; --wf-s6: 64px; --wf-s7: 96px;
+
+  /* 幅 */
+  --wf-pc: 1280px;      /* PCキャンバス */
+  --wf-sp: 390px;       /* SPキャンバス */
+  --wf-content: 1120px; /* コンテンツ最大幅 */
+
+  --wf-radius: 3px;
+  --wf-font: "Helvetica Neue", Arial, "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+             "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family:var(--wf-font);
+  font-size:15px;
+  line-height:1.8;              /* 日本語は1.7〜1.9。1.5以下にすると窮屈に見え誤解を生む */
+  letter-spacing:.02em;
+  color:var(--wf-ink-2);
+  background:#8f8f8f;           /* キャンバス外。紙面との区別のため中間グレー */
+  -webkit-font-smoothing:antialiased;
+}
+
+/* --- 2. ツールバー / キャンバス ---------------------------------------- */
+.wf-bar{
+  position:sticky; top:0; z-index:900;
+  display:flex; align-items:center; gap:var(--wf-s3);
+  padding:10px var(--wf-s4);
+  background:var(--wf-ink); color:#fff;
+  font-size:12px; letter-spacing:.04em;
+}
+.wf-bar__title{ font-weight:700; }
+.wf-bar__meta{ color:#b0b0b0; }
+.wf-bar__spacer{ margin-left:auto; }
+.wf-bar button{
+  font:inherit; cursor:pointer; padding:5px 12px;
+  color:#fff; background:transparent;
+  border:1px solid #6a6a6a; border-radius:var(--wf-radius);
+}
+.wf-bar button[aria-pressed="true"]{ background:#fff; color:var(--wf-ink); border-color:#fff; }
+.wf-bar a{ color:#fff; }
+
+/* キャンバス：container-type により、SP切替時に @container が発火して実際に段組みが崩れる。
+   メディアクエリはビューポート基準なので使わないこと。 */
+.wf-canvas{
+  container-type:inline-size;
+  width:100%; max-width:var(--wf-pc);
+  margin:var(--wf-s4) auto;
+  background:var(--wf-paper);
+  box-shadow:0 2px 16px rgba(0,0,0,.25);
+  transition:max-width .2s ease;
+}
+body[data-device="sp"] .wf-canvas{ max-width:var(--wf-sp); }
+
+.wf-inner{ max-width:var(--wf-content); margin-inline:auto; padding-inline:var(--wf-s4); }
+.wf-sec{ padding-block:var(--wf-s7); }
+.wf-sec--tight{ padding-block:var(--wf-s5); }
+.wf-sec--fill{ background:var(--wf-fill); }
+@container (max-width:600px){
+  .wf-sec{ padding-block:var(--wf-s5); }
+  .wf-inner{ padding-inline:var(--wf-s3); }
+}
+
+/* --- 3. タイポグラフィ -------------------------------------------------- */
+.wf-h1{ font-size:34px; line-height:1.4; font-weight:700; color:var(--wf-ink); margin:0 0 var(--wf-s3); }
+.wf-h2{ font-size:26px; line-height:1.45; font-weight:700; color:var(--wf-ink); margin:0 0 var(--wf-s4); }
+.wf-h3{ font-size:19px; line-height:1.5; font-weight:700; color:var(--wf-ink); margin:0 0 var(--wf-s2); }
+.wf-h4{ font-size:16px; line-height:1.6; font-weight:700; color:var(--wf-ink); margin:0 0 var(--wf-s2); }
+.wf-lead{ font-size:17px; margin:0 0 var(--wf-s4); }
+.wf-p{ margin:0 0 var(--wf-s3); }
+.wf-cap{ font-size:12px; color:var(--wf-ink-3); }
+.wf-en{ font-size:12px; letter-spacing:.18em; color:var(--wf-ink-3); display:block; margin-bottom:var(--wf-s1); }
+.wf-center{ text-align:center; }
+@container (max-width:600px){
+  .wf-h1{ font-size:26px; } .wf-h2{ font-size:21px; } .wf-h3{ font-size:17px; }
+  .wf-lead{ font-size:15px; }
+}
+
+/* セクション見出しの型（英字ラベル＋和文見出し）。BtoB／採用どちらでも共通で使う */
+.wf-sechead{ margin-bottom:var(--wf-s5); }
+.wf-sechead .wf-h2{ margin-bottom:var(--wf-s2); }
+
+/* --- 4. プレースホルダ -------------------------------------------------- */
+/* 画像枠：斜線クロスは「ここは写真」という業界共通の記号。文字で "IMAGE" と併記する */
+.wf-img{
+  position:relative; display:flex; align-items:center; justify-content:center;
+  min-height:180px; border:1px solid var(--wf-line);
+  color:var(--wf-ink-3); font-size:11px; letter-spacing:.1em;
+  background:
+    linear-gradient(to top right, transparent calc(50% - .5px), var(--wf-line) calc(50% - .5px),
+      var(--wf-line) calc(50% + .5px), transparent calc(50% + .5px)),
+    linear-gradient(to bottom right, transparent calc(50% - .5px), var(--wf-line) calc(50% - .5px),
+      var(--wf-line) calc(50% + .5px), transparent calc(50% + .5px)),
+    var(--wf-fill);
+}
+.wf-img > span{ background:var(--wf-paper); padding:2px 8px; }
+.wf-img--sq{ aspect-ratio:1/1; min-height:0; }
+.wf-img--wide{ aspect-ratio:16/9; min-height:0; }
+.wf-img--portrait{ aspect-ratio:3/4; min-height:0; }
+.wf-img--hero{ min-height:420px; }
+.wf-img--icon{ min-height:0; width:48px; height:48px; }
+@container (max-width:600px){ .wf-img--hero{ min-height:300px; } }
+
+/* ダミーテキスト：コピーが未確定のときだけ使う。
+   提案用ワイヤーでは「実コピー案」を書いたほうが必ず刺さるので、多用しない。 */
+.wf-dummy{ display:grid; gap:9px; margin:0 0 var(--wf-s3); }
+.wf-dummy span{ display:block; height:9px; background:var(--wf-fill-2); border-radius:2px; }
+.wf-dummy span:last-child{ width:62%; }
+
+/* --- 5. ボタン / リンク ------------------------------------------------- */
+.wf-btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:var(--wf-s2);
+  min-height:52px; padding:0 var(--wf-s5);
+  font-size:15px; font-weight:700; text-decoration:none;
+  color:var(--wf-paper); background:var(--wf-solid);
+  border:1px solid var(--wf-solid); border-radius:var(--wf-radius);
+}
+.wf-btn--ghost{ color:var(--wf-ink); background:transparent; border-color:var(--wf-ink); }
+.wf-btn--sm{ min-height:40px; padding:0 var(--wf-s4); font-size:13px; }
+.wf-btn--lg{ min-height:64px; padding:0 var(--wf-s6); font-size:17px; }
+.wf-btn--block{ display:flex; width:100%; }
+.wf-btns{ display:flex; flex-wrap:wrap; gap:var(--wf-s3); }
+.wf-btns--center{ justify-content:center; }
+@container (max-width:600px){
+  .wf-btns{ flex-direction:column; }
+  .wf-btn{ width:100%; }
+}
+.wf-tlink{ color:var(--wf-ink); text-decoration:underline; text-underline-offset:3px; }
+
+/* --- 6. レイアウト ------------------------------------------------------ */
+.wf-grid{ display:grid; gap:var(--wf-s4); }
+.wf-grid--2{ grid-template-columns:repeat(2,1fr); }
+.wf-grid--3{ grid-template-columns:repeat(3,1fr); }
+.wf-grid--4{ grid-template-columns:repeat(4,1fr); }
+.wf-split{ display:grid; grid-template-columns:1fr 1fr; gap:var(--wf-s5); align-items:center; }
+.wf-split--sidebar{ grid-template-columns:1fr 300px; align-items:start; }
+.wf-stack{ display:grid; gap:var(--wf-s4); }
+@container (max-width:900px){ .wf-grid--4{ grid-template-columns:repeat(2,1fr); } }
+@container (max-width:600px){
+  .wf-grid--2,.wf-grid--3,.wf-grid--4{ grid-template-columns:1fr; }
+  .wf-split,.wf-split--sidebar{ grid-template-columns:1fr; gap:var(--wf-s4); }
+}
+
+/* --- 7. カード ---------------------------------------------------------- */
+.wf-card{ border:1px solid var(--wf-line); background:var(--wf-paper); }
+.wf-card__body{ padding:var(--wf-s4); }
+.wf-card__foot{ padding:0 var(--wf-s4) var(--wf-s4); }
+.wf-card--fill{ background:var(--wf-fill); border-color:transparent; }
+.wf-card--flat{ border:0; }
+
+/* 導線カード（ハブページ用）：矢印記号で「先がある」ことを示す */
+.wf-navcard{
+  display:flex; align-items:center; justify-content:space-between; gap:var(--wf-s3);
+  padding:var(--wf-s4); border:1px solid var(--wf-line);
+  text-decoration:none; color:var(--wf-ink);
+}
+.wf-navcard::after{ content:"→"; color:var(--wf-ink-3); }
+
+/* --- 8. ヘッダー / フッター --------------------------------------------- */
+.wf-header{
+  position:sticky; top:0; z-index:100;
+  display:flex; align-items:center; gap:var(--wf-s4);
+  padding:var(--wf-s3) var(--wf-s4);
+  background:var(--wf-paper); border-bottom:1px solid var(--wf-line);
+}
+.wf-logo{ display:flex; align-items:center; justify-content:center; min-width:150px; height:40px;
+  border:1px solid var(--wf-line); background:var(--wf-fill); font-size:11px; color:var(--wf-ink-3); letter-spacing:.1em; }
+.wf-gnav{ display:flex; gap:var(--wf-s4); margin-left:auto; list-style:none; padding:0; margin-block:0; }
+.wf-gnav a{ font-size:14px; color:var(--wf-ink); text-decoration:none; }
+.wf-header__cta{ display:flex; gap:var(--wf-s2); }
+.wf-burger{ display:none; margin-left:auto; width:44px; height:44px; border:1px solid var(--wf-line);
+  align-items:center; justify-content:center; font-size:18px; }
+@container (max-width:600px){
+  .wf-gnav,.wf-header__cta{ display:none; }
+  .wf-burger{ display:flex; }
+}
+
+.wf-footer{ padding:var(--wf-s6) 0 var(--wf-s4); background:var(--wf-fill); }
+.wf-footer__nav{ display:grid; grid-template-columns:repeat(4,1fr); gap:var(--wf-s4); margin-bottom:var(--wf-s5); }
+.wf-footer__nav ul{ list-style:none; padding:0; margin:var(--wf-s2) 0 0; display:grid; gap:var(--wf-s2); }
+.wf-footer__nav a{ font-size:13px; color:var(--wf-ink-2); text-decoration:none; }
+.wf-copy{ padding-top:var(--wf-s3); border-top:1px solid var(--wf-line); font-size:12px; color:var(--wf-ink-3); }
+@container (max-width:600px){ .wf-footer__nav{ grid-template-columns:repeat(2,1fr); } }
+
+/* SP固定CTA：日本のBtoB／採用サイトでは事実上の標準。SP時のみ表示 */
+.wf-fixcta{ display:none; }
+@container (max-width:600px){
+  .wf-fixcta{
+    position:sticky; bottom:0; z-index:110;
+    display:grid; grid-auto-flow:column; gap:1px;
+    background:var(--wf-line); border-top:1px solid var(--wf-line);
+  }
+  .wf-fixcta a{
+    display:flex; align-items:center; justify-content:center; min-height:56px;
+    background:var(--wf-solid); color:var(--wf-paper); font-size:14px; font-weight:700; text-decoration:none;
+  }
+  .wf-fixcta a.is-sub{ background:var(--wf-paper); color:var(--wf-ink); }
+}
+
+/* --- 9. パンくず / 下層ヘッダ -------------------------------------------- */
+.wf-crumb{ padding:var(--wf-s3) 0; font-size:12px; color:var(--wf-ink-3); }
+.wf-crumb a{ color:var(--wf-ink-3); }
+.wf-pagehead{ padding-block:var(--wf-s6); background:var(--wf-fill); }
+.wf-pagehead .wf-h1{ margin-bottom:var(--wf-s1); }
+
+/* --- 10. ヒーロー -------------------------------------------------------- */
+.wf-hero{ position:relative; }
+.wf-hero--overlay .wf-hero__copy{
+  position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center;
+  padding:var(--wf-s6); background:rgba(255,255,255,.72);
+}
+.wf-hero--split{ display:grid; grid-template-columns:1fr 1fr; align-items:center; }
+.wf-hero--split .wf-hero__copy{ padding:var(--wf-s7) var(--wf-s5); }
+@container (max-width:600px){
+  .wf-hero--split{ grid-template-columns:1fr; }
+  .wf-hero--split .wf-hero__copy{ padding:var(--wf-s5) var(--wf-s3); }
+  .wf-hero--overlay .wf-hero__copy{ padding:var(--wf-s4); }
+}
+
+/* --- 11. リスト / テーブル ----------------------------------------------- */
+.wf-newslist{ list-style:none; padding:0; margin:0; border-top:1px solid var(--wf-line-2); }
+.wf-newslist li{ border-bottom:1px solid var(--wf-line-2); }
+.wf-newslist a{ display:flex; gap:var(--wf-s3); align-items:baseline; padding:var(--wf-s3) 0;
+  text-decoration:none; color:var(--wf-ink-2); }
+.wf-date{ font-size:13px; color:var(--wf-ink-3); white-space:nowrap; }
+.wf-tag{ display:inline-block; padding:2px 10px; border:1px solid var(--wf-line);
+  font-size:11px; color:var(--wf-ink-2); white-space:nowrap; }
+@container (max-width:600px){ .wf-newslist a{ flex-wrap:wrap; gap:var(--wf-s2); } }
+
+.wf-table{ width:100%; border-collapse:collapse; font-size:14px; }
+.wf-table th,.wf-table td{ padding:var(--wf-s3); border:1px solid var(--wf-line); text-align:left; vertical-align:top; }
+.wf-table th{ width:26%; background:var(--wf-fill); font-weight:700; color:var(--wf-ink); }
+@container (max-width:600px){
+  .wf-table,.wf-table tbody,.wf-table tr,.wf-table th,.wf-table td{ display:block; width:100%; }
+  .wf-table tr{ margin-bottom:-1px; }
+  .wf-table th{ border-bottom:0; }
+}
+
+/* --- 12. STEP / 数字 / タイムライン --------------------------------------- */
+.wf-steps{ display:grid; gap:var(--wf-s3); counter-reset:step; }
+.wf-steps--row{ grid-auto-flow:column; grid-auto-columns:1fr; }
+.wf-step{ position:relative; padding:var(--wf-s4); border:1px solid var(--wf-line); }
+.wf-step::before{
+  counter-increment:step; content:"STEP " counter(step);
+  display:block; margin-bottom:var(--wf-s2);
+  font-size:11px; letter-spacing:.12em; color:var(--wf-ink-3);
+}
+@container (max-width:600px){ .wf-steps--row{ grid-auto-flow:row; } }
+
+.wf-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--wf-line); border:1px solid var(--wf-line); }
+.wf-stat{ padding:var(--wf-s4); background:var(--wf-paper); text-align:center; }
+.wf-stat__num{ display:block; font-size:38px; font-weight:700; line-height:1.2; color:var(--wf-ink); }
+.wf-stat__label{ font-size:13px; color:var(--wf-ink-3); }
+@container (max-width:900px){ .wf-stats{ grid-template-columns:repeat(2,1fr); } }
+
+.wf-timeline{ display:grid; gap:0; border-left:2px solid var(--wf-line); padding-left:var(--wf-s4); }
+.wf-timeline > li{ position:relative; padding-bottom:var(--wf-s4); list-style:none; }
+.wf-timeline > li::before{ content:""; position:absolute; left:calc(-1 * var(--wf-s4) - 6px); top:10px;
+  width:10px; height:10px; background:var(--wf-solid); border-radius:50%; }
+
+/* --- 13. FAQ / タブ ------------------------------------------------------ */
+.wf-faq{ border-top:1px solid var(--wf-line-2); }
+.wf-faq details{ border-bottom:1px solid var(--wf-line-2); }
+.wf-faq summary{ padding:var(--wf-s3) var(--wf-s4) var(--wf-s3) 0; cursor:pointer;
+  font-weight:700; color:var(--wf-ink); list-style:none; position:relative; }
+.wf-faq summary::-webkit-details-marker{ display:none; }
+.wf-faq summary::after{ content:"＋"; position:absolute; right:0; color:var(--wf-ink-3); }
+.wf-faq details[open] summary::after{ content:"−"; }
+.wf-faq .wf-faq__a{ padding:0 0 var(--wf-s3); }
+
+.wf-tabs{ display:flex; gap:0; border-bottom:1px solid var(--wf-line); margin-bottom:var(--wf-s4); flex-wrap:wrap; }
+.wf-tabs a{ padding:var(--wf-s3) var(--wf-s4); font-size:14px; text-decoration:none; color:var(--wf-ink-3); }
+.wf-tabs a[aria-current="true"]{ color:var(--wf-ink); font-weight:700; border-bottom:2px solid var(--wf-ink); }
+
+.wf-filter{ display:flex; flex-wrap:wrap; gap:var(--wf-s2); margin-bottom:var(--wf-s4); }
+.wf-filter span{ padding:6px 14px; border:1px solid var(--wf-line); font-size:13px; color:var(--wf-ink-2); }
+
+/* --- 14. フォーム -------------------------------------------------------- */
+.wf-form{ display:grid; gap:var(--wf-s4); }
+.wf-field{ display:grid; gap:var(--wf-s2); }
+.wf-label{ font-size:14px; font-weight:700; color:var(--wf-ink); }
+.wf-req{ margin-left:var(--wf-s2); padding:1px 8px; background:var(--wf-solid); color:#fff; font-size:11px; font-weight:400; }
+.wf-input{ min-height:52px; padding:var(--wf-s3); border:1px solid var(--wf-line);
+  background:var(--wf-fill); color:var(--wf-ink-3); font-size:14px; }
+.wf-input--area{ min-height:140px; }
+.wf-input--select::after{ content:"▼"; float:right; }
+.wf-privacy{ padding:var(--wf-s4); border:1px solid var(--wf-line); font-size:13px; }
+
+/* --- 15. 注釈レイヤー ---------------------------------------------------- */
+/* 注釈は「デザインではない」ことが一目で分かる必要がある。
+   唯一の有彩色＋点線で、常にワイヤー本体から浮かせる。 */
+.wf-note{
+  position:relative; margin:var(--wf-s2) 0;
+  padding:var(--wf-s3) var(--wf-s3) var(--wf-s3) var(--wf-s5);
+  border:1px dashed var(--wf-note); background:#fdf6f4;
+  font-size:13px; line-height:1.7; color:var(--wf-note);
+}
+.wf-note::before{
+  content:attr(data-n); position:absolute; left:var(--wf-s2); top:var(--wf-s3);
+  display:flex; align-items:center; justify-content:center; width:20px; height:20px;
+  background:var(--wf-note); color:#fff; border-radius:50%; font-size:11px; font-weight:700;
+}
+.wf-note b{ display:block; font-weight:700; }
+body[data-notes="off"] .wf-note{ display:none; }
+
+/* --- 16. 印刷（提案書へ貼る際のスクリーンショット／PDF用） ---------------- */
+@media print{
+  body{ background:#fff; }
+  .wf-bar{ display:none; }
+  .wf-canvas{ box-shadow:none; margin:0; max-width:none; }
+  .wf-header{ position:static; }
+}
