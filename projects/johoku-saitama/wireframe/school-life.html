@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>学校生活 | 城北埼玉中学・高等学校 ワイヤーフレーム</title>
+<link rel="stylesheet" href="wireframe.css">
+</head>
+<body data-device="pc" data-notes="on">
+
+<div class="wf-bar">
+  <span class="wf-bar__title">城北埼玉 WF</span>
+  <span class="wf-bar__meta">school-life / 学校生活 ※デザインではなく構成案です</span>
+  <span class="wf-bar__spacer"></span>
+  <a href="index.html">サイトマップ</a>
+  <button type="button" data-wf="pc" aria-pressed="true">PC</button>
+  <button type="button" data-wf="sp" aria-pressed="false">SP</button>
+  <button type="button" data-wf="notes" aria-pressed="true">注釈</button>
+</div>
+
+<div class="wf-canvas">
+
+  <header class="wf-header">
+    <div class="wf-logo"><span>LOGO</span></div>
+    <ul class="wf-gnav">
+      <li><a href="junior-high.html">中学校</a></li>
+      <li><a href="frontier.html">高等学校</a></li>
+      <li><a href="school-life.html">学校生活</a></li>
+      <li><a href="admission-junior.html">入試・説明会</a></li>
+      <li><a href="#">学校案内</a></li>
+      <li><a href="#">アクセス</a></li>
+    </ul>
+    <div class="wf-header__cta">
+      <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">資料請求</a>
+      <a href="admission-junior.html" class="wf-btn wf-btn--sm">説明会予約</a>
+    </div>
+    <div class="wf-burger">≡</div>
+  </header>
+
+  <div class="wf-pagehead">
+    <div class="wf-inner">
+      <span class="wf-en">SCHOOL LIFE</span>
+      <h1 class="wf-h1">学校生活</h1>
+      <p class="wf-cap">行事・部活動・施設。ふだんの城北埼玉。</p>
+    </div>
+  </div>
+  <div class="wf-inner"><nav class="wf-crumb"><a href="index.html">HOME</a> ＞ 学校生活</nav></div>
+
+  <main>
+
+    <div class="wf-inner">
+      <div class="wf-note" data-n="1">
+        <b>意図</b>このページは<strong>論点03「学校が自分で更新し続けられるか」</strong>に対応する。学校生活は最も更新頻度が高く、同時に最も放置されやすい面。<strong>ここが止まると、サイト全体が「動いていない学校」に見える。</strong>
+      </div>
+      <div class="wf-note" data-n="2">
+        <b>差別化</b>このページは<strong>固定ページとして作り込まない</strong>。写真と短い記事を学校が投稿すれば、自動でこのページの見え方が変わる構造にする。原稿を書き直さないと更新できない作りが、6年で構造が崩れた原因。
+      </div>
+    </div>
+
+    <!-- 行事 -->
+    <section class="wf-sec wf-sec--tight">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">EVENT</span>
+          <h2 class="wf-h2">年間の行事</h2>
+        </div>
+        <nav class="wf-tabs">
+          <a href="#" aria-current="true">中学校</a><a href="#">高等学校</a>
+        </nav>
+        <ul class="wf-timeline">
+          <li><h3 class="wf-h4">1学期（4月〜7月）</h3><div class="wf-dummy"><span></span><span></span></div></li>
+          <li><h3 class="wf-h4">2学期（9月〜12月）</h3><div class="wf-dummy"><span></span><span></span></div></li>
+          <li><h3 class="wf-h4">3学期（1月〜3月）</h3><div class="wf-dummy"><span></span><span></span></div></li>
+        </ul>
+        <div class="wf-note" data-n="3">
+          <b>要確認</b>行事名は<strong>学校の一覧をいただいてから記載する（当社では書けないため空けています）</strong>。中学と高校で行事が異なる場合はタブで出し分ける。
+        </div>
+        <div class="wf-note" data-n="4">
+          <b>意図</b>年間行事は「一覧表の画像」や「PDF」にしない。SPで読めなくなるうえ、年度が変わるたびに画像を作り直すことになり、更新が止まる。テキストで持てば学校が1行ずつ直せる。
+        </div>
+      </div>
+    </section>
+
+    <!-- 行事レポート -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">REPORT</span>
+          <h2 class="wf-h2">最近の学校の様子</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <span class="wf-tag">中学校</span>
+            <h3 class="wf-h3">記事タイトルが入ります</h3>
+            <p class="wf-cap">日付（CMS）</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <span class="wf-tag">高等学校</span>
+            <h3 class="wf-h3">記事タイトルが入ります</h3>
+            <p class="wf-cap">日付（CMS）</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <span class="wf-tag">部活動</span>
+            <h3 class="wf-h3">記事タイトルが入ります</h3>
+            <p class="wf-cap">日付（CMS）</p>
+          </div></div>
+        </div>
+        <div class="wf-btns"><a href="#" class="wf-btn wf-btn--ghost">学校の様子をすべて見る</a></div>
+        <div class="wf-note" data-n="5">
+          <b>意図</b>記事は「写真1枚＋タイトル＋数行」で成立する単位にする。行事のたびに長文のレポートを書く前提にすると続かない。<strong>更新の心理的コストを下げることが、更新性の設計そのもの。</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- 部活動 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">CLUB</span>
+          <h2 class="wf-h2">部活動</h2>
+        </div>
+        <div class="wf-grid wf-grid--2">
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <h3 class="wf-h3">運動部</h3>
+            <p class="wf-p">部の一覧と活動日、活動の記録。部ごとのページから記事を投稿できます。</p>
+            <a href="#" class="wf-tlink">運動部の一覧を見る</a>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <h3 class="wf-h3">文化部</h3>
+            <p class="wf-p">部の一覧と活動日、活動の記録。部ごとのページから記事を投稿できます。</p>
+            <a href="#" class="wf-tlink">文化部の一覧を見る</a>
+          </div></div>
+        </div>
+        <div class="wf-note" data-n="6">
+          <b>根拠</b>現行サイトは部活動の入口が `/club`・`/club/culture`・`/club/workout` の3つに分かれたうえ、スライドバーメニューの「同好会」も `/club` を指している。<strong>同じ内容に複数の入口がある状態</strong>を、運動部／文化部の2入口に統合する。
+        </div>
+        <div class="wf-note" data-n="7">
+          <b>要確認</b>同好会の扱い。部と同列に並べるか、各一覧の中に含めるか。現行では独立した入口があるが中身は `/club` と同じ。
+        </div>
+      </div>
+    </section>
+
+    <!-- ギャラリー -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">GALLERY</span>
+          <h2 class="wf-h2">フォトギャラリー</h2>
+        </div>
+        <div class="wf-grid wf-grid--4">
+          <div class="wf-img wf-img--sq"><span>PHOTO</span></div>
+          <div class="wf-img wf-img--sq"><span>PHOTO</span></div>
+          <div class="wf-img wf-img--sq"><span>PHOTO</span></div>
+          <div class="wf-img wf-img--sq"><span>PHOTO</span></div>
+        </div>
+        <div class="wf-btns"><a href="#" class="wf-btn wf-btn--ghost">ギャラリーをすべて見る</a></div>
+        <div class="wf-note" data-n="8">
+          <b>意図</b>現行の `/life/gallery` を引き継ぐ。PCで4列、SPでは1列に切り替わる（SPボタンで確認できます）。<strong>このページに出す枚数は4枚までに絞り、続きはギャラリー本体へ送る。</strong>SPでは1枚が画面ほぼ全面になるため、枚数を並べるほどその下の部活動・施設に到達しなくなる。
+        </div>
+        <div class="wf-note" data-n="9">
+          <b>要確認</b>写真の掲載ルール（生徒の顔が写るものの可否）。運用ルールとして明文化しておかないと、担当者が変わったときに更新が止まる。
+        </div>
+      </div>
+    </section>
+
+    <!-- 施設 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">FACILITY</span>
+          <h2 class="wf-h2">施設</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <h3 class="wf-h3">施設名</h3>
+            <p class="wf-p">施設の一覧と説明は学校の原稿を反映します。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <h3 class="wf-h3">施設名</h3>
+            <p class="wf-p">施設の一覧と説明は学校の原稿を反映します。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <h3 class="wf-h3">施設名</h3>
+            <p class="wf-p">施設の一覧と説明は学校の原稿を反映します。</p>
+          </div></div>
+        </div>
+        <div class="wf-note" data-n="10">
+          <b>意図</b>現行の `/info/facility` は学校案内の下にあるが、施設を見たい人は「学校生活」を探す。案内ではなく生活の文脈に置き直す。
+        </div>
+      </div>
+    </section>
+
+    <!-- 更新運用（論点03の核） -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">OPERATION</span>
+          <h2 class="wf-h2">更新の分担（ご提案）</h2>
+        </div>
+        <table class="wf-table">
+          <tr><th>随時・学校</th><td>学校の様子／部活動の記録／ギャラリーの写真。投稿画面から写真とタイトルを入れるだけで公開できます。</td></tr>
+          <tr><th>年1回・学校</th><td>募集要項／年間行事／進学実績。項目が決まった入力画面で、値を書き換えるだけで更新できます。</td></tr>
+          <tr><th>数年に1回・当社</th><td>コースの考え方／教育方針／サイト全体の構成。学校では触らない範囲として固定します。</td></tr>
+        </table>
+        <div class="wf-note" data-n="11">
+          <b>差別化</b>論点03への回答。<strong>更新頻度でページを3つに分類し、学校が触る範囲とそうでない範囲を先に決める。</strong>「どこでも自由に編集できる」管理画面は、結果として誰も触らなくなり、6年後に今回と同じ状態に戻る。
+        </div>
+        <div class="wf-note" data-n="12">
+          <b>要確認</b>実際に更新を担当される方（広報部の体制）と、1週間に割ける時間。ここが分かると、CMSの項目をどこまで細かく作るかが決められる。
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <section class="wf-sec">
+    <div class="wf-inner wf-center">
+      <h2 class="wf-h2">実際の雰囲気は、学校でご覧ください。</h2>
+      <p class="wf-lead">説明会では校内をご案内します。</p>
+      <div class="wf-btns wf-btns--center">
+        <a href="admission-junior.html" class="wf-btn wf-btn--lg">説明会に申し込む</a>
+        <a href="#" class="wf-btn wf-btn--lg wf-btn--ghost">資料を請求する</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="wf-footer">
+    <div class="wf-inner">
+      <div class="wf-footer__nav">
+        <div><h4 class="wf-h4">中学校</h4><ul>
+          <li><a href="junior-high.html">中学校トップ</a></li>
+          <li><a href="admission-junior.html">入試情報（中学）</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">高等学校</h4><ul>
+          <li><a href="#">高等学校トップ</a></li>
+          <li><a href="frontier.html">フロンティアコース</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">学校生活</h4><ul>
+          <li><a href="school-life.html">学校生活</a></li>
+          <li><a href="school-life.html">部活動</a></li>
+          <li><a href="school-life.html">フォトギャラリー</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">学校案内・その他</h4><ul>
+          <li><a href="top.html">TOP</a></li>
+          <li><a href="#">理事長挨拶</a></li>
+          <li><a href="#">アクセス</a></li>
+          <li><a href="index.html">サイトマップ</a></li>
+        </ul></div>
+      </div>
+      <p class="wf-copy">© 城北埼玉中学・高等学校（ワイヤーフレーム／構成案）</p>
+    </div>
+  </footer>
+
+  <div class="wf-fixcta">
+    <a href="#" class="is-sub">資料請求</a>
+    <a href="admission-junior.html">説明会に申し込む</a>
+  </div>
+
+</div><!-- /.wf-canvas -->
+
+<script>
+document.querySelectorAll('[data-wf]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var k = b.dataset.wf, d = document.body;
+    if (k === 'notes'){
+      var on = d.dataset.notes === 'on';
+      d.dataset.notes = on ? 'off' : 'on';
+      b.setAttribute('aria-pressed', String(!on));
+    } else {
+      d.dataset.device = k;
+      document.querySelectorAll('[data-wf="pc"],[data-wf="sp"]').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x.dataset.wf === k));
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>

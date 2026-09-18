@@ -11,8 +11,8 @@
 |---|---|
 | 案件スラッグ | `johoku-saitama` |
 | クライアント | 学校法人城北埼玉学園 城北埼玉中学・高等学校 |
-| 種別 | リニューアル提案（**受注済み**／Backlog GG_ORDER-4733） |
-| 提出期日 | 未定（10月中に戦略設計・見積精緻化） |
+| 種別 | リニューアル提案（**受注済み**・2026-09-17／Backlog GG_ORDER-4733） |
+| 提出期日 | 未定（10月中に戦略設計・見積精緻化、11/1〜スケジュール策定） |
 | 起票日 | 2026-09-18 |
 
 ---
@@ -25,6 +25,10 @@
 - 現行サイトの実測は `research/current-site-audit.md`。P0＝テンプレートのコメント崩れによる不正URL約90本
 - 金額は提案書に載せない（反映先D＝見積書側）
 
+- 与件整理は `research/brief.md`、現行サイト調査は `research/current-site-audit.md` が正本
+- 3つの論点：01 スマホで受験生と保護者に出会えているか／02 最新の姿を、探さずに受け取れるか／03 学校が自分で更新し続けられるか
+- 受注条件：設計16P・デザイン11P・流し込み2,365P・WordPress・外注不可
+
 ## 未確定・確認待ち
 
 | # | 論点 | 確認先 | 期日 |
@@ -35,6 +39,7 @@
 | 4 | 周年（2026年 中学25周年）をサイトで扱うか | 先方 | 10月上旬 |
 | 5 | 参考サイト・デザインの方向性 | 先方 | 9月中 |
 | 6 | PDF掲載数の棚卸し | 社内（サイト内検索） | 10月上旬 |
+| 7 | ワイヤー内の空欄（進学実績・募集要項・年間行事・本科/フロンティア比較・在校生の声）の原稿 | 先方（広報部） | 要件定義 |
 
 ---
 
@@ -79,6 +84,23 @@
   - 別紙：サイトマップ仕様書（`gg-sitemap-spec`）／ワイヤーフレーム（`gg-wireframe`）
   - `skills/gg-proposal-deck/references/structure.md` の章別スライド定義が未記入。本案件の並びを追記すると次案件が速い
 
+### [2026-09-18] 先方合意用クリッカブルワイヤーフレーム作成 — Claude
+- 成果物: `projects/johoku-saitama/wireframe/`（index / top / junior-high / frontier / admission-junior / school-life ＋ wireframe.css ＋ shots/ にPC・SP計12枚）
+- 検証: `python3 scripts/qa-wireframe.py --shots projects/johoku-saitama/wireframe/shots projects/johoku-saitama/wireframe/*.html` → **全6ページ OK**（JSエラー0／リンク切れ0／SP切替でキャンバス390px・グリッド組み替わり／注釈トグル可）。PC・SPのスクリーンショットを目視、崩れなし。注釈OFFでも構成が読めることを確認
+- 判断メモ:
+  - **SP基準で設計**（論点01／9割スマホは推定）。FVは overlay ではなく split 型。SPで文字がKVに重なると見出し・リード・CTAが画面外に出るため
+  - ワイヤーは5ページに絞り、3つの論点に1枚以上ずつ当てた。網羅より密度を優先（gg-wireframe の方針）
+  - グローバルナビは6項目（中学校／高等学校／学校生活／入試・説明会／学校案内／アクセス）に固定。現行の学部区分とコース区分の二重導線を1本化
+  - **学校の事実（実績数値・行事名・コース詳細）は brief.md と current-site-audit.md にあるものだけを使用**。無いものは創作せず「—」「学校確認のうえ記入」として空欄にし、要確認注釈を付けた
+  - 現行サイトの P0（コメント崩れによる旧ナビの生きたリンク）は再現せず、index に「移行対象にしない」旨を明記
+  - 学校生活のギャラリーは8枚→4枚に削減。SPで1列になり、下のコンテンツに到達しなくなるため
+  - `wireframe.css` は無編集でコピー。各HTMLに `<style>`・インラインスタイル・メディアクエリはゼロ（コンテナクエリのみ）
+- 残課題:
+  - ワイヤー内の空欄（進学実績・募集要項・年間行事・本科/フロンティア比較表の4行・在校生の声）の原稿を先方からもらう
+  - 16Pの内訳は受注プラン未確定のままの暫定案。確定後にサイトマップを更新する
+  - 高等学校トップ／入試情報（高校受験）／進路実績は今回WF未作成。要件定義で詰める
+  - レビューは Codex へ（`references/role-split.md` の引き渡しの型）
+
 ---
 
 ## 成果物
@@ -90,5 +112,14 @@
 | `deck/outline.md` | 提案書骨子（モードA） | 下書き |
 | `deck/deck.json` | 提案書原稿（モードB） | 下書き |
 | `deck/johoku-saitama_requirements-report_draft.pptx` | 社内レビュー用ドラフト（モードC） | 下書き |
+
+| `research/current-site-audit.md` | 現行サイト棚卸し | 下書き |
+| `wireframe/index.html` | サイトマップ兼ハブ（3論点との対応・16P内訳・確認事項） | 下書き |
+| `wireframe/top.html` | TOP（論点01） | 下書き |
+| `wireframe/junior-high.html` | 中学校トップ（論点01） | 下書き |
+| `wireframe/frontier.html` | 高等学校 フロンティアコース（論点02） | 下書き |
+| `wireframe/admission-junior.html` | 入試情報・中学受験（論点02・03） | 下書き |
+| `wireframe/school-life.html` | 学校生活（論点03） | 下書き |
+| `wireframe/shots/` | PC・SP スクリーンショット（提案書貼付用） | 下書き |
 
 > 納品候補は `outputs/` へ。`outputs/` は Git 追跡外。

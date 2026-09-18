@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中学校トップ | 城北埼玉中学・高等学校 ワイヤーフレーム</title>
+<link rel="stylesheet" href="wireframe.css">
+</head>
+<body data-device="pc" data-notes="on">
+
+<div class="wf-bar">
+  <span class="wf-bar__title">城北埼玉 WF</span>
+  <span class="wf-bar__meta">junior-high / 中学校トップ ※デザインではなく構成案です</span>
+  <span class="wf-bar__spacer"></span>
+  <a href="index.html">サイトマップ</a>
+  <button type="button" data-wf="pc" aria-pressed="true">PC</button>
+  <button type="button" data-wf="sp" aria-pressed="false">SP</button>
+  <button type="button" data-wf="notes" aria-pressed="true">注釈</button>
+</div>
+
+<div class="wf-canvas">
+
+  <header class="wf-header">
+    <div class="wf-logo"><span>LOGO</span></div>
+    <ul class="wf-gnav">
+      <li><a href="junior-high.html">中学校</a></li>
+      <li><a href="frontier.html">高等学校</a></li>
+      <li><a href="school-life.html">学校生活</a></li>
+      <li><a href="admission-junior.html">入試・説明会</a></li>
+      <li><a href="#">学校案内</a></li>
+      <li><a href="#">アクセス</a></li>
+    </ul>
+    <div class="wf-header__cta">
+      <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">資料請求</a>
+      <a href="admission-junior.html" class="wf-btn wf-btn--sm">説明会予約</a>
+    </div>
+    <div class="wf-burger">≡</div>
+  </header>
+
+  <div class="wf-pagehead">
+    <div class="wf-inner">
+      <span class="wf-en">JUNIOR HIGH SCHOOL</span>
+      <h1 class="wf-h1">中学校</h1>
+      <p class="wf-cap">中学受験をお考えの方と、在校生の保護者の方へ。</p>
+    </div>
+  </div>
+  <div class="wf-inner"><nav class="wf-crumb"><a href="index.html">HOME</a> ＞ 中学校</nav></div>
+
+  <main>
+
+    <div class="wf-inner">
+      <div class="wf-note" data-n="1">
+        <b>意図</b>このページは<strong>論点01「スマホで受験生と保護者に出会えているか」</strong>に対応する。中学受験層の入口を1枚に集約し、ここから先は「中学受験の世界」に閉じる。高校受験の情報は一切混ぜない。
+      </div>
+      <div class="wf-note" data-n="2">
+        <b>根拠</b>現行サイトは `/junior-high-school` の下に integrated-learning・syllabus_m・plusalpha・junior・result-junior が並列で並び、どれから読めばよいか分からない。中学受験の保護者が最初に知りたい順（学びの中身 → 6年間の見通し → 進路 → 入試）に組み替える。
+      </div>
+    </div>
+
+    <!-- リード＋主要導線 -->
+    <section class="wf-sec wf-sec--tight">
+      <div class="wf-inner">
+        <p class="wf-lead">城北埼玉中学校は、男子中高一貫の6年間で「着実・勤勉・自主」を育てます。中学の3年間は、体験を通して学ぶJSプログラムと、英語のイングリッシュキャンプが柱です。</p>
+        <div class="wf-grid wf-grid--3">
+          <a href="admission-junior.html" class="wf-navcard">入試情報を見る</a>
+          <a href="admission-junior.html" class="wf-navcard">説明会に申し込む</a>
+          <a href="school-life.html" class="wf-navcard">学校生活を見る</a>
+        </div>
+        <div class="wf-note" data-n="3">
+          <b>差別化</b>SPでは「ページの先頭3スクロール以内に、行きたい場所へのボタンがあるか」で離脱が決まる。読み物より先に、入試・説明会・学校生活の3つを置く。中学受験の検討層が探す先はほぼこの3つに集約される。
+        </div>
+      </div>
+    </section>
+
+    <!-- 中学の学び -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">LEARNING</span>
+          <h2 class="wf-h2">中学校の学び</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <h3 class="wf-h3">中高一貫カリキュラム</h3>
+            <p class="wf-p">6年間を見通した教科の進め方。学年ごとの学習内容は学校の原稿を反映します。</p>
+            <a href="#" class="wf-tlink">カリキュラムを見る</a>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <h3 class="wf-h3">JSプログラム</h3>
+            <p class="wf-p">体験を軸にした中学独自のプログラム。内容・実施学年は学校の原稿を反映します。</p>
+            <a href="#" class="wf-tlink">JSプログラムを見る</a>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <h3 class="wf-h3">イングリッシュキャンプ</h3>
+            <p class="wf-p">英語の取り組み。対象学年・実施時期は学校の原稿を反映します。</p>
+            <a href="#" class="wf-tlink">英語の学びを見る</a>
+          </div></div>
+        </div>
+        <div class="wf-note" data-n="4">
+          <b>意図</b>現行の syllabus_m（シラバス）と plusalpha は、単独ページとしては検索流入も回遊も期待できない。この3枚のカードの下層にぶら下げ、中学校トップ→学び詳細の2階層に収める（論点03の「構造を崩さない設計」に対応）。
+        </div>
+        <div class="wf-note" data-n="5">
+          <b>要確認</b>3枚の粒度。plusalpha を独立させるか、カリキュラムに統合するかで設計ページ数が1P変わる。
+        </div>
+      </div>
+    </section>
+
+    <!-- 6年間 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">6 YEARS</span>
+          <h2 class="wf-h2">入学から卒業までの6年間</h2>
+        </div>
+        <ul class="wf-timeline">
+          <li><h3 class="wf-h4">中学1年・2年</h3><div class="wf-dummy"><span></span><span></span></div></li>
+          <li><h3 class="wf-h4">中学3年</h3><div class="wf-dummy"><span></span><span></span></div></li>
+          <li><h3 class="wf-h4">高校1年（コース選択）</h3><div class="wf-dummy"><span></span><span></span></div></li>
+          <li><h3 class="wf-h4">高校2年・3年</h3><div class="wf-dummy"><span></span><span></span></div></li>
+        </ul>
+        <div class="wf-note" data-n="6">
+          <b>意図</b>中学受験の保護者が本当に判断したいのは「6年後にどうなるか」。中学単独ではなく、高校のコース選択（本科／フロンティア）までを1本の時間軸で見せる。現行サイトは中学と高校がURLごと分断されており、この見通しがどこにも書かれていない。
+        </div>
+        <div class="wf-note" data-n="7">
+          <b>要確認</b>各段階の中身は学校に確認して流し込む（ここは意図的に本文を置いていません）。特に<strong>高1でのコース選択の仕組み</strong>は、内進生がフロンティアコースへ進めるのかどうかを含めて明記したい。
+        </div>
+      </div>
+    </section>
+
+    <!-- 進路 -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">CAREER</span>
+          <h2 class="wf-h2">卒業後の進路</h2>
+        </div>
+        <div class="wf-stats">
+          <div class="wf-stat"><span class="wf-stat__num">—</span><span class="wf-stat__label">国公立大学 合格者数</span></div>
+          <div class="wf-stat"><span class="wf-stat__num">—</span><span class="wf-stat__label">早慶上理 合格者数</span></div>
+          <div class="wf-stat"><span class="wf-stat__num">—</span><span class="wf-stat__label">GMARCH 合格者数</span></div>
+          <div class="wf-stat"><span class="wf-stat__num">—</span><span class="wf-stat__label">現役進学率</span></div>
+        </div>
+        <div class="wf-btns"><a href="#" class="wf-btn wf-btn--ghost">進路・進学実績を見る</a></div>
+        <div class="wf-note" data-n="8">
+          <b>要確認</b>数値は未取得のため「—」。実数は学校から提供いただく。中学校ページに出す実績は「中高一貫生の実績」か「学校全体の実績」かで意味が変わるため、どちらを出すかの確認が要る。
+        </div>
+      </div>
+    </section>
+
+    <!-- 学校生活・部活 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">SCHOOL LIFE</span>
+          <h2 class="wf-h2">中学生の学校生活</h2>
+        </div>
+        <div class="wf-grid wf-grid--2">
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <h3 class="wf-h3">行事と日常</h3>
+            <p class="wf-p">学校が随時追加する写真と短い記事で、いまの様子を見せます。</p>
+            <a href="school-life.html" class="wf-tlink">学校生活を見る</a>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <h3 class="wf-h3">部活動</h3>
+            <p class="wf-p">中学生が参加できる運動部・文化部の一覧。</p>
+            <a href="school-life.html" class="wf-tlink">部活動を見る</a>
+          </div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 更新情報 -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">NEWS</span>
+          <h2 class="wf-h2">中学校からのお知らせ</h2>
+        </div>
+        <ul class="wf-newslist">
+          <li><a href="#"><span class="wf-date">日付（CMS）</span><span class="wf-tag">中学校</span>記事タイトルが入ります</a></li>
+          <li><a href="#"><span class="wf-date">日付（CMS）</span><span class="wf-tag">中学校</span>記事タイトルが入ります</a></li>
+          <li><a href="#"><span class="wf-date">日付（CMS）</span><span class="wf-tag">中学校</span>記事タイトルが入ります</a></li>
+        </ul>
+        <div class="wf-note" data-n="9">
+          <b>意図</b>記事一覧は既存の区分（中学校／高等学校・本科／高等学校・フロンティア／その他）で自動抽出する。学校側の作業は「記事を書いて区分を選ぶ」だけで、このブロックが更新される（論点03）。
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">FAQ</span>
+          <h2 class="wf-h2">よくあるご質問</h2>
+        </div>
+        <div class="wf-faq">
+          <details open><summary>最寄り駅からの通学経路を知りたい</summary><div class="wf-faq__a">本川越／ふじみ野／南古谷の3方面からの経路をアクセスページに掲載します。所要時間・交通手段は学校に確認して記載します。</div></details>
+          <details><summary>学校を見学できる機会はありますか</summary><div class="wf-faq__a">学校説明会の日程を入試情報ページに掲載しています。個別の見学対応の可否は学校に確認のうえ記載します。</div></details>
+          <details><summary>入試の日程・科目を知りたい</summary><div class="wf-faq__a">入試情報ページに募集要項を掲載します。年度が変わる情報のため、学校が直接更新できる形にします。</div></details>
+        </div>
+        <div class="wf-note" data-n="10">
+          <b>意図</b>FAQはSPで最も読まれる。問い合わせ電話の削減にも効く。<b>要確認</b>実際に多い質問を学校（広報部）から3〜5件いただきたい。ここに書いた3件は構成を示すための仮置き。
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <section class="wf-sec wf-sec--fill">
+    <div class="wf-inner wf-center">
+      <h2 class="wf-h2">中学校説明会のご案内</h2>
+      <p class="wf-lead">日程の確認と申込は、スマートフォンから1分で完了します。</p>
+      <div class="wf-btns wf-btns--center">
+        <a href="admission-junior.html" class="wf-btn wf-btn--lg">説明会に申し込む</a>
+        <a href="#" class="wf-btn wf-btn--lg wf-btn--ghost">資料を請求する</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="wf-footer">
+    <div class="wf-inner">
+      <div class="wf-footer__nav">
+        <div><h4 class="wf-h4">中学校</h4><ul>
+          <li><a href="junior-high.html">中学校トップ</a></li>
+          <li><a href="admission-junior.html">入試情報（中学）</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">高等学校</h4><ul>
+          <li><a href="#">高等学校トップ</a></li>
+          <li><a href="frontier.html">フロンティアコース</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">学校生活</h4><ul>
+          <li><a href="school-life.html">学校生活</a></li>
+          <li><a href="school-life.html">部活動</a></li>
+        </ul></div>
+        <div><h4 class="wf-h4">学校案内・その他</h4><ul>
+          <li><a href="top.html">TOP</a></li>
+          <li><a href="#">理事長挨拶</a></li>
+          <li><a href="#">アクセス</a></li>
+          <li><a href="index.html">サイトマップ</a></li>
+        </ul></div>
+      </div>
+      <p class="wf-copy">© 城北埼玉中学・高等学校（ワイヤーフレーム／構成案）</p>
+    </div>
+  </footer>
+
+  <div class="wf-fixcta">
+    <a href="#" class="is-sub">資料請求</a>
+    <a href="admission-junior.html">説明会に申し込む</a>
+  </div>
+
+</div><!-- /.wf-canvas -->
+
+<script>
+document.querySelectorAll('[data-wf]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var k = b.dataset.wf, d = document.body;
+    if (k === 'notes'){
+      var on = d.dataset.notes === 'on';
+      d.dataset.notes = on ? 'off' : 'on';
+      b.setAttribute('aria-pressed', String(!on));
+    } else {
+      d.dataset.device = k;
+      document.querySelectorAll('[data-wf="pc"],[data-wf="sp"]').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x.dataset.wf === k));
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>
