@@ -19,6 +19,23 @@
 
 ## 直近
 
+### [2026-09-18] リモート実行環境で `recalc.py` が使えない／COUNTIF用のフォールバックを追加 — Claude
+- 成果物: `scripts/recalc-countif-fallback.py`
+- 検証:
+  - Claude Code on the web の LibreOffice 24.2.7.2 は **xlsx を読み込めない**。`soffice --convert-to xlsx` が
+    `Error: source file could not be loaded` を返す。openpyxl で作った最小の xlsx（3セル）でも再現するため、
+    生成物側の問題ではない ＝ 環境側の制約
+  - そのため `xlsx` Skill の `recalc.py` は timeout 30 / 180 / 400 秒のいずれでもタイムアウトする
+  - 追加したフォールバックで `仕様書_城北埼玉中学高等学校_提案サイトマップ.xlsx` の COUNTIF 14件に
+    キャッシュ値を書き込み、`verify_sitemap_xlsx.py` が **FAIL 0** ＝ **OK**
+- 判断メモ:
+  - **`recalc.py` は置き換えない。** フォールバックが評価できるのは `=COUNTIF(範囲,"文字列")` だけで、
+    仕様書サイトマップの集計行がたまたまこの形に限られるから成立している。
+    LibreOffice が動く環境（蒲さんのローカルに Python が入った場合も含む）では従来どおり `recalc.py` を使う
+  - 仕様書 Excel 以外（PPTX の validate など）はこのスクリプトでは救えない。
+    PDF 変換・画像化による目視 QA（AGENTS.md 第6章）もこの環境では同じ理由で通らないはず
+- 残課題: リモート実行環境で PDF 変換・目視 QA をどうするか（未検証）
+
 ### [2026-08-30] 固定ブロックの検品と、テンプレートへの反映 — Claude
 - 成果物: `skills/gg-proposal-deck/assets/deck-template.json`（40枚 → **54枚**）/ `SKILL.md` のテンプレート節・参照ファイル表
 - 検証:
