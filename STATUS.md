@@ -19,6 +19,16 @@
 
 ## 直近
 
+### [2026-09-27] Windows への Orca 導入 — Claude＋人間
+- 成果物: `scripts/setup-orca.ps1`
+- 検証:
+  - クラウド側：インストーラー（NSIS 3.04・ユーザー単位導入）の Authenticode を osslsigncode / openssl で確認。署名者 SignPath Foundation → GlobalSign GCC R45 CA → Code Signing Root R45、digest 一致、EKU=Code Signing ＝ **OK**（CRL 取得はプロキシで不可）。pwsh 7.5.3 で構文エラー 0
+  - 実機（人間が実行）：手順1〜6 成功、署名 Valid、サイレント導入完了。git 2.48.1 / node v22.14.0 / gh 2.101.0 / codex-cli 0.157.1 / claude 2.1.251、`gh auth status` hkaba-bit ログイン済み、Orca は `%LOCALAPPDATA%\Programs\orca\Orca.exe` で起動確認 ＝ **OK**
+- 判断メモ:
+  - 実機で出た不具合2件をスクリプトに反映：①Windows PowerShell 5.1 は `Stop` 下で native コマンドの stderr が終了エラーになり、gh 未ログイン時に手順7で止まる → まとめ部分は `Continue` ②npm のグローバル bin（`%APPDATA%\npm`）が PATH に無く codex を検出できない → ユーザー PATH に追加
+  - 日本語を含むため `.ps1` は UTF-8 BOM 付き（5.1 が BOM 無しを ANSI で読むため）
+- 残課題: 修正後のスクリプトは未実行（次に別 PC で導入するときに通しで確認）
+
 ### [2026-08-30] ワイヤー／Artifact の実物 QA と、検品の自動化 — Claude
 - 成果物: `scripts/qa-wireframe.py` / `AGENTS.md` 第2章の環境スクリプト表に1行
 - 検証（Chromium で実際にレンダリングして確認）:

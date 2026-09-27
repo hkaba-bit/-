@@ -39,6 +39,7 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 |---|---|
 | `scripts\new-project.ps1 <slug> "案件名"` / `bash scripts/new-project.sh <slug> "案件名"` | 案件ディレクトリを `projects/_template/` から作る |
 | `scripts\sync-skills.ps1` / `bash scripts/sync-skills.sh` | `skills/` を Claude Code 側（`~/.claude/skills/`）へ配布 |
+| `scripts\setup-orca.ps1`（Windows のみ） | Orca（stablyai/orca）と Git・Node・gh・Codex CLI を導入。インストーラーの署名が Valid かつ署名者が SignPath Foundation でなければ中止する |
 | `python scripts/check-skills-table.py` | 第5章の一覧表と `skills/` の実体が一致しているか検証 |
 | `python scripts/find-skill-script.py <skill> <スクリプト>` | Skill 同梱スクリプトの実パスを解決（環境ごとに置き場所が違うため直書きしない） |
 | `python scripts/check-skill-assets.py` | SKILL.md が参照する assets / scripts / references が実在するか検証 |
