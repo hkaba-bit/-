@@ -26,7 +26,7 @@
   - worktree 判定は Orca の API ではなく git（`--git-dir` と `--git-common-dir` の不一致）で行う。Orca のバージョン差に左右されない
   - モード判定は「文脈を1行渡すだけ」にして、動き方のルールは CLAUDE.md に置いた（フックにロジックを持たせない）
   - Codex はレビュー担当なので worktree を切らない。よってこのルールは AGENTS.md ではなく CLAUDE.md に置いた
-- 残課題: Windows の Claude Code（Git Bash 経由のフック実行）で `[Orca モード B]` が出るか確認
+- 残課題: なし。2026-09-28 Windows 実機で確認 ＝ **OK**（`node scripts\orca-context.mjs` がモード B を出力。`C:\work\gg` で起動した Claude Code が「今のOrcaモードは？」にモード B と回答＝フック経由で文脈が渡っている）
 
 ### [2026-09-27] Orca をワークフローに組み込み — Claude
 - 成果物: `references/orca-workflow.md` / `skills/gg-orca-flow/SKILL.md` / `orca.yaml` / `.worktreeinclude` / `AGENTS.md` 第4・5・8・9章 / `references/role-split.md` 4.5
@@ -41,7 +41,7 @@
   3. Orca にリポジトリを追加 ＝ **OK**（displayName `gg`、`C:/work/gg`、remote `github.com/hkaba-bit/-`）
   4. Orca CLI 有効化 ＝ **OK**（`orca status --json` ok、Orca 1.4.215）
   5. `orca-cli` Skill ＝ **OK**（`~\.agents\skills\orca-cli`、Codex と Claude Code に配布）
-  6. PR #5 マージ後、小さな依頼で §3 の流れを1周し、通らなかったコマンドを orca-workflow.md に反映 ＝ 未実施
+  6. PR #5 マージ後、小さな依頼で §3 の流れを1周し、通らなかったコマンドを orca-workflow.md に反映 ＝ 未実施（モード判定までは確認済み。worktree 作成 → Codex レビューの実走が未）
 
 ### [2026-09-27] Windows への Orca 導入 — Claude＋人間
 - 成果物: `scripts/setup-orca.ps1`
