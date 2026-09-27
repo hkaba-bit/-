@@ -128,7 +128,7 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 
 | 環境 | 作業ルート | Node.js | Python |
 |---|---|---|---|
-| Windows ローカル（蒲） | `<初回起動時に実測値を記入>` | v22.14.0 | `<未計測>` |
+| Windows ローカル（蒲） | `C:\work\gg` | v22.14.0 | `<未計測>` |
 | Claude Code on the web | `/home/user/-` | v22.22.2 | 3.11.15 |
 
 - Git：`hkaba-bit/-`（private）。ローカルとリモートはこのリポジトリ経由で同期する

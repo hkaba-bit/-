@@ -26,12 +26,13 @@
   - 分担と引き渡しの型は role-split.md のまま変えず、「Orca 上でどう回すか」だけを別ファイルに切り出した（正本の二重化を避ける）
   - worktree ごとの `npm ci` を避けるため `orca.yaml` で `node_modules` を共有。`.env` は `.worktreeinclude` でコピー（実体が無ければ Orca が無視する）
   - Orchestration は Experimental なので任意扱い。基本は worktree＋terminal コマンドで回す
-- 残課題（人間・Windows で1回だけ）:
-  1. `sync-skills.ps1` を実行して `gg-orca-flow` を配布
-  2. Orca にこのリポジトリを追加 → Settings → General → Orca CLI を有効化 → `orca status --json` が通るか
-  3. `orca skills install --skill orca-cli`
-  4. 元チェックアウトで `npm ci`（共有される `node_modules` の元）
-  5. 小さな依頼で §3 の流れを1周し、コマンドが通らなかった箇所を orca-workflow.md に反映
+- 残課題（人間・Windows で1回だけ）— 2026-09-27 実施:
+  1. `sync-skills.ps1` で `gg-orca-flow` を配布 ＝ **OK**（シンボリックリンク不可のためコピー同期。Skill 更新のたびに再実行が必要）
+  2. 元チェックアウト `C:\work\gg` で `npm ci` ＝ **OK**（audit で high 2件：sharp / image-size。別タスクで対応）
+  3. Orca にリポジトリを追加 ＝ 確認待ち（`orca repo list --json`）
+  4. Orca CLI 有効化 ＝ **OK**（`orca status --json` ok、Orca 1.4.215）
+  5. `orca-cli` Skill ＝ **OK**（`~\.agents\skills\orca-cli`、Codex と Claude Code に配布）
+  6. PR #5 マージ後、小さな依頼で §3 の流れを1周し、通らなかったコマンドを orca-workflow.md に反映 ＝ 未実施
 
 ### [2026-09-27] Windows への Orca 導入 — Claude＋人間
 - 成果物: `scripts/setup-orca.ps1`
