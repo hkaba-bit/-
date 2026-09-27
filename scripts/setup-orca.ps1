@@ -89,7 +89,8 @@ if ($proc.ExitCode -ne 0) {
 }
 Step 6 "サイレント導入 完了"
 
-# 7. まとめ
+# 7. まとめ（未ログイン時の gh の stderr で止まらないよう、ここからは Continue）
+$ErrorActionPreference = "Continue"
 Update-Path
 $orcaDir = $null
 $uninstallKeys = @(
