@@ -153,6 +153,7 @@
 | 3 | Skill の正本は `skills/` のみ。`~/.claude/skills/` 側を直接編集しない | 2026-08-30 |
 | 4 | 案件ディレクトリは手で作らず `scripts/new-project.*` で作る | 2026-08-30 |
 | 5 | Orca では 1工程＝1 worktree。元チェックアウトで直接エージェントを走らせない（`references/orca-workflow.md`） | 2026-09-27 |
+| 6 | 日本語を含む `.ps1` は UTF-8（BOM 付き）で保存する。`sync-skills.ps1` が BOM 無しで 5.1 から実行できなかった（2026-09-27 修正） | 2026-09-27 |
 | 5 | `outputs/` と `.env` は Git 追跡外。納品物の実体をリポジトリに載せない | 2026-08-30 |
 | 6 | **リモート実行環境（Claude Code on the web）では PDF 変換・目視 QA ができない。**LibreOffice が core のみで calc/impress/writer 未導入のため xlsx・pptx を読み込めず（`Error: source file could not be loaded`）、`pdftoppm` も無い。`AGENTS.md` 第6章の「生成 → PDF 変換 → 画像化して目視確認」まで完結できるのは Windows ローカルのみ | 2026-08-30 |
 | 7 | 依存は `npm ci` と `pip install -r requirements.txt` で入れる。案件ディレクトリごとに個別インストールしない | 2026-08-30 |

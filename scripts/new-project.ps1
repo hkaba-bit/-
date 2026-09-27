@@ -1,4 +1,4 @@
-# 案件ディレクトリを projects\_template\ から作る。
+﻿# 案件ディレクトリを projects\_template\ から作る。
 #
 #   powershell -ExecutionPolicy Bypass -File scripts\new-project.ps1 tokyo-weld "東京ウェルディングパーツ リニューアル"
 
