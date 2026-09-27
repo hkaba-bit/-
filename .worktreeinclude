@@ -1,0 +1,2 @@
+# Orca が新しい worktree を作るときにコピーする Git 追跡外ファイル（references/orca-workflow.md）
+.env

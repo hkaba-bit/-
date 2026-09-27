@@ -29,6 +29,7 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 | `references/` | 環境まわりのドキュメント | 可 |
 | `.env` | 認証情報 | **読み書き禁止（人間のみ）** |
 | `.env.example` | キー名のみ（値は空） | 可 |
+| `orca.yaml` / `.worktreeinclude` | Orca の worktree 設定（共有する依存・コピーする追跡外ファイル） | 人間承認のうえ可 |
 
 - 案件スラッグは英小文字ハイフン（例：`bikkuri-donkey`、`lizon`、`tokyo-weld`）
 - 生成物は必ず案件ディレクトリ配下。ルート直下にファイルを散らかさない
@@ -39,6 +40,7 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 |---|---|
 | `scripts\new-project.ps1 <slug> "案件名"` / `bash scripts/new-project.sh <slug> "案件名"` | 案件ディレクトリを `projects/_template/` から作る |
 | `scripts\sync-skills.ps1` / `bash scripts/sync-skills.sh` | `skills/` を Claude Code 側（`~/.claude/skills/`）へ配布 |
+| `scripts\setup-orca.ps1`（Windows のみ） | Orca（stablyai/orca）と Git・Node・gh・Codex CLI を導入。インストーラーの署名が Valid かつ署名者が SignPath Foundation でなければ中止する |
 | `python scripts/check-skills-table.py` | 第5章の一覧表と `skills/` の実体が一致しているか検証 |
 | `python scripts/find-skill-script.py <skill> <スクリプト>` | Skill 同梱スクリプトの実パスを解決（環境ごとに置き場所が違うため直書きしない） |
 | `python scripts/check-skill-assets.py` | SKILL.md が参照する assets / scripts / references が実在するか検証 |
@@ -71,6 +73,8 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 
 **原則：Claude で実装 → Codex でレビュー。** 逆順にしない。
 
+Windows ローカルでは Orca（作業ごとの git worktree でエージェントを並べて動かすアプリ）の上でこの流れを回す。1工程＝1 worktree。手順は `references/orca-workflow.md`。
+
 ---
 
 ## 5. Skill 参照（Codex 向け）
@@ -85,6 +89,7 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 | `gg-sitemap-spec` | 仕様書（サイトマップ Excel）・見積の下地 | `skills/gg-sitemap-spec/SKILL.md` |
 | `gg-proposal-artifact` | 商談で触ってもらうインタラクティブ資料 | `skills/gg-proposal-artifact/SKILL.md` |
 | `gg-calendar-task` | 議事録からのタスク化・カレンダー登録 | `skills/gg-calendar-task/SKILL.md` |
+| `gg-orca-flow` | Orca 上で Claude 実装 → Codex レビューを回す（worktree 作成・依頼文・回収） | `skills/gg-orca-flow/SKILL.md` |
 
 > Skill を追加・改訂したら **この表も同時に更新する**。表と実体がずれた時点で Codex 側は機能しない。
 
@@ -103,6 +108,7 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 コード規約：
 - TypeScript を使う場合は `any` 禁止
 - スクリプトは `scripts/` に置き、案件ディレクトリにコピーしない
+- 日本語を含む `.ps1` は **UTF-8（BOM 付き）** で保存する。BOM が無いと Windows PowerShell 5.1 が Shift-JIS として読み、構文エラーになる
 - 生成スクリプトは必ず「生成 → PDF 変換 → 画像化して目視確認」まで実行してから完了とする
 
 ---
@@ -122,7 +128,7 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 
 | 環境 | 作業ルート | Node.js | Python |
 |---|---|---|---|
-| Windows ローカル（蒲） | `<初回起動時に実測値を記入>` | `<未計測>` | `<未計測>` |
+| Windows ローカル（蒲） | `C:\work\gg` | v22.14.0 | `<未計測>` |
 | Claude Code on the web | `/home/user/-` | v22.22.2 | 3.11.15 |
 
 - Git：`hkaba-bit/-`（private）。ローカルとリモートはこのリポジトリ経由で同期する
@@ -137,3 +143,4 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 |---|---|
 | 2026-08-30 | 初版 |
 | 2026-08-30 | 第8章の環境情報を実測値で記入。第2章に `references/` `projects/_template/` `.env.example` を追加 |
+| 2026-09-27 | 第4章に Orca での運用を追記。第5章に `gg-orca-flow` を追加。第2章に `setup-orca.ps1`、第8章に Windows の Node 実測値 |

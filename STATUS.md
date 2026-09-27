@@ -19,6 +19,31 @@
 
 ## 直近
 
+### [2026-09-27] Orca をワークフローに組み込み — Claude
+- 成果物: `references/orca-workflow.md` / `skills/gg-orca-flow/SKILL.md` / `orca.yaml` / `.worktreeinclude` / `AGENTS.md` 第4・5・8・9章 / `references/role-split.md` 4.5
+- 検証: `python3 scripts/check-skills-table.py` が一致を返す。CLI の引数は Orca 公式ドキュメント（docs/site/content/docs/cli/*.mdx）と照合。実機での CLI 実行は **未実施**
+- 判断メモ:
+  - 分担と引き渡しの型は role-split.md のまま変えず、「Orca 上でどう回すか」だけを別ファイルに切り出した（正本の二重化を避ける）
+  - worktree ごとの `npm ci` を避けるため `orca.yaml` で `node_modules` を共有。`.env` は `.worktreeinclude` でコピー（実体が無ければ Orca が無視する）
+  - Orchestration は Experimental なので任意扱い。基本は worktree＋terminal コマンドで回す
+- 残課題（人間・Windows で1回だけ）— 2026-09-27 実施:
+  1. `sync-skills.ps1` で `gg-orca-flow` を配布 ＝ **OK**（シンボリックリンク不可のためコピー同期。Skill 更新のたびに再実行が必要）
+  2. 元チェックアウト `C:\work\gg` で `npm ci` ＝ **OK**（audit で high 2件：sharp / image-size。別タスクで対応）
+  3. Orca にリポジトリを追加 ＝ **OK**（displayName `gg`、`C:/work/gg`、remote `github.com/hkaba-bit/-`）
+  4. Orca CLI 有効化 ＝ **OK**（`orca status --json` ok、Orca 1.4.215）
+  5. `orca-cli` Skill ＝ **OK**（`~\.agents\skills\orca-cli`、Codex と Claude Code に配布）
+  6. PR #5 マージ後、小さな依頼で §3 の流れを1周し、通らなかったコマンドを orca-workflow.md に反映 ＝ 未実施
+
+### [2026-09-27] Windows への Orca 導入 — Claude＋人間
+- 成果物: `scripts/setup-orca.ps1`
+- 検証:
+  - クラウド側：インストーラー（NSIS 3.04・ユーザー単位導入）の Authenticode を osslsigncode / openssl で確認。署名者 SignPath Foundation → GlobalSign GCC R45 CA → Code Signing Root R45、digest 一致、EKU=Code Signing ＝ **OK**（CRL 取得はプロキシで不可）。pwsh 7.5.3 で構文エラー 0
+  - 実機（人間が実行）：手順1〜6 成功、署名 Valid、サイレント導入完了。git 2.48.1 / node v22.14.0 / gh 2.101.0 / codex-cli 0.157.1 / claude 2.1.251、`gh auth status` hkaba-bit ログイン済み、Orca は `%LOCALAPPDATA%\Programs\orca\Orca.exe` で起動確認 ＝ **OK**
+- 判断メモ:
+  - 実機で出た不具合2件をスクリプトに反映：①Windows PowerShell 5.1 は `Stop` 下で native コマンドの stderr が終了エラーになり、gh 未ログイン時に手順7で止まる → まとめ部分は `Continue` ②npm のグローバル bin（`%APPDATA%\npm`）が PATH に無く codex を検出できない → ユーザー PATH に追加
+  - 日本語を含むため `.ps1` は UTF-8 BOM 付き（5.1 が BOM 無しを ANSI で読むため）
+- 残課題: 修正後のスクリプトは未実行（次に別 PC で導入するときに通しで確認）
+
 ### [2026-08-30] ワイヤー／Artifact の実物 QA と、検品の自動化 — Claude
 - 成果物: `scripts/qa-wireframe.py` / `AGENTS.md` 第2章の環境スクリプト表に1行
 - 検証（Chromium で実際にレンダリングして確認）:
@@ -132,6 +157,8 @@
 | 6 | **リモート実行環境（Claude Code on the web）では PDF 変換・目視 QA ができない。**LibreOffice が core のみで calc/impress/writer 未導入のため xlsx・pptx を読み込めず（`Error: source file could not be loaded`）、`pdftoppm` も無い。`AGENTS.md` 第6章の「生成 → PDF 変換 → 画像化して目視確認」まで完結できるのは Windows ローカルのみ | 2026-08-30 |
 | 7 | 依存は `npm ci` と `pip install -r requirements.txt` で入れる。案件ディレクトリごとに個別インストールしない | 2026-08-30 |
 | 8 | Skill 同梱スクリプトのパスを直書きしない。`python scripts/find-skill-script.py <skill> <スクリプト>` で解決する | 2026-08-30 |
+| 9 | Orca では 1工程＝1 worktree。元チェックアウトで直接エージェントを走らせない（`references/orca-workflow.md`） | 2026-09-27 |
+| 10 | 日本語を含む `.ps1` は UTF-8（BOM 付き）で保存する。`sync-skills.ps1` が BOM 無しで 5.1 から実行できなかった（2026-09-27 修正） | 2026-09-27 |
 
 ---
 

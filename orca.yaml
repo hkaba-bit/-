@@ -1,0 +1,5 @@
+# Orca（stablyai/orca）のリポジトリ設定。運用は references/orca-workflow.md。
+# node_modules は元チェックアウトのものを各 worktree で共有する（worktree ごとの npm ci を省く）。
+worktree:
+  sharedDirectories:
+    - node_modules
