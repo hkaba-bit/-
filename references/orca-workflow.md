@@ -24,6 +24,20 @@ worktree ごとに `npm ci` をやり直す必要はない（worktree は base r
 
 ---
 
+## 1.5 自動判定（Claude Code）
+
+Claude Code は起動時に `scripts/orca-context.mjs`（`.claude/settings.json` の SessionStart フック）で運用モードを判定し、それに従って動く。
+
+| モード | 条件 | Claude の動き |
+|---|---|---|
+| A | `orca status` が通り、git の linked worktree 内 | そこで実装 → 同じ worktree の Codex にレビュー |
+| B | `orca status` が通り、元チェックアウト | 変更を伴う依頼は worktree を切ってから |
+| C | `orca status` が通らない | 通常どおり実装し、Codex 依頼文を人間に渡す |
+
+詳細は `CLAUDE.md`「Orca 運用（自動）」。人間が「Orca を使わずに」と言えばそちらを優先する。
+
+---
+
 ## 2. 命名
 
 | 対象 | 規則 | 例 |

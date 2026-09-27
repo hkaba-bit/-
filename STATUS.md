@@ -19,6 +19,15 @@
 
 ## 直近
 
+### [2026-09-28] Claude Code 起動時に Orca 運用へ自動で乗せる — Claude
+- 成果物: `scripts/orca-context.mjs` / `.claude/settings.json`（SessionStart フック）/ `CLAUDE.md`「Orca 運用（自動）」/ `skills/gg-orca-flow` 手順1 / `references/orca-workflow.md` 1.5 / `AGENTS.md` 第2章・第9章
+- 検証: Linux で3モードを再現 ＝ **OK**（C：orca 無し／B：偽 orca＋元チェックアウト／A：偽 orca＋`git worktree add` した worktree／orca 応答が reachable:false → C）。`$CLAUDE_PROJECT_DIR` 経由の実行も確認。Windows 実機は **未確認**
+- 判断メモ:
+  - worktree 判定は Orca の API ではなく git（`--git-dir` と `--git-common-dir` の不一致）で行う。Orca のバージョン差に左右されない
+  - モード判定は「文脈を1行渡すだけ」にして、動き方のルールは CLAUDE.md に置いた（フックにロジックを持たせない）
+  - Codex はレビュー担当なので worktree を切らない。よってこのルールは AGENTS.md ではなく CLAUDE.md に置いた
+- 残課題: Windows の Claude Code（Git Bash 経由のフック実行）で `[Orca モード B]` が出るか確認
+
 ### [2026-09-27] Orca をワークフローに組み込み — Claude
 - 成果物: `references/orca-workflow.md` / `skills/gg-orca-flow/SKILL.md` / `orca.yaml` / `.worktreeinclude` / `AGENTS.md` 第4・5・8・9章 / `references/role-split.md` 4.5
 - 検証: `python3 scripts/check-skills-table.py` が一致を返す。CLI の引数は Orca 公式ドキュメント（docs/site/content/docs/cli/*.mdx）と照合。実機での CLI 実行は **未実施**

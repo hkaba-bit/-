@@ -17,6 +17,18 @@
 `~/.claude/skills/` に `skills/` からリンク済み。該当作業では自動で読み込まれる。
 読み込まれない場合は `skills/` 側の `SKILL.md` を直接開く。
 
+### Orca 運用（自動）
+セッション開始時に `.claude/settings.json` のフックが `scripts/orca-context.mjs` を実行し、`[Orca モード A/B/C]` を1行出す。その行に従って進める。
+
+| モード | 状況 | 進め方 |
+|---|---|---|
+| A | Orca 管理の worktree 内 | ここで実装 → 完了したら `gg-orca-flow` §4 で同じ worktree の Codex にレビューを回す → 指摘を反映 → STATUS.md 追記・コミット |
+| B | Orca 起動中・元チェックアウト | ファイルを変える依頼は、着手前に `gg-orca-flow` で worktree を切り、Claude をそこで起動して依頼を渡す。自分では編集しない。質問・調査はこのまま答える |
+| C | Orca を使えない（クラウド等） | 通常どおり作業ブランチで実装。完了時、Codex へのレビュー依頼文（`references/role-split.md` 第3章の4項目）を最後に出す |
+
+- 人間が「Orca を使わずに」「ここで直接」と言ったら、モードに関係なくその指示を優先する
+- 行が出ていない（フックが動かなかった）ときは、自分で `node scripts/orca-context.mjs` を実行して判定する
+
 ### モデルの使い分け
 | 作業 | モデル |
 |---|---|

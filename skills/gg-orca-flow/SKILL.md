@@ -14,12 +14,13 @@ description: Orca（stablyai/orca）上で「Claude で実装 → Codex でレ�
 
 ### 1. 実行場所を確かめる
 
-`orca status --json` を実行する。
+セッション冒頭の `[Orca モード A/B/C]` の行を見る（Claude Code の SessionStart フックが出す）。行が無ければ `node scripts/orca-context.mjs` を実行する。
 
-| 結果 | 進め方 |
+| モード | 進め方 |
 |---|---|
-| 通る（Orca の中、または Orca が起動中の PC） | 下の 2 以降を CLI で実行する |
-| `orca` が無い・失敗する（クラウドセッションなど） | CLI は使わない。2〜4 を組み立てて、人間が Orca 画面に貼れる形で渡す |
+| A：Orca の worktree 内 | この worktree で実装し、4 の後半（Codex のレビュー）だけ CLI で行う |
+| B：元チェックアウト・Orca 起動中 | 2〜4 をすべて CLI で行う。自分では編集せず、worktree 側の Claude に渡す |
+| C：Orca を使えない（クラウド等） | CLI は使わない。実装は作業ブランチで行い、3 の依頼文を人間が Orca に貼れる形で出す |
 
 ### 2. 工程に切る
 
