@@ -29,7 +29,7 @@
 - 残課題（人間・Windows で1回だけ）— 2026-09-27 実施:
   1. `sync-skills.ps1` で `gg-orca-flow` を配布 ＝ **OK**（シンボリックリンク不可のためコピー同期。Skill 更新のたびに再実行が必要）
   2. 元チェックアウト `C:\work\gg` で `npm ci` ＝ **OK**（audit で high 2件：sharp / image-size。別タスクで対応）
-  3. Orca にリポジトリを追加 ＝ 確認待ち（`orca repo list --json`）
+  3. Orca にリポジトリを追加 ＝ **OK**（displayName `gg`、`C:/work/gg`、remote `github.com/hkaba-bit/-`）
   4. Orca CLI 有効化 ＝ **OK**（`orca status --json` ok、Orca 1.4.215）
   5. `orca-cli` Skill ＝ **OK**（`~\.agents\skills\orca-cli`、Codex と Claude Code に配布）
   6. PR #5 マージ後、小さな依頼で §3 の流れを1周し、通らなかったコマンドを orca-workflow.md に反映 ＝ 未実施
