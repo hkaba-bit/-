@@ -14,13 +14,13 @@ Orca（stablyai/orca）は、CLI エージェントを **作業ごとの git wor
 |---|---|---|
 | 1 | Orca・git・node・gh・codex・claude を導入 | `scripts\setup-orca.ps1`（済：2026-09-27） |
 | 2 | Codex にログイン | `codex` を一度起動してブラウザでログイン |
-| 3 | このリポジトリを Orca にプロジェクトとして追加 | Orca 画面左の Project に出る。CLI なら `orca repo list --json` |
+| 3 | このリポジトリを Orca に追加 | サイドバーの **Add Repo** → ローカルのチェックアウト（例：`C:\work\gg`）を選ぶ。サイドバーに出れば OK。CLI なら `orca repo list --json` |
 | 4 | Orca CLI を有効化 | Orca の Settings → General → Orca CLI。新しい PowerShell で `orca status --json` が通る |
 | 5 | エージェントに Orca CLI の Skill を入れる | `orca skills install --skill orca-cli` |
 | 6 | （任意）Orchestration を有効化 | Settings → Experimental。§4 の監督付き実行を使う場合だけ |
 
 リポジトリ直下の `orca.yaml` で `node_modules` を各 worktree に共有し、`.worktreeinclude` で `.env` を各 worktree にコピーする設定にしてある。
-worktree ごとに `npm ci` をやり直す必要はない。ただし `node_modules` は元のチェックアウトで一度 `npm ci` しておくこと。
+worktree ごとに `npm ci` をやり直す必要はない（worktree は base ref＝main から切られるので、この設定が main に入っていることが前提）。ただし `node_modules` は元のチェックアウトで一度 `npm ci` しておくこと。
 
 ---
 
@@ -40,7 +40,7 @@ worktree ごとに `npm ci` をやり直す必要はない。ただし `node_mod
 
 | 段 | 誰が | Orca 画面での操作 | CLI（エージェントが実行する場合） |
 |---|---|---|---|
-| ① 作る | 人間 or Claude | Create Workspace → Project=このリポジトリ、Agent=Claude Code、名前は §2 | `orca worktree create --repo id:<repoId> --name <名前> --agent claude --prompt "<依頼>" --json` |
+| ① 作る | 人間 or Claude | サイドバーのリポジトリ名の横の **+** → 名前は §2、start-from は `origin/main`、Agent=Claude Code | `orca worktree create --repo id:<repoId> --name <名前> --agent claude --prompt "<依頼>" --json` |
 | ② 実装 | Claude | そのまま依頼。Skill は自動で読まれる | — |
 | ③ レビュー | Codex | 同じ worktree でターミナルを分割 → `codex` を起動し、role-split.md 第3章の型で依頼 | `orca terminal split --direction vertical --command "codex" --json` の後、`orca terminal send --terminal <handle> --text "<型どおりの依頼>" --enter --json` |
 | ④ 差し戻し | 人間 | 差分の行にコメント（Annotate AI Diffs）→ Claude へ送る | `orca terminal send` で Claude の端末へ |
