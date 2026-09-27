@@ -19,6 +19,20 @@
 
 ## 直近
 
+### [2026-09-27] Orca をワークフローに組み込み — Claude
+- 成果物: `references/orca-workflow.md` / `skills/gg-orca-flow/SKILL.md` / `orca.yaml` / `.worktreeinclude` / `AGENTS.md` 第4・5・8・9章 / `references/role-split.md` 4.5
+- 検証: `python3 scripts/check-skills-table.py` が一致を返す。CLI の引数は Orca 公式ドキュメント（docs/site/content/docs/cli/*.mdx）と照合。実機での CLI 実行は **未実施**
+- 判断メモ:
+  - 分担と引き渡しの型は role-split.md のまま変えず、「Orca 上でどう回すか」だけを別ファイルに切り出した（正本の二重化を避ける）
+  - worktree ごとの `npm ci` を避けるため `orca.yaml` で `node_modules` を共有。`.env` は `.worktreeinclude` でコピー（実体が無ければ Orca が無視する）
+  - Orchestration は Experimental なので任意扱い。基本は worktree＋terminal コマンドで回す
+- 残課題（人間・Windows で1回だけ）:
+  1. `sync-skills.ps1` を実行して `gg-orca-flow` を配布
+  2. Orca にこのリポジトリを追加 → Settings → General → Orca CLI を有効化 → `orca status --json` が通るか
+  3. `orca skills install --skill orca-cli`
+  4. 元チェックアウトで `npm ci`（共有される `node_modules` の元）
+  5. 小さな依頼で §3 の流れを1周し、コマンドが通らなかった箇所を orca-workflow.md に反映
+
 ### [2026-09-27] Windows への Orca 導入 — Claude＋人間
 - 成果物: `scripts/setup-orca.ps1`
 - 検証:
@@ -138,6 +152,7 @@
 | 2 | `skills/*/assets/` の共通 CSS は案件ごとに書き換えない | 2026-08-30 |
 | 3 | Skill の正本は `skills/` のみ。`~/.claude/skills/` 側を直接編集しない | 2026-08-30 |
 | 4 | 案件ディレクトリは手で作らず `scripts/new-project.*` で作る | 2026-08-30 |
+| 5 | Orca では 1工程＝1 worktree。元チェックアウトで直接エージェントを走らせない（`references/orca-workflow.md`） | 2026-09-27 |
 | 5 | `outputs/` と `.env` は Git 追跡外。納品物の実体をリポジトリに載せない | 2026-08-30 |
 | 6 | **リモート実行環境（Claude Code on the web）では PDF 変換・目視 QA ができない。**LibreOffice が core のみで calc/impress/writer 未導入のため xlsx・pptx を読み込めず（`Error: source file could not be loaded`）、`pdftoppm` も無い。`AGENTS.md` 第6章の「生成 → PDF 変換 → 画像化して目視確認」まで完結できるのは Windows ローカルのみ | 2026-08-30 |
 | 7 | 依存は `npm ci` と `pip install -r requirements.txt` で入れる。案件ディレクトリごとに個別インストールしない | 2026-08-30 |

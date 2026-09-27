@@ -76,6 +76,16 @@ Codex の結果は **差分と指摘だけ** を Claude に戻す。生ログを
 
 ---
 
+## 4.5 Orca で回す場合
+
+Windows ローカルでは Orca の上で第3章・第4章の受け渡しを行う。型は変えない。
+
+- 1工程＝1 worktree。実装した worktree の中で、別ターミナルの Codex にレビューさせる
+- 依頼文は第3章の4項目のまま、Codex のターミナルに送る
+- 手順・命名・CLI は `references/orca-workflow.md`。エージェントに任せるときは Skill `gg-orca-flow`
+
+---
+
 ## 5. Skill を改訂したときの手順
 
 1. `skills/<name>/` を編集（**正本はここだけ**。`~/.claude/skills/` 側を直接触らない）
