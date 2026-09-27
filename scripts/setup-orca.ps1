@@ -5,6 +5,7 @@
 # 署名が Valid でなければ中止する。サイレント導入できなければ「PC画面で操作が必要」と出して止まる。
 
 $ErrorActionPreference = "Stop"
+$ProgressPreference = "SilentlyContinue"  # 5.1 の Invoke-WebRequest は進捗表示で極端に遅くなる
 
 function Step($n, $msg) { Write-Host "[$n] $msg" }
 function Update-Path {
@@ -69,9 +70,14 @@ if ($sig.Status -ne "Valid") {
   Step 5 "署名が Valid ではない（$($sig.Status): $($sig.StatusMessage)）。中止する"
   exit 1
 }
+# 公式リリースは SignPath Foundation 名義で署名されている（2026-09 時点）
+if ($sig.SignerCertificate.Subject -notmatch 'CN=SignPath Foundation') {
+  Step 5 "署名は Valid だが署名者が想定外（$($sig.SignerCertificate.Subject)）。中止する"
+  exit 1
+}
 Step 5 "署名 Valid: $($sig.SignerCertificate.Subject)"
 
-# 6. サイレント導入（electron-builder / NSIS 想定の /S）。5 分で終わらなければ GUI 待ちとみなす
+# 6. サイレント導入（NSIS 3.04・ユーザー単位導入なので /S が効く想定）。5 分で終わらなければ GUI 待ちとみなす
 $proc = Start-Process -FilePath $installer -ArgumentList "/S" -PassThru
 if (-not $proc.WaitForExit(300000)) {
   Step 6 "5 分経っても終わらない。PC画面で操作が必要（インストーラーの画面を確認）"
