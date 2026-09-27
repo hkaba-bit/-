@@ -47,7 +47,14 @@ Step 1 ("PATH 再読込" + $(if ($installed) { "（新規導入あり）" } else
 git config --global core.longpaths true
 Step 2 "core.longpaths = $(git config --global core.longpaths)"
 
-# 3. Codex CLI
+# 3. Codex CLI（npm のグローバル bin が PATH に無いと codex が見えないので先に足す）
+$npmBin = (npm prefix -g).Trim()
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+if (($userPath -split ';') -notcontains $npmBin) {
+  [Environment]::SetEnvironmentVariable("Path", "$userPath;$npmBin", "User")
+  Step 3 "npm グローバル bin を PATH に追加: $npmBin"
+}
+Update-Path
 if (Get-Command codex -ErrorAction SilentlyContinue) {
   Step 3 "codex: 導入済み。スキップ"
 } else {
