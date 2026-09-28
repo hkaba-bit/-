@@ -19,6 +19,15 @@
 
 ## 直近
 
+### [2026-09-28] ワイヤー依頼で Orca を自動起動 — Claude
+- 成果物: `scripts/orca-context.mjs`（`--on-prompt` 追加）/ `.claude/settings.json`（UserPromptSubmit フック）/ `CLAUDE.md` / `references/orca-workflow.md` 1.5 / `AGENTS.md` 第2・9章
+- 検証: Linux で7ケース ＝ **OK**（非ワイヤー依頼→無出力／ワイヤー＋Orca なし→モード C／WF＋偽 orca＋元チェックアウト→モード B と worktree 手順／worktree 内→モード A と「この worktree で進める」／壊れた JSON→無出力・exit 0／SessionStart は従来どおり／「WFH」は非該当）。Orca.exe の自動起動は Windows 実機 **未確認**
+- 判断メモ:
+  - SessionStart だけだと Orca 未起動のまま始めたセッションはモード C に固定される。依頼ごとに判定し直すため UserPromptSubmit を使った
+  - ワイヤー以外では何も出さない（毎回のコンテキストを増やさない）。検知語は gg-wireframe の description に揃えた
+  - 起動待ちは最大60秒。フックの timeout は 90 秒
+- 残課題: Windows で Orca を閉じた状態から「〇〇のワイヤーを作って」と送り、Orca が起動して `[Orca] ワイヤー依頼を検知し、Orca を起動した。` が効くか確認
+
 ### [2026-09-28] Claude Code 起動時に Orca 運用へ自動で乗せる — Claude
 - 成果物: `scripts/orca-context.mjs` / `.claude/settings.json`（SessionStart フック）/ `CLAUDE.md`「Orca 運用（自動）」/ `skills/gg-orca-flow` 手順1 / `references/orca-workflow.md` 1.5 / `AGENTS.md` 第2章・第9章
 - 検証: Linux で3モードを再現 ＝ **OK**（C：orca 無し／B：偽 orca＋元チェックアウト／A：偽 orca＋`git worktree add` した worktree／orca 応答が reachable:false → C）。`$CLAUDE_PROJECT_DIR` 経由の実行も確認。Windows 実機は **未確認**

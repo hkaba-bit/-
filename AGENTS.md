@@ -42,7 +42,7 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 | `scripts\new-project.ps1 <slug> "案件名"` / `bash scripts/new-project.sh <slug> "案件名"` | 案件ディレクトリを `projects/_template/` から作る |
 | `scripts\sync-skills.ps1` / `bash scripts/sync-skills.sh` | `skills/` を Claude Code 側（`~/.claude/skills/`）へ配布 |
 | `scripts\setup-orca.ps1`（Windows のみ） | Orca（stablyai/orca）と Git・Node・gh・Codex CLI を導入。インストーラーの署名が Valid かつ署名者が SignPath Foundation でなければ中止する |
-| `node scripts/orca-context.mjs` | Orca 運用モード（A: worktree 内 / B: 元チェックアウト / C: Orca 不可）を判定。Claude Code の SessionStart フックから自動実行 |
+| `node scripts/orca-context.mjs` | Orca 運用モード（A: worktree 内 / B: 元チェックアウト / C: Orca 不可）を判定。Claude Code の SessionStart フックから自動実行。`--on-prompt` はワイヤー依頼時に Orca を自動起動（UserPromptSubmit フック） |
 | `python scripts/check-skills-table.py` | 第5章の一覧表と `skills/` の実体が一致しているか検証 |
 | `python scripts/find-skill-script.py <skill> <スクリプト>` | Skill 同梱スクリプトの実パスを解決（環境ごとに置き場所が違うため直書きしない） |
 | `python scripts/check-skill-assets.py` | SKILL.md が参照する assets / scripts / references が実在するか検証 |
@@ -147,3 +147,4 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 | 2026-08-30 | 第8章の環境情報を実測値で記入。第2章に `references/` `projects/_template/` `.env.example` を追加 |
 | 2026-09-27 | 第4章に Orca での運用を追記。第5章に `gg-orca-flow` を追加。第2章に `setup-orca.ps1`、第8章に Windows の Node 実測値 |
 | 2026-09-28 | 第2章に `.claude/settings.json` と `orca-context.mjs` を追加（Claude Code 起動時に Orca 運用モードを自動判定） |
+| 2026-09-28 | 第2章 `orca-context.mjs` に `--on-prompt`（ワイヤー依頼時に Orca を自動起動）を追記 |
