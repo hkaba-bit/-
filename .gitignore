@@ -30,3 +30,6 @@ desktop.ini
 # --- 一時ファイル（Office のロックファイル含む）---
 *.tmp
 ~$*
+
+# --- Orca パイプラインの着手記録（PC ローカル）---
+.orca-pipeline/

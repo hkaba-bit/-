@@ -1,8 +1,8 @@
-# Orca で回す（Claude 実装 → Codex レビュー）
+# Orca で回す（①整理 → ②Codex 作成 → ③Claude Code チェック）
 
 Orca（stablyai/orca）は、CLI エージェントを **作業ごとの git worktree** で並べて動かすデスクトップアプリ。
-この環境では「Claude で実装 → Codex でレビュー」（`AGENTS.md` 第4章）を 1 画面で回すために使う。
-分担と引き渡しの型そのものは `references/role-split.md` が正本。ここは **Orca 上での回し方** だけを書く。
+この環境では、②Codex による資料・ワイヤー作成と、③Claude Code によるチェック・ブラッシュアップを、Orca 上で自動で回すために使う。
+分担の正本は `references/role-split.md`。ここは **Orca 上での回し方** だけを書く。
 
 > CLI の引数は Orca の公式ドキュメント（https://www.onorca.dev/docs/cli/reference）に合わせてある。Orca は毎日更新されるので、コマンドが通らなければ `orca <サブコマンド> --help` を正とする。
 
@@ -14,98 +14,90 @@ Orca（stablyai/orca）は、CLI エージェントを **作業ごとの git wor
 |---|---|---|
 | 1 | Orca・git・node・gh・codex・claude を導入 | `scripts\setup-orca.ps1`（済：2026-09-27） |
 | 2 | Codex にログイン | `codex` を一度起動してブラウザでログイン |
-| 3 | このリポジトリを Orca に追加 | サイドバーの **Add Repo** → ローカルのチェックアウト（例：`C:\work\gg`）を選ぶ。サイドバーに出れば OK。CLI なら `orca repo list --json` |
-| 4 | Orca CLI を有効化 | Orca の Settings → General → Orca CLI。新しい PowerShell で `orca status --json` が通る |
-| 5 | エージェントに Orca CLI の Skill を入れる | `orca skills install --skill orca-cli` |
-| 6 | （任意）Orchestration を有効化 | Settings → Experimental。§4 の監督付き実行を使う場合だけ |
+| 3 | このリポジトリを Orca に追加 | サイドバーの **Add Repo** → `C:\work\gg`。CLI なら `orca repo list --json`（済） |
+| 4 | Orca CLI を有効化 | Settings → General → Orca CLI。`orca status --json` が通る（済） |
+| 5 | エージェントに Orca CLI の Skill を入れる | `orca skills install --skill orca-cli`（済） |
+| 6 | 定期実行「gg handoff pipeline」を登録 | `C:\work\gg` を main にして `powershell -ExecutionPolicy Bypass -File scripts\setup-orca-pipeline.ps1`。Orca の Automations 画面に出る |
+| 7 | 自動実行中に承認待ちで止まらないようにする | **人間が判断して設定する**（§6） |
 
-リポジトリ直下の `orca.yaml` で `node_modules` を各 worktree に共有し、`.worktreeinclude` で `.env` を各 worktree にコピーする設定にしてある。
-worktree ごとに `npm ci` をやり直す必要はない（worktree は base ref＝main から切られるので、この設定が main に入っていることが前提）。ただし `node_modules` は元のチェックアウトで一度 `npm ci` しておくこと。
+リポジトリ直下の `orca.yaml` で `node_modules` を各 worktree に共有し、`.worktreeinclude` で `.env` を各 worktree にコピーする。`node_modules` は元チェックアウトで一度 `npm ci` しておくこと。
 
 ---
 
-## 1.5 自動判定（Claude Code）
+## 2. 全体の流れ
 
-Claude Code は起動時に `scripts/orca-context.mjs`（`.claude/settings.json` の SessionStart フック）で運用モードを判定し、それに従って動く。
+| 工程 | 担当 | 場所 | 使う Skill | 出力 |
+|---|---|---|---|---|
+| ① 情報整理 → 依頼書 | Claude | claude.ai（クラウド可） | `gg-handoff` | `projects/<slug>/handoff/<日付>-<種類>-<名前>.md`（status: ready）を main へ |
+| ② 資料・ワイヤー作成 | Codex | Orca（PC） | 依頼書の Context にある Skill | worktree にコミット |
+| ③ チェック・ブラッシュアップ | Claude Code | Orca（PC）・同じ worktree | `gg-proposal-standard` ＋種類別の検品 | 修正コミット → PR（依頼書は status: review） |
+| マージ | 人間 | GitHub | — | — |
 
-| モード | 条件 | Claude の動き |
+②③の進行は `skills/gg-orca-flow/SKILL.md`。Orca の定期実行が 15 分ごとに呼ぶ。
+
+---
+
+## 3. 自動実行のしくみ
+
+| 部品 | 役割 |
+|---|---|
+| Orca automation「gg handoff pipeline」 | 15 分ごと（cron `*/15 * * * *`）。`provider: claude` で進行役を起動する |
+| precheck：`node C:/work/gg/scripts/handoff-scan.mjs --check` | main を pull し、未着手の `status: ready` が無ければ exit 1 → その回はスキップ（**エージェントを起動しないので費用がかからない**） |
+| 進行役（Claude）→ `gg-orca-flow` | `handoff-scan.mjs --next` で1件取り出し → worktree 作成＋②Codex 起動 → 完了待ち → 同じ worktree で③Claude Code 起動 → 完了待ち → PR URL を記録 |
+| 着手記録 `.orca-pipeline/claimed.json` | 同じ依頼書を二重に処理しない（Git 追跡外）。失敗時は `--release` で消して次回に再挑戦 |
+
+**すぐ回したいとき**：PC の Claude Code（`C:\work\gg`）に「依頼書を今すぐ処理して」。または Orca の Automations 画面で「gg handoff pipeline」を手動実行。
+
+依頼書の status：`ready`（①が作成）→ `review`（③が PR 作成）→ 人間がマージ。2回続けて失敗したものは `blocked`。
+
+---
+
+## 4. 自動判定（Claude Code のフック）
+
+Claude Code は起動時と依頼送信時に `scripts/orca-context.mjs`（`.claude/settings.json` のフック）でモードを判定し、役割を決める。
+
+| モード | 条件 | 役割 |
 |---|---|---|
-| A | `orca status` が通り、Orca 管理の worktree 内（`ORCA_TERMINAL_HANDLE` あり、または `orca worktree current` が通る） | そこで実装 → 同じ worktree の Codex にレビュー |
-| B | `orca status` が通り、Orca の worktree の外（元チェックアウト、デスクトップアプリの worktree 等） | 変更を伴う依頼は worktree を切ってから |
-| C | `orca status` が通らない | 通常どおり実装し、Codex 依頼文を人間に渡す |
+| A | Orca 管理の worktree 内（`ORCA_TERMINAL_HANDLE` あり、または `orca worktree current` が通る） | ③チェック担当、または gg-orca-flow の進行役（受け取った依頼文に従う） |
+| B | Orca 起動中・worktree の外（元チェックアウト、デスクトップアプリの worktree 等） | 作成依頼は `gg-orca-flow` で②③に回す。自分では作らない |
+| C | Orca に接続できない（クラウド／PC で Orca 未起動） | ①担当。作成依頼は `gg-handoff` で依頼書にする |
 
-ワイヤー依頼（ワイヤー／WF／wireframe／画面設計／構成イメージ／たたき台／プロトタイプ）を送ると、`UserPromptSubmit` フック（`orca-context.mjs --on-prompt`）が Orca を確認し、Windows で止まっていれば `%LOCALAPPDATA%\Programs\orca\Orca.exe` を起動して最大60秒待つ。起動できればモード A/B の手順、できなければモード C で進む。
-
-`orca` が PATH に無いプロセス（Orca CLI 登録前に起動した Claude デスクトップアプリ等）でも動くよう、Windows では `%LOCALAPPDATA%\Programs\orca\resources\bin\orca.exe` を直接試す。
-
-詳細は `CLAUDE.md`「Orca 運用（自動）」。人間が「Orca を使わずに」と言えばそちらを優先する。
+ワイヤー依頼（ワイヤー／WF／wireframe／画面設計／構成イメージ／たたき台／プロトタイプ）を送ると、Windows で Orca が止まっていれば `%LOCALAPPDATA%\Programs\orca\Orca.exe` を起動して最大 60 秒待つ。`orca` が PATH に無いプロセスでも `%LOCALAPPDATA%\Programs\orca\resources\bin\orca.exe` を直接試す。人間が「Orca を使わずに」と言えばそちらを優先する。
 
 ---
 
-## 2. 命名
+## 5. 命名
 
 | 対象 | 規則 | 例 |
 |---|---|---|
-| worktree 名 | `<案件スラッグ>-<工程>` | `tokyo-weld-wireframe` / `tokyo-weld-deck` |
-| レビュー用 | 実装と同じ worktree を使う（別に作らない） | — |
-| 比較用（同じ依頼を2案） | 末尾に `-a` / `-b` | `lizon-top-a` / `lizon-top-b` |
+| 依頼書 | `projects/<slug>/handoff/<YYYYMMDD>-<type>-<短い名前>.md` | `projects/tokyo-weld/handoff/20260928-wireframe-top.md` |
+| worktree | `<slug>-<type>-<MMDD>` | `tokyo-weld-wireframe-0928` |
+| PR タイトル | `<slug>: <依頼書タイトル>` | `tokyo-weld: 依頼：TOP・下層ワイヤー` |
 
 案件スラッグは `AGENTS.md` 第2章の規約どおり（英小文字・数字・ハイフン）。
 
 ---
 
-## 3. 基本の流れ（1工程＝1 worktree）
+## 6. 自動実行で止まらないための設定（人間が判断する）
 
-| 段 | 誰が | Orca 画面での操作 | CLI（エージェントが実行する場合） |
-|---|---|---|---|
-| ① 作る | 人間 or Claude | サイドバーのリポジトリ名の横の **+** → 名前は §2、start-from は `origin/main`、Agent=Claude Code | `orca worktree create --repo id:<repoId> --name <名前> --agent claude --prompt "<依頼>" --json` |
-| ② 実装 | Claude | そのまま依頼。Skill は自動で読まれる | — |
-| ③ レビュー | Codex | 同じ worktree でターミナルを分割 → `codex` を起動し、role-split.md 第3章の型で依頼 | `orca terminal split --direction vertical --command "codex" --json` の後、`orca terminal send --terminal <handle> --text "<型どおりの依頼>" --enter --json` |
-| ④ 差し戻し | 人間 | 差分の行にコメント（Annotate AI Diffs）→ Claude へ送る | `orca terminal send` で Claude の端末へ |
-| ⑤ 仕上げ | Claude | STATUS.md 追記・コミット・PR | `gh pr create` |
-| ⑥ 片付け | 人間 | マージ後に worktree を削除 | `orca worktree rm --worktree id:<id> --json` |
+無人で回すには、②Codex と③Claude Code が承認待ちで止まらないことが必要。どちらも権限を広げる設定なので、**リポジトリには入れず、人間が PC で判断して設定する**。
 
-- Codex への依頼文は **role-split.md 第3章の4項目（Goal / Context / Constraints / Done when）だけ**。会話履歴を渡さない。
-- Codex の戻しは role-split.md 第4章の型（変更ファイル・指摘・判断が要る点）。
-- 待ち合わせは `orca terminal wait --terminal <handle> --for tui-idle --timeout-ms 900000 --json`、結果は `orca terminal read --terminal <handle> --json`。
+| 対象 | 止まる場面 | 設定の考え方 |
+|---|---|---|
+| Codex | ファイル作成・コマンド実行の承認 | Orca のエージェント設定、または Codex の設定で、作業フォルダ内の書き込みを承認なしにする |
+| Claude Code | ファイル編集、`git add/commit/push`、`gh pr create`、`python scripts/qa-wireframe.py`、`node scripts/handoff-scan.mjs`、`orca …` の実行 | `C:\work\gg` の Claude Code で `/permissions` から、上の操作だけを許可に追加する |
+
+設定前でも仕組み自体は動くが、承認待ちで止まったら Orca の画面で承認する（=半自動）。
 
 ---
 
-## 4. Orchestration を使う場合（任意）
-
-依頼が複数工程にまたがり、完了の追跡が要るときだけ使う。単発なら §3 で足りる。
-
-```bash
-orca orchestration run-create --objective "<案件スラッグ>: <目的>" --json
-orca orchestration task-create --task-title "実装" --spec "<Goal/Context/Constraints/Done when>" --json
-orca orchestration worker-start --task <taskId> --worktree new-child --name <名前> --agent claude --json
-# 実装完了（worker_done）を待つ
-orca orchestration check --wait --types worker_done,escalation,question --timeout-ms 900000 --json
-# 同じ worktree で Codex にレビューを割り当てる
-orca orchestration task-create --task-title "レビュー" --spec "<型どおりの依頼。修正はしない（指摘のみ）>" --json
-orca orchestration worker-start --task <reviewTaskId> --worktree current --agent codex --json
-```
-
-PowerShell ではグループ宛先を引用符で囲む（`--to "@codex"`）。
-
----
-
-## 5. 使いどころ
-
-| 場面 | Orca の使い方 |
-|---|---|
-| ワイヤーの下層ページ量産 | Claude が TOP を作った worktree で、Codex に横展開させる（role-split.md の例） |
-| デザイン案を2つ比べたい | 同じ依頼を `-a`（Claude）/ `-b`（Codex）で並列 → 良い方をマージ、他方は削除 |
-| ワイヤーの見た目確認 | 内蔵ブラウザの Design Mode で要素をクリックして、HTML/CSS をエージェントに渡す |
-| 外出中 | Orca のモバイルアプリで完了通知を受け、追加指示を送る |
-
----
-
-## 6. やらないこと
+## 7. やらないこと
 
 | NG | なぜ |
 |---|---|
-| main の元チェックアウトで直接エージェントを走らせる | 並行作業が混ざる。必ず worktree を切る |
-| 実装した Claude と同じ端末で「レビューして」と頼む | 実装者の思い込みを二度通すだけ（role-split.md 第6章） |
-| worktree の `outputs/` を当てにする | `outputs/` は Git 追跡外なので worktree 間で共有されない。納品物は作業した worktree 内で確認してから所定の場所へ移す |
-| マージ済みの worktree を残す | どれが生きているか分からなくなる |
+| ①（claude.ai）で成果物を作り始める | 作るのは②Codex。①は依頼書まで |
+| ③の Claude が②を飛ばして一から作る | 分担が崩れ、Codex に逃がしたはずのトークンを払うことになる |
+| 元チェックアウトで直接エージェントを走らせる | 並行作業が混ざる。必ず worktree を切る |
+| PR を自動でマージする | マージは人間が決める |
+| worktree の `outputs/` を当てにする | Git 追跡外なので worktree 間で共有されない |
+| マージ済みの worktree を残す | どれが生きているか分からなくなる。マージ後に Orca で削除 |
