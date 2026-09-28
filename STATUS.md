@@ -19,6 +19,20 @@
 
 ## 直近
 
+### [2026-09-28] 分担改定と Orca 自動パイプライン（①整理 → ②Codex 作成 → ③Claude Code チェック） — Claude
+- 経緯: 人間（蒲）の指示で分担を改定。①claude.ai で情報整理、②Codex で資料・ワイヤー作成、③Claude Code でチェック・ブラッシュアップ、②③は Orca で自動
+- 成果物: `skills/gg-handoff/SKILL.md`（新規・①）/ `skills/gg-orca-flow/SKILL.md`（②③の進行役に書き直し）/ `scripts/handoff-scan.mjs` / `scripts/setup-orca-pipeline.ps1` / `scripts/orca-context.mjs`（モード文言）/ `references/orca-workflow.md`（全面改訂）/ `references/role-split.md` 第2章・4.5・第6章 / `AGENTS.md` 第2・4・5・9章 / `CLAUDE.md` / `.gitignore`（`.orca-pipeline/`）
+- 検証: `handoff-scan.mjs` を元チェックアウトと worktree の両方から実行 ＝ **OK**（ready のみ検出・draft は除外／worktree からでも元チェックアウトの依頼書を見る／着手後は再取得しない／`--release` で再取得可・Windows 区切りも可）。`orca-context.mjs` のモード出力 ＝ **OK**。`setup-orca-pipeline.ps1` は pwsh で構文エラー 0（UTF-8 BOM）。Orca 上の実走は **未確認**
+- 判断メモ:
+  - クラウド（①）から PC に直接指示できないため、受け渡しは Git（main 上の依頼書）にした。Orca automation の precheck で「依頼書が無い回はエージェントを起動しない」ようにし、費用を抑えた
+  - 二重処理防止は Git ではなく PC ローカルの着手記録にした（main への書き戻しで衝突させない）
+  - 自動実行で承認待ちに止まらないための権限設定は、権限を広げる変更なのでリポジトリに入れず人間の判断に残した（orca-workflow.md §6）
+- 残課題（人間・Windows）:
+  1. `git pull` → `sync-skills.ps1`（gg-handoff 追加・gg-orca-flow 更新）
+  2. `scripts\setup-orca-pipeline.ps1` で定期実行を登録（最初は `-Disabled` で登録して手動実行でもよい）
+  3. orca-workflow.md §6 の権限設定を判断
+  4. テスト用の依頼書で1周（① → main → Orca が②③ → PR）
+
 ### [2026-09-28] デスクトップアプリで Orca を検出できない問題の修正 — Claude
 - 事象: Claude デスクトップアプリ（ローカル）でワイヤーを依頼したところ、フックがモード C を出し、Claude が「クラウドで実行された」と誤って報告した。作業は `claude/upbeat-franklin-6cy1l0`（デスクトップアプリが作る worktree）で行われた
 - 原因（推定）: デスクトップアプリが Orca CLI 登録前に起動しており PATH に `orca` が無い。加えて、モード C の文言「クラウド等」が誤解を招いた。また、デスクトップアプリの worktree は git 上は linked worktree なので、Orca 起動中ならモード A と誤判定するおそれがあった

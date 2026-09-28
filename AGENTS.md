@@ -43,6 +43,8 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 | `scripts\sync-skills.ps1` / `bash scripts/sync-skills.sh` | `skills/` を Claude Code 側（`~/.claude/skills/`）へ配布 |
 | `scripts\setup-orca.ps1`（Windows のみ） | Orca（stablyai/orca）と Git・Node・gh・Codex CLI を導入。インストーラーの署名が Valid かつ署名者が SignPath Foundation でなければ中止する |
 | `node scripts/orca-context.mjs` | Orca 運用モード（A: worktree 内 / B: 元チェックアウト / C: Orca 不可）を判定。Claude Code の SessionStart フックから自動実行。`--on-prompt` はワイヤー依頼時に Orca を自動起動（UserPromptSubmit フック） |
+| `scripts\setup-orca-pipeline.ps1`（Windows のみ） | Orca に定期実行「gg handoff pipeline」（15分ごと）を登録 |
+| `node scripts/handoff-scan.mjs --check / --next / --release / --list` | 依頼書（status: ready）の検出と着手記録。Orca の定期実行から使う |
 | `python scripts/check-skills-table.py` | 第5章の一覧表と `skills/` の実体が一致しているか検証 |
 | `python scripts/find-skill-script.py <skill> <スクリプト>` | Skill 同梱スクリプトの実パスを解決（環境ごとに置き場所が違うため直書きしない） |
 | `python scripts/check-skill-assets.py` | SKILL.md が参照する assets / scripts / references が実在するか検証 |
@@ -63,19 +65,17 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 
 ## 4. 役割分担（Claude / Codex）
 
-詳細は `references/role-split.md`。要約：
+詳細は `references/role-split.md`。要約（2026-09-28 改定）：
 
-| 工程 | 担当 | 理由 |
-|---|---|---|
-| 与件整理・戦略設計・提案骨子 | **Claude** | 長い文脈の統合と論点の一貫性 |
-| PPTX / Excel / HTML の初回生成 | **Claude** | Skill を自動読込できる |
-| 定型実装・リファクタ・型付け | **Codex** | トークン効率 |
-| 生成物のレビュー・バグ検出 | **Codex** | 実装者と別の目を通す |
-| 最終判断・クライアント向け文言 | **人間（蒲）** | — |
+| 工程 | 担当 | 場所 | 理由 |
+|---|---|---|---|
+| ① 与件整理・戦略設計・提案骨子・依頼書作成 | **Claude** | claude.ai | 長い文脈の統合と論点の一貫性。MCP（調査）を持つ |
+| ② 資料・ワイヤー・Excel の作成 | **Codex** | Orca（PC） | トークン効率。依頼書と Skill に従って作る |
+| ③ チェック・ブラッシュアップ | **Claude Code** | Orca（PC）・②と同じ worktree | 判断基準（`gg-proposal-standard`）で検品し、その場で直す |
+| 最終判断・マージ・クライアント向け文言 | **人間（蒲）** | — | — |
 
-**原則：Claude で実装 → Codex でレビュー。** 逆順にしない。
-
-Windows ローカルでは Orca（作業ごとの git worktree でエージェントを並べて動かすアプリ）の上でこの流れを回す。1工程＝1 worktree。手順は `references/orca-workflow.md`。
+**原則：① Claude が整理 → ② Codex が作る → ③ Claude Code がチェック。** 作った側（Codex）に検品させない。
+②③は Orca が自動で回す。受け渡しは依頼書（`projects/<slug>/handoff/*.md`）。手順は `references/orca-workflow.md`。
 
 ---
 
@@ -91,7 +91,8 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 | `gg-sitemap-spec` | 仕様書（サイトマップ Excel）・見積の下地 | `skills/gg-sitemap-spec/SKILL.md` |
 | `gg-proposal-artifact` | 商談で触ってもらうインタラクティブ資料 | `skills/gg-proposal-artifact/SKILL.md` |
 | `gg-calendar-task` | 議事録からのタスク化・カレンダー登録 | `skills/gg-calendar-task/SKILL.md` |
-| `gg-orca-flow` | Orca 上で Claude 実装 → Codex レビューを回す（worktree 作成・依頼文・回収） | `skills/gg-orca-flow/SKILL.md` |
+| `gg-handoff` | ①で与件を整理し、②③に渡す依頼書を作って main に入れる | `skills/gg-handoff/SKILL.md` |
+| `gg-orca-flow` | Orca 上で依頼書を1件取り出し、②Codex 作成 → ③Claude Code チェック → PR まで回す | `skills/gg-orca-flow/SKILL.md` |
 
 > Skill を追加・改訂したら **この表も同時に更新する**。表と実体がずれた時点で Codex 側は機能しない。
 
@@ -148,3 +149,4 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 | 2026-09-27 | 第4章に Orca での運用を追記。第5章に `gg-orca-flow` を追加。第2章に `setup-orca.ps1`、第8章に Windows の Node 実測値 |
 | 2026-09-28 | 第2章に `.claude/settings.json` と `orca-context.mjs` を追加（Claude Code 起動時に Orca 運用モードを自動判定） |
 | 2026-09-28 | 第2章 `orca-context.mjs` に `--on-prompt`（ワイヤー依頼時に Orca を自動起動）を追記 |
+| 2026-09-28 | 第4章の分担を改定（①Claude 整理 → ②Codex 作成 → ③Claude Code チェック）。第2章に `setup-orca-pipeline.ps1` `handoff-scan.mjs`、第5章に `gg-handoff` |

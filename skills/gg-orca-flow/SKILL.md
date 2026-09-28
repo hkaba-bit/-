@@ -1,77 +1,99 @@
 ---
 name: gg-orca-flow
-description: Orca（stablyai/orca）上で「Claude で実装 → Codex でレビュー」を回す進行役。依頼を1工程＝1 worktree に切り、worktree 名を決め、Claude の実装依頼と Codex のレビュー依頼（Goal / Context / Constraints / Done when の4項目）を組み立て、Orca CLI（orca worktree / terminal / orchestration）で起動・待ち合わせ・回収まで進める。「Orcaで」「Orcaに投げて」「worktreeを切って」「Codexにレビューさせて」「並列で2案作って比べたい」「ClaudeとCodexで分担して」と言われたとき、Orca の中で動いていて別エージェントに作業を渡すときに使う。分担の判断基準と引き渡しの型の正本は references/role-split.md、Orca 上の手順の正本は references/orca-workflow.md で、このスキルはそれらに従って手を動かす。Orca の導入そのものは scripts/setup-orca.ps1 の担当。
+description: Orca（stablyai/orca）上で、依頼書（projects/*/handoff/*.md、status: ready）を1件取り出し、②Codex に資料・ワイヤーを作らせ、③Claude Code にチェックとブラッシュアップをさせて PR にするまでを進める進行役。worktree の作成・Codex と Claude の起動・待ち合わせ・失敗時の差し戻しを Orca CLI（orca worktree / terminal）で行う。Orca の定期実行（automation「gg handoff pipeline」）から呼ばれるほか、「依頼書を今すぐ処理して」「Orcaで回して」「パイプラインを動かして」と言われたとき、PC の Orca 内でワイヤー・資料の作成依頼を受けたときに使う。依頼書の作り方は gg-handoff、分担は references/role-split.md、Orca の手順と CLI は references/orca-workflow.md が正本。
 ---
 
-# Orca で回す
+# Orca で ②作成 → ③チェック を回す
 
-正本は2つ。迷ったらそちらを開く。
+正本：手順・CLI は `references/orca-workflow.md`、分担は `references/role-split.md`、依頼書の書式は `skills/gg-handoff/SKILL.md`。
 
-- 手順・命名・CLI：`references/orca-workflow.md`
-- 誰に何を渡すか・引き渡しの型：`references/role-split.md`
+## 0. 前提を確かめる
 
-## 進め方
-
-### 1. 実行場所を確かめる
-
-セッション冒頭の `[Orca モード A/B/C]` の行を見る（Claude Code の SessionStart フックが出す）。行が無ければ `node scripts/orca-context.mjs` を実行する。
+`[Orca モード …]` の行を見る（無ければ `node scripts/orca-context.mjs`）。
 
 | モード | 進め方 |
 |---|---|
-| A：Orca の worktree 内 | この worktree で実装し、4 の後半（Codex のレビュー）だけ CLI で行う |
-| B：元チェックアウト・Orca 起動中 | 2〜4 をすべて CLI で行う。自分では編集せず、worktree 側の Claude に渡す |
-| C：Orca を使えない（クラウド等） | CLI は使わない。実装は作業ブランチで行い、3 の依頼文を人間が Orca に貼れる形で出す |
+| A / B（Orca に接続できる） | 下の 1〜6 を実行する |
+| C（クラウド等） | ②③は回せない。依頼がワイヤー・資料なら `gg-handoff` で依頼書を作って main に入れる |
 
-### 2. 工程に切る
+依頼書が無いまま「〇〇のワイヤーを作って」と直接頼まれたら、先に `gg-handoff` の書式で依頼書を作って main に入れてから 1 に進む（与件が足りなければ人間に聞く）。
 
-依頼を「1工程＝1 worktree」に分ける。名前は `<案件スラッグ>-<工程>`（例：`tokyo-weld-wireframe`）。
-振り分けは role-split.md 第2章の表で決める。表にない作業は Claude 側に置き、人間に確認する。
-
-### 3. 依頼文を作る
-
-どちらのエージェント宛ても、次の4項目だけで作る。会話履歴は入れない。
-
-```
-Goal:        何を達成したいか（1〜2行）
-Context:     触るファイルのパス。参照すべき Skill のパス（skills/<name>/SKILL.md）
-Constraints: AGENTS.md 準拠。加えて今回固有の制約
-Done when:   完了とみなす条件（検証方法まで）
-```
-
-Codex へのレビュー依頼には、Constraints に必ず「修正はしない（指摘のみ）」を入れる。戻しの形は role-split.md 第4章（変更ファイル・指摘・判断が要る点）で指定する。
-
-### 4. 起動して回収する（CLI が使える場合）
+## 1. 依頼書を1件取り出す
 
 ```bash
-orca repo list --json                                   # repoId を取る
-orca worktree create --repo id:<repoId> --name <名前> --agent claude --prompt "<実装依頼>" --json
-orca terminal wait --terminal <handle> --for tui-idle --timeout-ms 900000 --json
-orca terminal read --terminal <handle> --json           # 完了を確認
-orca terminal split --direction vertical --command "codex" --json
-orca terminal send --terminal <codexHandle> --text "<レビュー依頼>" --enter --json
-orca terminal wait --terminal <codexHandle> --for tui-idle --timeout-ms 900000 --json
-orca terminal read --terminal <codexHandle> --json
+node scripts/handoff-scan.mjs --next
+```
+出力の JSON（`path` / `slug` / `type` / `title`）を控える。exit 1 なら処理対象なし → 終了。
+
+## 2. worktree を作り、② Codex を起動する
+
+```bash
+orca repo list --json    # C:/work/gg の id を取る
+orca worktree create --repo id:<repoId> --name <slug>-<type>-<MMDD> --agent codex --prompt "<②の依頼>" --json
 ```
 
-複数工程で完了追跡が要るときは orca-workflow.md 第4章の Orchestration を使う。
+②の依頼（そのまま使う。`<path>` は 1 の path）：
+```
+依頼書 <path> を読み、その Goal / Context / Constraints / Done when に従って成果物を作ってください。
+参照 Skill は依頼書の Context にあるものを開いて従うこと（AGENTS.md 第5章）。
+成果物は projects/<slug>/ 配下に置き、git add と git commit まで行ってください（push はしない）。
+要確認の点は成果物の注釈と、依頼書末尾の「## ② メモ」に書いてください。
+最後に「②完了」とだけ出力してください。
+```
 
-### 5. 報告する
+## 3. ② の完了を待つ
 
-人間には次の表だけ返す。生ログは貼らない。
+```bash
+orca terminal list --worktree id:<worktreeId> --json      # codex の handle を取る
+orca terminal wait --terminal <codexHandle> --for tui-idle --timeout-ms 3600000 --json
+orca terminal read --terminal <codexHandle> --json
+```
+「②完了」が無い、または承認待ちで止まっている → 7（失敗時）へ。
+
+## 4. ③ Claude Code を同じ worktree で起動する
+
+```bash
+orca terminal create --worktree id:<worktreeId> --command "claude" --json
+orca terminal wait --terminal <claudeHandle> --for tui-idle --timeout-ms 120000 --json
+orca terminal send --terminal <claudeHandle> --text "<③の依頼>" --enter --json
+```
+
+③の依頼：
+```
+Orca を使わずにここで直接作業してください。
+依頼書 <path> の「Done when」と「③ チェック観点」で、② Codex が作った成果物（git log の直近コミット）をチェックし、問題はその場で直してください。
+判断は skills/gg-proposal-standard、種類ごとの検品は skills/gg-handoff の表（wireframe なら python scripts/qa-wireframe.py）に従うこと。
+終わったら、依頼書の status を review に変え、末尾に「## ③ 結果」（直した点・残った要確認・検品結果）を追記し、STATUS.md と projects/<slug>/STATUS.md に1件追記してください。
+コミットして push し、gh pr create で PR を作り（タイトル「<slug>: <依頼書タイトル>」）、最後に PR の URL だけを出力してください。
+```
+
+## 5. ③ の完了を待って回収する
+
+```bash
+orca terminal wait --terminal <claudeHandle> --for tui-idle --timeout-ms 3600000 --json
+orca terminal read --terminal <claudeHandle> --json
+orca worktree set --worktree id:<worktreeId> --comment "PR: <URL>" --json
+```
+
+## 6. 報告する
 
 | 項目 | 内容 |
 |---|---|
+| 依頼書 | path |
 | worktree | 名前 |
-| 実装 | 変更ファイル |
-| レビュー指摘 | 重要度つき箇条書き |
-| 判断が要る点 | 人間に決めてほしいこと |
-| 次アクション | マージ／差し戻し／worktree 削除 |
+| PR | URL |
+| ③ で直した点 | 箇条書き |
+| 要確認 | 人間に決めてほしいこと |
 
-完了したら `STATUS.md` に追記する（AGENTS.md 第7章）。
+マージしない（人間が決める）。worktree はマージ後に人間が削除する。
+
+## 7. 失敗したとき
+
+- `node scripts/handoff-scan.mjs --release <path>` で着手記録を消す（次回の定期実行で再挑戦される）
+- worktree は残す（原因調査用）。`orca worktree set --comment "失敗: <理由>"` を付ける
+- 同じ依頼書が2回続けて失敗したら、依頼書の status を `blocked` に変えるコミットを作り、人間に理由を報告する
 
 ## やらないこと
-
-- 元チェックアウト（main）で直接エージェントを走らせない。必ず worktree を切る
-- 実装した Claude 自身にレビューさせない
-- Codex のレビュー結果を、人間の確認前に自動でマージしない
-- 見積金額・クライアント向け文言の最終判断をエージェントに任せない（人間が決める）
+- 元チェックアウト（C:\work\gg）で直接ファイルを作らない。必ず worktree で
+- ② を飛ばして ③ の Claude が一から作らない（分担が崩れる）
+- PR を自分でマージしない

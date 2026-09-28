@@ -14,21 +14,21 @@
 
 ## 2. 振り分け表
 
+2026-09-28 改定：成果物を**作るのは Codex、検品して仕上げるのは Claude Code**。①の整理は claude.ai の Claude。
+
 | 作業 | 担当 | 補足 |
 |---|---|---|
-| ヒアリング議事録の整理・与件確定 | Claude | 文脈量が多い |
-| 競合調査・市場調査 | Claude | MCP（Semrush / Supermetrics）を持つのは Claude 側 |
-| 提案骨子・章立て・論点設計 | Claude | `gg-proposal-standard` `gg-proposal-deck` |
-| PPTX 生成スクリプトの初回実装 | Claude | Skill 参照が必要 |
-| PPTX 生成スクリプトの修正・レイアウト微調整 | **Codex** | 仕様が固まった後の反復 |
-| ワイヤーフレーム HTML の初回設計 | Claude | `gg-wireframe` |
-| ワイヤーフレーム HTML のページ量産 | **Codex** | 型が決まった後の横展開。実績あり（リエイ・羽立） |
-| 仕様書 Excel の構造設計 | Claude | `gg-sitemap-spec` |
-| 仕様書 Excel の行追加・整形 | **Codex** | |
-| 生成物のレビュー（抜け・崩れ・規約違反） | **Codex** | 実装した側に検品させない |
-| テスト・Lint・型エラー潰し | **Codex** | |
+| ヒアリング議事録の整理・与件確定 | ① Claude | 文脈量が多い |
+| 競合調査・市場調査 | ① Claude | MCP（Semrush / Supermetrics）を持つのは Claude 側 |
+| 提案骨子・章立て・論点設計 | ① Claude | `gg-proposal-standard` `gg-proposal-deck` |
+| 依頼書の作成（②③への受け渡し） | ① Claude | `gg-handoff` |
+| PPTX 生成スクリプトの実装・修正 | ② **Codex** | 依頼書＋`gg-proposal-deck` |
+| ワイヤーフレーム HTML の作成・ページ量産 | ② **Codex** | 依頼書＋`gg-wireframe`。量産の実績あり（リエイ・羽立） |
+| 仕様書 Excel の作成・行追加・整形 | ② **Codex** | 依頼書＋`gg-sitemap-spec` |
+| 生成物のチェック（抜け・崩れ・規約違反・論点の一貫性）とブラッシュアップ | ③ **Claude Code** | 作った Codex に検品させない。`qa-wireframe.py` 等の検品も③ |
+| テスト・Lint・型エラー潰し | ② Codex | |
 | クライアント向け文言の最終判断 | 人間（蒲） | |
-| 見積金額の決定 | 人間（蒲） | |
+| 見積金額の決定・PR のマージ | 人間（蒲） | |
 
 ---
 
@@ -78,11 +78,11 @@ Codex の結果は **差分と指摘だけ** を Claude に戻す。生ログを
 
 ## 4.5 Orca で回す場合
 
-Windows ローカルでは Orca の上で第3章・第4章の受け渡しを行う。型は変えない。
+②③は PC の Orca が自動で回す。第3章の4項目は、そのまま依頼書（`projects/<slug>/handoff/*.md`）に書く。
 
-- 1工程＝1 worktree。実装した worktree の中で、別ターミナルの Codex にレビューさせる
-- 依頼文は第3章の4項目のまま、Codex のターミナルに送る
-- 手順・命名・CLI は `references/orca-workflow.md`。エージェントに任せるときは Skill `gg-orca-flow`
+- ① claude.ai で依頼書を作って main に入れる（`gg-handoff`）
+- Orca の定期実行が 15 分ごとに依頼書を拾い、同じ worktree で ②Codex → ③Claude Code を回して PR にする（`gg-orca-flow`）
+- 手順・命名・CLI は `references/orca-workflow.md`
 
 ---
 
@@ -110,4 +110,4 @@ Windows ローカルでは Orca の上で第3章・第4章の受け渡しを行�
 | 進捗を `AGENTS.md` に書く | ルールが埋もれ、毎リクエストのトークンが膨らむ |
 | 同じ Skill を `skills/` と `~/.claude/skills/` で別々に編集 | 必ず片方が古くなる |
 | Codex に会話履歴を丸ごと渡す | 逃がしたはずのトークンをそのまま払うことになる |
-| Claude が実装したものを Claude にレビューさせる | 同じ思い込みを二度通すだけ |
+| Codex が作ったものを Codex に検品させる | 同じ思い込みを二度通すだけ（検品は③Claude Code） |

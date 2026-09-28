@@ -103,17 +103,18 @@ function launchOrca() {
   return false;
 }
 
+// 分担（references/role-split.md）：①claude.ai で整理 → 依頼書 → ②Codex が作る → ③Claude Code がチェック
 function modeLine(ready) {
   if (!ready) {
-    const where = process.platform === "win32"
-      ? "この PC 上で動いているが Orca CLI に接続できない（Orca 未起動か、CLI が見つからない）。クラウドではない"
-      : "Orca を使えない環境（クラウド等）";
-    return `[Orca モード C] ${where}。通常どおり作業ブランチで実装し、完了時に Codex へのレビュー依頼文（role-split.md 第3章の4項目）を、人間が Orca に貼れる形で最後に出す。`;
+    if (process.platform === "win32") {
+      return "[Orca モード C] この PC 上で動いているが Orca CLI に接続できない（Orca 未起動か、CLI が見つからない）。クラウドではない。資料・ワイヤーの作成依頼は、Orca を起動してから skills/gg-orca-flow で回す。起動できなければ skills/gg-handoff で依頼書だけ作って main に入れる。";
+    }
+    return "[Orca モード C] Orca を使えない環境（クラウド等）＝①情報整理の担当。資料・ワイヤーの作成依頼は、自分では作らず skills/gg-handoff で依頼書を作って main に入れる（PC の Orca が15分以内に②Codex→③Claude Code で処理する）。";
   }
   if (inOrcaWorktree()) {
-    return `[Orca モード A] Orca 管理の worktree 内（ブランチ ${branch()}）。この worktree で実装し、完了したら skills/gg-orca-flow の手順で同じ worktree の Codex にレビューを回す。`;
+    return `[Orca モード A] Orca 管理の worktree 内（ブランチ ${branch()}）。役割は③チェック・ブラッシュアップ、または gg-orca-flow の進行役。受け取った依頼文の指示に従う。依頼書（projects/*/handoff）があれば、その Done when と③チェック観点で確認・修正して PR にする。`;
   }
-  return `[Orca モード B] Orca は起動中だが、ここは Orca の worktree の外（ブランチ ${branch()}）。ファイルを変更する依頼は、着手前に skills/gg-orca-flow で worktree を切り、そこで実装させる。質問・調査だけならこのまま答えてよい。`;
+  return `[Orca モード B] Orca 起動中・Orca の worktree の外（ブランチ ${branch()}）。資料・ワイヤーなどファイルを作る依頼は自分で作らず、skills/gg-orca-flow で ②Codex → ③Claude Code に回す（依頼書が無ければ先に gg-handoff の書式で作る）。質問・調査はこのまま答えてよい。`;
 }
 
 function readPrompt() {
@@ -136,12 +137,11 @@ if (process.argv.includes("--on-prompt")) {
     launched = ready;
   }
   const head = launched ? "[Orca] ワイヤー依頼を検知し、Orca を起動した。" : "[Orca] ワイヤー依頼を検知。";
-  const steps = "Claude が skills/gg-wireframe で設計・TOP を作る → 下層の量産は Codex（role-split.md 第2章）→ レビューは Codex（修正せず指摘のみ）→ python scripts/qa-wireframe.py で検品。";
   const flow = !ready
-    ? "Orca を起動できなかった。gg-wireframe で作業ブランチに作り、完了時に Codex へのレビュー依頼文を出す。"
+    ? "Orca を起動できなかった。ワイヤーは作らず、skills/gg-handoff で依頼書（type: wireframe）を作って main に入れる。"
     : inOrcaWorktree()
-      ? `この worktree で進める：${steps}`
-      : `skills/gg-orca-flow で worktree \`<案件スラッグ>-wireframe\` を切って進める：${steps}`;
+      ? "③として：依頼書があればそのチェック観点で確認・修正し python scripts/qa-wireframe.py を通す。依頼書の無い新規作成なら skills/gg-orca-flow で②Codex に回す。"
+      : "skills/gg-orca-flow で処理する：依頼書（type: wireframe）が無ければ gg-handoff の書式で作って main に入れ、②Codex（gg-wireframe で作成）→ ③Claude Code（チェック・qa-wireframe.py・PR）を回す。";
   console.log(`${head}${modeLine(ready)} ${flow}`);
 } else {
   console.log(modeLine(orcaReady()));
