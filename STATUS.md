@@ -19,6 +19,12 @@
 
 ## 直近
 
+### [2026-09-28] test2 案件の TOP ワイヤー — Claude
+- 成果物: `projects/test2/`（STATUS.md / test2_wireframe/）
+- 検証: `qa-wireframe.py` ＝ **OK**
+- 判断メモ: 与件なし。test の TOP を複製して案件名のみ差し替え
+- 残課題: Codex レビュー
+
 ### [2026-09-28] test 案件の TOP ワイヤー — Claude
 - 成果物: `projects/test/`（STATUS.md / test_wireframe/）
 - 検証: 機械チェック・`qa-wireframe.py` ＝ **OK**（詳細は案件 STATUS.md）
