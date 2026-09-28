@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>サイトマップ | test ワイヤーフレーム</title>
+<link rel="stylesheet" href="wireframe.css">
+</head>
+<body data-device="pc" data-notes="on">
+
+<div class="wf-bar">
+  <span class="wf-bar__title">test WF</span>
+  <span class="wf-bar__meta">index / サイトマップ</span>
+  <span class="wf-bar__spacer"></span>
+  <a href="index.html">サイトマップ</a>
+  <button type="button" data-wf="pc" aria-pressed="true">PC</button>
+  <button type="button" data-wf="sp" aria-pressed="false">SP</button>
+  <button type="button" data-wf="notes" aria-pressed="true">注釈</button>
+</div>
+
+<div class="wf-canvas">
+  <main>
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <h1 class="wf-h1">サイトマップ</h1>
+        <p class="wf-lead">BtoBコーポレートサイトの標準構成（全11ページ想定）。今回ワイヤーを作成したのは TOP のみ。</p>
+        <div class="wf-note" data-n="1">
+          <b>要確認</b>与件（業種・目的・主CV・ターゲット）が未確定のため、標準型で仮置きしている。与件確定後にページ構成を見直す。
+        </div>
+
+        <h2 class="wf-h2">作成済み</h2>
+        <div class="wf-grid wf-grid--3">
+          <a href="top.html" class="wf-navcard">TOP</a>
+        </div>
+
+        <h2 class="wf-h2">未作成（構成のみ）</h2>
+        <table class="wf-table">
+          <tr><th>課題から探す</th><td>課題別の入口。TOPの課題カードの受け先</td></tr>
+          <tr><th>サービス一覧・詳細</th><td>課題→解決→根拠→CTA</td></tr>
+          <tr><th>選ばれる理由</th><td>競合比較への回答</td></tr>
+          <tr><th>導入事例一覧・詳細</th><td>業種・課題で絞り込み。数値成果を見出しに</td></tr>
+          <tr><th>お役立ち資料</th><td>資料ダウンロード（リード獲得）</td></tr>
+          <tr><th>コラム一覧・詳細</th><td>SEO流入と信頼形成</td></tr>
+          <tr><th>お知らせ一覧・詳細</th><td>更新されている証明</td></tr>
+          <tr><th>会社情報</th><td>会社概要・沿革・アクセス</td></tr>
+          <tr><th>FAQ</th><td>問い合わせ前の不安解消</td></tr>
+          <tr><th>お問い合わせ・完了</th><td>主CV</td></tr>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+document.querySelectorAll('[data-wf]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var k = b.dataset.wf, d = document.body;
+    if (k === 'notes'){
+      var on = d.dataset.notes === 'on';
+      d.dataset.notes = on ? 'off' : 'on';
+      b.setAttribute('aria-pressed', String(!on));
+    } else {
+      d.dataset.device = k;
+      document.querySelectorAll('[data-wf="pc"],[data-wf="sp"]').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x.dataset.wf === k));
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>

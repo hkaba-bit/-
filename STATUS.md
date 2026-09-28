@@ -19,6 +19,12 @@
 
 ## 直近
 
+### [2026-09-28] test 案件の TOP ワイヤー — Claude
+- 成果物: `projects/test/`（STATUS.md / test_wireframe/）
+- 検証: 機械チェック・`qa-wireframe.py` ＝ **OK**（詳細は案件 STATUS.md）
+- 判断メモ: クラウド環境のためモード C。与件なしで標準構成を仮置き
+- 残課題: Codex レビュー
+
 ### [2026-09-28] ワイヤー依頼で Orca を自動起動 — Claude
 - 成果物: `scripts/orca-context.mjs`（`--on-prompt` 追加）/ `.claude/settings.json`（UserPromptSubmit フック）/ `CLAUDE.md` / `references/orca-workflow.md` 1.5 / `AGENTS.md` 第2・9章
 - 検証: Linux で7ケース ＝ **OK**（非ワイヤー依頼→無出力／ワイヤー＋Orca なし→モード C／WF＋偽 orca＋元チェックアウト→モード B と worktree 手順／worktree 内→モード A と「この worktree で進める」／壊れた JSON→無出力・exit 0／SessionStart は従来どおり／「WFH」は非該当）。Orca.exe の自動起動は Windows 実機 **未確認**
