@@ -30,11 +30,13 @@ Claude Code は起動時に `scripts/orca-context.mjs`（`.claude/settings.json`
 
 | モード | 条件 | Claude の動き |
 |---|---|---|
-| A | `orca status` が通り、git の linked worktree 内 | そこで実装 → 同じ worktree の Codex にレビュー |
-| B | `orca status` が通り、元チェックアウト | 変更を伴う依頼は worktree を切ってから |
+| A | `orca status` が通り、Orca 管理の worktree 内（`ORCA_TERMINAL_HANDLE` あり、または `orca worktree current` が通る） | そこで実装 → 同じ worktree の Codex にレビュー |
+| B | `orca status` が通り、Orca の worktree の外（元チェックアウト、デスクトップアプリの worktree 等） | 変更を伴う依頼は worktree を切ってから |
 | C | `orca status` が通らない | 通常どおり実装し、Codex 依頼文を人間に渡す |
 
 ワイヤー依頼（ワイヤー／WF／wireframe／画面設計／構成イメージ／たたき台／プロトタイプ）を送ると、`UserPromptSubmit` フック（`orca-context.mjs --on-prompt`）が Orca を確認し、Windows で止まっていれば `%LOCALAPPDATA%\Programs\orca\Orca.exe` を起動して最大60秒待つ。起動できればモード A/B の手順、できなければモード C で進む。
+
+`orca` が PATH に無いプロセス（Orca CLI 登録前に起動した Claude デスクトップアプリ等）でも動くよう、Windows では `%LOCALAPPDATA%\Programs\orca\resources\bin\orca.exe` を直接試す。
 
 詳細は `CLAUDE.md`「Orca 運用（自動）」。人間が「Orca を使わずに」と言えばそちらを優先する。
 
