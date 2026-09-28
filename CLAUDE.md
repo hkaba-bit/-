@@ -26,6 +26,7 @@
 | B | Orca 起動中・元チェックアウト | ファイルを変える依頼は、着手前に `gg-orca-flow` で worktree を切り、Claude をそこで起動して依頼を渡す。自分では編集しない。質問・調査はこのまま答える |
 | C | Orca を使えない（クラウド等） | 通常どおり作業ブランチで実装。完了時、Codex へのレビュー依頼文（`references/role-split.md` 第3章の4項目）を最後に出す |
 
+- **ワイヤー依頼（ワイヤー／WF／画面設計／構成イメージ等）を送ると**、`UserPromptSubmit` フックが Orca の起動を確認し、止まっていれば Windows で自動起動してから `[Orca] ワイヤー依頼を検知…` の行を出す。その行の手順（worktree → gg-wireframe → Codex で量産・レビュー → `qa-wireframe.py`）で進める
 - 人間が「Orca を使わずに」「ここで直接」と言ったら、モードに関係なくその指示を優先する
 - 行が出ていない（フックが動かなかった）ときは、自分で `node scripts/orca-context.mjs` を実行して判定する
 
