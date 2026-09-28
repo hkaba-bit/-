@@ -19,6 +19,16 @@
 
 ## 直近
 
+### [2026-09-28] デスクトップアプリで Orca を検出できない問題の修正 — Claude
+- 事象: Claude デスクトップアプリ（ローカル）でワイヤーを依頼したところ、フックがモード C を出し、Claude が「クラウドで実行された」と誤って報告した。作業は `claude/upbeat-franklin-6cy1l0`（デスクトップアプリが作る worktree）で行われた
+- 原因（推定）: デスクトップアプリが Orca CLI 登録前に起動しており PATH に `orca` が無い。加えて、モード C の文言「クラウド等」が誤解を招いた。また、デスクトップアプリの worktree は git 上は linked worktree なので、Orca 起動中ならモード A と誤判定するおそれがあった
+- 成果物: `scripts/orca-context.mjs` / `CLAUDE.md` / `references/orca-workflow.md`
+  - Windows では PATH に無くても `%LOCALAPPDATA%\Programs\orca\resources\bin\orca.exe`（Orca 同梱 CLI）を直接試す
+  - モード A は Orca 管理の worktree に限定（`ORCA_TERMINAL_HANDLE` か `orca worktree current` 成功）。デスクトップアプリの worktree はモード B
+  - Windows のモード C は「この PC 上で動いているが Orca CLI に接続できない。クラウドではない」と出す
+- 検証: 偽 orca で7ケース ＝ **OK**（元チェックアウト→B／Orca が知らない worktree→B／Orca 管理 worktree→A／Orca ターミナル→A／ワイヤー依頼＋デスクトップ worktree→B と worktree 作成手順／Orca なし→C／非ワイヤー→無出力）。同梱 CLI のパスは Orca ソース `src/main/cli/bundled-cli-launcher-path.ts` で確認。Windows 実機は **未確認**
+- 残課題: デスクトップアプリ（ローカル・`C:\work\gg`）で「今のOrcaモードは？」→ B、Orca を閉じてワイヤー依頼 → Orca 起動、を確認
+
 ### [2026-09-28] ワイヤー依頼で Orca を自動起動 — Claude
 - 成果物: `scripts/orca-context.mjs`（`--on-prompt` 追加）/ `.claude/settings.json`（UserPromptSubmit フック）/ `CLAUDE.md` / `references/orca-workflow.md` 1.5 / `AGENTS.md` 第2・9章
 - 検証: Linux で7ケース ＝ **OK**（非ワイヤー依頼→無出力／ワイヤー＋Orca なし→モード C／WF＋偽 orca＋元チェックアウト→モード B と worktree 手順／worktree 内→モード A と「この worktree で進める」／壊れた JSON→無出力・exit 0／SessionStart は従来どおり／「WFH」は非該当）。Orca.exe の自動起動は Windows 実機 **未確認**

@@ -26,15 +26,54 @@ function run(cmd, args) {
   return { ok: r.status === 0, out: (r.stdout || "").trim() };
 }
 
-function orcaReady() {
-  const r = run("orca", ["status", "--json"]);
-  if (!r.ok) return false;
-  try {
-    const j = JSON.parse(r.out);
-    return j.ok === true && j.result?.runtime?.reachable === true;
-  } catch {
-    return false;
+// Windows の Orca 同梱 CLI（Orca の src/main/cli/bundled-cli-launcher-path.ts）。
+// Claude デスクトップアプリ等、Orca CLI 登録前に起動したプロセスは PATH に orca が無いので直接探す
+function bundledOrcaCli() {
+  if (process.platform !== "win32" || !process.env.LOCALAPPDATA) return null;
+  const exe = path.join(process.env.LOCALAPPDATA, "Programs", "orca", "resources", "bin", "orca.exe");
+  return existsSync(exe) ? exe : null;
+}
+
+// 使える orca コマンドを1度だけ解決する：[cmd, viaShell] か null
+let orcaCliCache;
+function orcaCli() {
+  if (orcaCliCache !== undefined) return orcaCliCache;
+  const candidates = [["orca", process.platform === "win32"]];
+  const exe = bundledOrcaCli();
+  if (exe) candidates.push([exe, false]);
+  orcaCliCache = null;
+  for (const c of candidates) {
+    if (orcaJson(c, ["status", "--json"])?.result?.runtime?.reachable === true) {
+      orcaCliCache = c;
+      break;
+    }
   }
+  return orcaCliCache;
+}
+
+function orcaJson([cmd, viaShell], args) {
+  const r = spawnSync(cmd, args, { encoding: "utf8", timeout: 5000, shell: viaShell, windowsHide: true });
+  if (r.status !== 0) return null;
+  try {
+    const j = JSON.parse((r.stdout || "").trim());
+    return j.ok === true ? j : null;
+  } catch {
+    return null;
+  }
+}
+
+function orcaReady() {
+  orcaCliCache = undefined; // 起動待ちのたびに解決し直す
+  return orcaCli() !== null;
+}
+
+// Orca が管理している worktree の中か。Orca のターミナルなら ORCA_TERMINAL_HANDLE が入る。
+// Claude デスクトップアプリ等が作った git worktree は Orca が知らないので、worktree current が失敗する
+function inOrcaWorktree() {
+  if (process.env.ORCA_TERMINAL_HANDLE) return true;
+  if (!inLinkedWorktree()) return false;
+  const cli = orcaCli();
+  return cli ? orcaJson(cli, ["worktree", "current", "--json"]) !== null : false;
 }
 
 // git の linked worktree では git-dir と git-common-dir が一致しない
@@ -66,12 +105,15 @@ function launchOrca() {
 
 function modeLine(ready) {
   if (!ready) {
-    return "[Orca モード C] Orca を使えない環境（クラウド等）。通常どおり作業ブランチで実装し、完了時に Codex へのレビュー依頼文（role-split.md 第3章の4項目）を、人間が Orca に貼れる形で最後に出す。";
+    const where = process.platform === "win32"
+      ? "この PC 上で動いているが Orca CLI に接続できない（Orca 未起動か、CLI が見つからない）。クラウドではない"
+      : "Orca を使えない環境（クラウド等）";
+    return `[Orca モード C] ${where}。通常どおり作業ブランチで実装し、完了時に Codex へのレビュー依頼文（role-split.md 第3章の4項目）を、人間が Orca に貼れる形で最後に出す。`;
   }
-  if (inLinkedWorktree()) {
+  if (inOrcaWorktree()) {
     return `[Orca モード A] Orca 管理の worktree 内（ブランチ ${branch()}）。この worktree で実装し、完了したら skills/gg-orca-flow の手順で同じ worktree の Codex にレビューを回す。`;
   }
-  return `[Orca モード B] Orca は起動中だが、ここは元チェックアウト（ブランチ ${branch()}）。ファイルを変更する依頼は、着手前に skills/gg-orca-flow で worktree を切り、そこで実装させる。質問・調査だけならこのまま答えてよい。`;
+  return `[Orca モード B] Orca は起動中だが、ここは Orca の worktree の外（ブランチ ${branch()}）。ファイルを変更する依頼は、着手前に skills/gg-orca-flow で worktree を切り、そこで実装させる。質問・調査だけならこのまま答えてよい。`;
 }
 
 function readPrompt() {
@@ -97,7 +139,7 @@ if (process.argv.includes("--on-prompt")) {
   const steps = "Claude が skills/gg-wireframe で設計・TOP を作る → 下層の量産は Codex（role-split.md 第2章）→ レビューは Codex（修正せず指摘のみ）→ python scripts/qa-wireframe.py で検品。";
   const flow = !ready
     ? "Orca を起動できなかった。gg-wireframe で作業ブランチに作り、完了時に Codex へのレビュー依頼文を出す。"
-    : inLinkedWorktree()
+    : inOrcaWorktree()
       ? `この worktree で進める：${steps}`
       : `skills/gg-orca-flow で worktree \`<案件スラッグ>-wireframe\` を切って進める：${steps}`;
   console.log(`${head}${modeLine(ready)} ${flow}`);

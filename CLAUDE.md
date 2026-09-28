@@ -22,9 +22,9 @@
 
 | モード | 状況 | 進め方 |
 |---|---|---|
-| A | Orca 管理の worktree 内 | ここで実装 → 完了したら `gg-orca-flow` §4 で同じ worktree の Codex にレビューを回す → 指摘を反映 → STATUS.md 追記・コミット |
-| B | Orca 起動中・元チェックアウト | ファイルを変える依頼は、着手前に `gg-orca-flow` で worktree を切り、Claude をそこで起動して依頼を渡す。自分では編集しない。質問・調査はこのまま答える |
-| C | Orca を使えない（クラウド等） | 通常どおり作業ブランチで実装。完了時、Codex へのレビュー依頼文（`references/role-split.md` 第3章の4項目）を最後に出す |
+| A | Orca 管理の worktree 内（Orca のターミナル、または `orca worktree current` が通る） | ここで実装 → 完了したら `gg-orca-flow` §4 で同じ worktree の Codex にレビューを回す → 指摘を反映 → STATUS.md 追記・コミット |
+| B | Orca 起動中・Orca の worktree の外（元チェックアウト、Claude デスクトップアプリが作った worktree 等） | ファイルを変える依頼は、着手前に `gg-orca-flow` で worktree を切り、Claude をそこで起動して依頼を渡す。自分では編集しない。質問・調査はこのまま答える |
+| C | Orca に接続できない（クラウド、または PC で Orca 未起動）。Windows では「クラウドではない」と明記される | 通常どおり作業ブランチで実装。完了時、Codex へのレビュー依頼文（`references/role-split.md` 第3章の4項目）を最後に出す |
 
 - **ワイヤー依頼（ワイヤー／WF／画面設計／構成イメージ等）を送ると**、`UserPromptSubmit` フックが Orca の起動を確認し、止まっていれば Windows で自動起動してから `[Orca] ワイヤー依頼を検知…` の行を出す。その行の手順（worktree → gg-wireframe → Codex で量産・レビュー → `qa-wireframe.py`）で進める
 - 人間が「Orca を使わずに」「ここで直接」と言ったら、モードに関係なくその指示を優先する
