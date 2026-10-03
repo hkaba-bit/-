@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>加工技術 | サンプル精工 ワイヤーフレーム</title>
+<link rel="stylesheet" href="wireframe.css">
+</head>
+<body data-device="pc" data-notes="on">
+
+<div class="wf-bar">
+  <span class="wf-bar__title">サンプル精工 WF（架空案件）</span>
+  <span class="wf-bar__meta">technology / 加工技術 ※デザインではなく構成案です</span>
+  <span class="wf-bar__spacer"></span>
+  <a href="index.html">TOP</a>
+  <button type="button" data-wf="pc" aria-pressed="true">PC</button>
+  <button type="button" data-wf="sp" aria-pressed="false">SP</button>
+  <button type="button" data-wf="notes" aria-pressed="true">注釈</button>
+</div>
+
+<div class="wf-canvas">
+
+  <header class="wf-header">
+    <div class="wf-logo"><span>LOGO</span></div>
+    <ul class="wf-gnav">
+      <li><a href="#">課題から探す</a></li>
+      <li><a href="technology.html" aria-current="page">加工技術・設備</a></li>
+      <li><a href="#">加工事例</a></li>
+      <li><a href="#">技術資料</a></li>
+      <li><a href="#">会社情報</a></li>
+    </ul>
+    <div class="wf-header__cta">
+      <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">技術資料DL</a>
+      <a href="#" class="wf-btn wf-btn--sm">見積依頼</a>
+    </div>
+    <div class="wf-burger">≡</div>
+  </header>
+
+  <main>
+
+    <!-- 1. 下層ページヘッダ -->
+    <div class="wf-pagehead">
+      <div class="wf-inner">
+        <span class="wf-en">TECHNOLOGY</span>
+        <h1 class="wf-h1">加工技術</h1>
+        <p class="wf-cap">切削から仕上げ・検査まで。図面の要求精度に、どの工程で応えるかをご紹介します。</p>
+      </div>
+    </div>
+    <div class="wf-inner"><nav class="wf-crumb"><a href="index.html">HOME</a> ＞ 加工技術</nav></div>
+
+    <!-- 2. 対象と課題 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">FOR DESIGNERS</span>
+          <h2 class="wf-h2">「この図面、作れるか？」に<br>このページで答えます</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--icon"><span></span></div>
+            <h3 class="wf-h3">材質・サイズが対応範囲か</h3>
+            <p class="wf-p">加工方法ごとの対応範囲を一覧表で確認できます。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--icon"><span></span></div>
+            <h3 class="wf-h3">要求公差を満たせるか</h3>
+            <p class="wf-p">工程別の加工精度の目安と、検査での保証範囲を明示します。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--icon"><span></span></div>
+            <h3 class="wf-h3">試作・小ロットで頼めるか</h3>
+            <p class="wf-p">ロット条件と見積の出し方をページ下部でご案内します。</p>
+          </div></div>
+        </div>
+        <div class="wf-note" data-n="1">
+          <b>意図</b>ターゲット（装置メーカーの設計・購買担当）が技術ページに来る理由は「自分の図面が作れるか」の判断。その3つの判断軸を先に提示し、以降のブロックを判断軸の順に並べる。
+          <br><b>根拠</b>与件のターゲット＝設計・購買担当。3つの疑問はTOPの課題提起（試作・公差・見積回答）と対応させた仮説。
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 加工技術の全体像（ページ内ナビ兼図解） -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead wf-center">
+          <span class="wf-en">OVERVIEW</span>
+          <h2 class="wf-h2">素材から検査済み部品まで、社内で一貫加工（仮）</h2>
+        </div>
+        <div class="wf-steps wf-steps--row">
+          <div class="wf-step"><h3 class="wf-h4"><a href="#cutting" class="wf-tlink">切削加工</a></h3><p class="wf-p">形状をつくる</p></div>
+          <div class="wf-step"><h3 class="wf-h4"><a href="#grinding" class="wf-tlink">研削・仕上げ加工</a></h3><p class="wf-p">精度と面を仕上げる</p></div>
+          <div class="wf-step"><h3 class="wf-h4"><a href="#inspection" class="wf-tlink">検査・品質保証</a></h3><p class="wf-p">図面どおりかを保証する</p></div>
+        </div>
+        <div class="wf-note" data-n="2">
+          <b>意図</b>工程の流れを図解1点で見せ、各工程の詳細へページ内リンクで降りられるようにする。加工技術を「工程の連なり」として見せることで、一貫対応を説明なしで伝える。
+          <br><b>要確認</b>加工の種類はTOPと同じく仮置き（与件は「精密金属加工」のみ）。社内一貫か、一部外注（熱処理・表面処理など）があるかを確認したい。
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 切削加工 -->
+    <section class="wf-sec" id="cutting">
+      <div class="wf-inner">
+        <div class="wf-split">
+          <div class="wf-img wf-img--wide"><span>IMAGE（切削加工の様子・加工品）</span></div>
+          <div>
+            <span class="wf-en">01 CUTTING</span>
+            <h2 class="wf-h2">切削加工</h2>
+            <p class="wf-p">試作1点から、複雑形状の精密部品を削り出します（対応条件は仮）。</p>
+            <table class="wf-table">
+              <tr><th>対応材質</th><td>アルミ／ステンレス／鉄鋼 ほか（仮）</td></tr>
+              <tr><th>加工サイズ</th><td>最大 ◯◯◯ × ◯◯◯ mm（仮）</td></tr>
+              <tr><th>加工精度の目安</th><td>±◯μm（仮）</td></tr>
+              <tr><th>主な設備</th><td>マシニングセンタ・旋盤 ほか（設備名・台数は要確認）</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="wf-note" data-n="3">
+          <b>意図</b>各工程は「画像＋一言＋仕様表」の同じ型で並べ、設計者が工程間で比較しやすくする。仕様表の項目（材質・サイズ・精度・設備）は全工程で揃える。
+          <br><b>要確認</b>材質・サイズ・精度・設備名はすべて仮。実際の対応範囲と保有設備をご提供いただきたい。
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 研削・仕上げ加工 -->
+    <section class="wf-sec wf-sec--fill" id="grinding">
+      <div class="wf-inner">
+        <div class="wf-split">
+          <div>
+            <span class="wf-en">02 GRINDING</span>
+            <h2 class="wf-h2">研削・仕上げ加工</h2>
+            <p class="wf-p">切削後の部品を、図面の公差・面粗さまで仕上げます（対応条件は仮）。</p>
+            <table class="wf-table">
+              <tr><th>対応材質</th><td>焼入れ鋼／ステンレス ほか（仮）</td></tr>
+              <tr><th>加工サイズ</th><td>最大 ◯◯◯ mm（仮）</td></tr>
+              <tr><th>加工精度の目安</th><td>±◯μm／面粗さ Ra◯.◯（仮）</td></tr>
+              <tr><th>主な設備</th><td>平面研削盤・円筒研削盤 ほか（設備名・台数は要確認）</td></tr>
+            </table>
+          </div>
+          <div class="wf-img wf-img--wide"><span>IMAGE（研削加工の様子・加工品）</span></div>
+        </div>
+        <div class="wf-note" data-n="4">
+          <b>要確認</b>研削・仕上げを自社で行っているか、どこまでの精度・面粗さを得意とするかが、競合との差になる可能性が高い。数値は仮。
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. 検査・品質保証 -->
+    <section class="wf-sec" id="inspection">
+      <div class="wf-inner">
+        <div class="wf-split">
+          <div class="wf-img wf-img--wide"><span>IMAGE（測定室・測定機器）</span></div>
+          <div>
+            <span class="wf-en">03 INSPECTION</span>
+            <h2 class="wf-h2">検査・品質保証</h2>
+            <p class="wf-p">加工した部品が図面どおりであることを、測定データで保証します（対応範囲は仮）。</p>
+            <table class="wf-table">
+              <tr><th>測定項目</th><td>寸法・形状・面粗さ（仮）</td></tr>
+              <tr><th>主な測定機器</th><td>三次元測定機 ほか（機器名・台数は要確認）</td></tr>
+              <tr><th>検査成績書</th><td>添付可否・書式は要確認</td></tr>
+              <tr><th>品質認証</th><td>取得規格の有無は要確認</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="wf-note" data-n="5">
+          <b>意図</b>購買担当は「精度が出る」より「精度を証明できる」を重視する。検査成績書と品質認証を仕様表に入れ、社内稟議で使える情報にする。
+          <br><b>要確認</b>測定機器・検査成績書の対応・品質認証（ISO等）の取得状況はすべて未確認。
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. 中間CTA（主CV 2か所目） -->
+    <section class="wf-sec wf-sec--tight wf-sec--fill">
+      <div class="wf-inner wf-center">
+        <h2 class="wf-h3">対応範囲か判断がつかない図面も、そのままお送りください</h2>
+        <div class="wf-btns wf-btns--center">
+          <a href="#" class="wf-btn wf-btn--lg">図面を送って見積依頼</a>
+          <a href="#" class="wf-btn wf-btn--lg wf-btn--ghost">対応材質・公差一覧をダウンロード</a>
+        </div>
+        <div class="wf-note" data-n="6">
+          <b>意図</b>3工程の仕様を読み終えた「作れそうだ」と判断した直後に主CV（見積依頼）を置く。判断がつかない層は副CV（技術資料DL）で受ける。
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. 設備一覧 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">EQUIPMENT</span>
+          <h2 class="wf-h2">主要設備一覧</h2>
+        </div>
+        <table class="wf-table">
+          <tr><th>工程</th><td>設備名・メーカー・型式／台数／加工範囲</td></tr>
+          <tr><th>切削加工</th><td>設備名（要確認）／◯台（仮）／◯◯◯ × ◯◯◯ mm（仮）</td></tr>
+          <tr><th>切削加工</th><td>設備名（要確認）／◯台（仮）／φ◯◯◯ mm（仮）</td></tr>
+          <tr><th>研削・仕上げ</th><td>設備名（要確認）／◯台（仮）／◯◯◯ mm（仮）</td></tr>
+          <tr><th>検査</th><td>測定機器名（要確認）／◯台（仮）／測定範囲（仮）</td></tr>
+        </table>
+        <div class="wf-btns">
+          <a href="#" class="wf-btn wf-btn--ghost">設備一覧（PDF）をダウンロード</a>
+        </div>
+        <div class="wf-note" data-n="7">
+          <b>意図</b>設計者は設備名・型式で加工可否を判断することが多い。ページ上は主要設備に絞り、全設備はTOPの技術資料（設備一覧）PDFに誘導する。
+          <br><b>要確認</b>設備名・台数・加工範囲はすべて未提供。【梅】主要設備のみ表で掲載／【竹】CMSで設備を追加・更新可能に／【松】設備ごとの詳細ページを作成。
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. 関連加工事例 -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">CASE</span>
+          <h2 class="wf-h2">この技術を使った加工事例</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <div class="wf-card__body">
+              <span class="wf-tag">切削加工（仮）</span>
+              <h3 class="wf-h3">事例見出し：成果を数字で（仮）</h3>
+              <p class="wf-cap">材質（仮）／ロット（仮）</p>
+            </div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <div class="wf-card__body">
+              <span class="wf-tag">研削・仕上げ（仮）</span>
+              <h3 class="wf-h3">事例見出し：成果を数字で（仮）</h3>
+              <p class="wf-cap">材質（仮）／ロット（仮）</p>
+            </div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <div class="wf-card__body">
+              <span class="wf-tag">一貫加工（仮）</span>
+              <h3 class="wf-h3">事例見出し：成果を数字で（仮）</h3>
+              <p class="wf-cap">材質（仮）／ロット（仮）</p>
+            </div>
+          </div>
+        </div>
+        <div class="wf-btns wf-btns--center">
+          <a href="#" class="wf-btn wf-btn--ghost">加工事例一覧へ</a>
+        </div>
+        <div class="wf-note" data-n="8">
+          <b>意図</b>技術の説明を事例で裏付ける。タグを加工方法にし、事例一覧の絞り込み軸（TOPの加工方法フィルタ）とつなげる。
+          <br><b>要確認</b>掲載可能な事例の有無と、取引先名を伏せる必要があるか（TOPと同じ確認事項）。
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. FAQ -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">FAQ</span>
+          <h2 class="wf-h2">加工技術に関するよくあるご質問</h2>
+        </div>
+        <div class="wf-faq">
+          <details open><summary>試作1点からでも依頼できますか？</summary><div class="wf-faq__a">回答案：1点から承ります（最小ロット・条件は要確認）。</div></details>
+          <details><summary>図面がなく、ポンチ絵やサンプル品だけでも見積できますか？</summary><div class="wf-faq__a">回答は要確認。</div></details>
+          <details><summary>熱処理・表面処理まで含めて依頼できますか？</summary><div class="wf-faq__a">回答は要確認（社内対応か協力会社手配か）。</div></details>
+          <details><summary>検査成績書は発行できますか？</summary><div class="wf-faq__a">回答は要確認（書式・費用の有無）。</div></details>
+        </div>
+        <div class="wf-note" data-n="9">
+          <b>意図</b>見積依頼の直前に出る不安（ロット・図面の有無・後工程・品質書類）をFAQで先回りして消す。
+          <br><b>要確認</b>質問はすべて仮説。営業担当がよく受ける質問に差し替え、回答はご提供いただきたい。
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 11. CTAバンド（主CV 3か所目） -->
+  <section class="wf-sec wf-sec--fill">
+    <div class="wf-inner wf-center">
+      <h2 class="wf-h2">図面があれば、まずはお見積りを</h2>
+      <p class="wf-lead">試作1点・仕様検討段階のご相談も承ります（対応範囲は要確認）。</p>
+      <div class="wf-btns wf-btns--center">
+        <a href="#" class="wf-btn wf-btn--lg">図面を送って見積依頼</a>
+        <a href="#" class="wf-btn wf-btn--lg wf-btn--ghost">技術資料をダウンロード</a>
+      </div>
+      <div class="wf-note" data-n="10">
+        <b>意図</b>ページ末尾で主CV（見積依頼）を再提示。本文の中間CTA・ここ・ヘッダー・SP固定CTAの4か所で見積依頼に到達できる。文言はTOPと揃える。
+      </div>
+    </div>
+  </section>
+
+  <footer class="wf-footer">
+    <div class="wf-inner">
+      <div class="wf-footer__nav">
+        <div><h4 class="wf-h4">課題から探す</h4><ul><li><a href="#">試作・小ロット</a></li><li><a href="#">高精度加工</a></li></ul></div>
+        <div><h4 class="wf-h4">加工技術・設備</h4><ul><li><a href="technology.html">加工技術</a></li><li><a href="#">設備一覧</a></li></ul></div>
+        <div><h4 class="wf-h4">会社情報</h4><ul><li><a href="#">会社概要</a></li><li><a href="#">アクセス（所在地は要確認）</a></li></ul></div>
+        <div><h4 class="wf-h4">その他</h4><ul><li><a href="index.html">TOP</a></li><li><a href="#">個人情報保護方針</a></li></ul></div>
+      </div>
+      <p class="wf-copy">© サンプル精工（架空）</p>
+    </div>
+  </footer>
+
+  <div class="wf-fixcta">
+    <a href="#" class="is-sub">技術資料</a>
+    <a href="#">見積依頼</a>
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll('[data-wf]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var k = b.dataset.wf, d = document.body;
+    if (k === 'notes'){
+      var on = d.dataset.notes === 'on';
+      d.dataset.notes = on ? 'off' : 'on';
+      b.setAttribute('aria-pressed', String(!on));
+    } else {
+      d.dataset.device = k;
+      document.querySelectorAll('[data-wf="pc"],[data-wf="sp"]').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x.dataset.wf === k));
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>
