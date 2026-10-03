@@ -45,12 +45,18 @@
 - 判断メモ: —
 - 残課題: 与件の確定
 
+### [2026-10-03] TOP ワイヤー（Claude 経路の動作確認）— Claude（② クラウド子セッション）
+- 成果物: `projects/dots-test/wireframe-claude/index.html`, `projects/dots-test/wireframe-claude/wireframe.css`（共通 CSS を無編集でコピー）
+- 検証: `python scripts/qa-wireframe.py projects/dots-test/wireframe-claude/index.html` OK（JS エラーなし・SP 切替でグリッド組み替え）
+- 判断メモ: 与件に無い数値（創業年・精度・回答日数・事例成果）は「◯◯（仮）」で置き、注釈に要確認と明記
+- 残課題: ③ の検品（別セッション）。所在地・主要デバイス・加工区分・事例の可否は要確認
+
 ---
 
 ## 成果物
 
 | ファイル | 用途 | 状態（下書き / レビュー済 / 提出済） |
 |---|---|---|
-| | | |
+| `wireframe-claude/index.html` | TOP ワイヤー（Claude 経路） | 下書き |
 
 > 納品候補は `outputs/` へ。`outputs/` は Git 追跡外。
