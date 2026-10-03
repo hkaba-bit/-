@@ -19,6 +19,19 @@
 
 ## 直近
 
+### [2026-10-03] OpenAI Dots で依頼書を自律的に消化する経路を追加 — Claude
+- 経緯: 人間（蒲）から「AI エージェントを作り、Codex の Dots と紐付けてどんどんタスクを消化させたい」。Dots は利用可（作成済み）。タスクは既存の依頼書、③ は Claude Code クラウドで、と決定
+- 成果物: `references/dots-workflow.md`（新規。全体像・GitHub だけで持つ状態・Dot への指示文・③ 定期実行の手順）/ `AGENTS.md` 第2・4・9章（Codex がクラウドで動くときは PR まで作る）/ `skills/gg-handoff/SKILL.md`（front matter `runner: dots` を既定に）/ `scripts/handoff-scan.mjs`（`runner: dots` は Orca 側で拾わない）/ `CLAUDE.md`
+- 検証: `handoff-scan.mjs` をテスト用依頼書2件で確認 ＝ **OK**（`--list` で Dots／未着手を区別、`--check` は Orca 側の1件のみ、`--next` は Orca 側のみ取り出し2回目は exit 1）。`check-skills-table.py` `check-skill-assets.py` ＝ **OK**。Dot・Codex クラウドの実走は **未確認**
+- 判断メモ:
+  - Dot・Codex・Claude Code は別々のクラウドで動くので、状態はローカルに持たず GitHub だけで判定する（PR タイトルの `[handoff:…]` と、③ の記録コメント `<!-- gg-review sha=… -->`）
+  - PC の Orca 経路と二重に処理しないよう、依頼書の `runner` で振り分けた。PC を使わない `dots` を既定にした
+  - ③ を Dot・Codex に任せず、Claude Code の定期実行に残した（作った側に検品させない原則）
+- 残課題（人間）:
+  1. このブランチをマージ
+  2. `references/dots-workflow.md` §3 の手順で Dot（gg-pipeline）に GitHub 接続・Codex 環境・指示文を設定
+  3. テスト用の依頼書（`runner: dots`）を main に入れ、Dot に「今すぐ回して」→ PR → ③ のコメントまで1周確認
+
 ### [2026-10-03] Codex 起点で ③ Claude Code を自動起動 — Claude
 - 経緯: 人間（蒲）から「毎回うまく機能していない。Codex 起点で自動で動くようにしたい」。確認すると main に依頼書は1件も無く、claude.ai 起点のパイプライン（2026-09-28）は一度も実走していなかった。①がクラウドのため、依頼書を main に入れる段で止まりやすい構造だった
 - 成果物: `.codex/hooks.json`（Codex の Stop フック）/ `scripts/codex-stop.mjs` / `AGENTS.md` 第2・4・9章（Codex へのルール：成果物を作り終えたら最後の行を `②完了`）/ `CLAUDE.md` / `references/orca-workflow.md` §1・§2（Codex 起点を基本に）・§2.5・§3 / `references/role-split.md` 4.5

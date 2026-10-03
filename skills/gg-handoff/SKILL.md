@@ -14,7 +14,14 @@ description: ①claude.ai で整理した与件・方針を、②Codex（資料�
 | ③ チェック・ブラッシュアップ → PR | Claude Code | Orca（PC） | gg-orca-flow が自動で起動 |
 | マージ | 人間 | GitHub | — |
 
-PC の Orca は 15 分ごとに main の依頼書を確認し、`status: ready` のものを処理する（`references/orca-workflow.md` 第3章）。
+依頼書は front matter の `runner` で処理する側を決める。
+
+| runner | 処理する側 | 拾われるまで |
+|---|---|---|
+| `dots`（既定） | OpenAI Dots → Codex クラウドが作って PR → Claude Code クラウドの定期実行が③（`references/dots-workflow.md`）。PC 不要 | 最大1時間 |
+| `orca` | PC の Orca（`references/orca-workflow.md` 第3章） | PC 起動中で最大15分 |
+
+人間が「PC で」「Orca で」と言わない限り `runner: dots` にする。
 
 ## 手順
 
@@ -28,6 +35,7 @@ PC の Orca は 15 分ごとに main の依頼書を確認し、`status: ready` 
 ```markdown
 ---
 status: ready
+runner: dots
 type: wireframe
 slug: tokyo-weld
 created: 2026-09-28
@@ -69,7 +77,9 @@ created: 2026-09-28
 3. 変更が `projects/*/handoff/*.md` だけなら、その場でマージしてよい。それ以外を含むなら人間に確認する
 
 ### 4. 人間に伝える
-- 依頼書のパスと、PC で処理が始まる目安（最大 15 分後。すぐ回すなら PC の Claude Code に「依頼書を今すぐ処理して」）
+- 依頼書のパスと、処理が始まる目安
+  - `runner: dots`：最大1時間後。すぐ回すなら ChatGPT の Dot（gg-pipeline）に「今すぐ回して」
+  - `runner: orca`：PC 起動中で最大15分後。すぐ回すなら PC の Claude Code に「依頼書を今すぐ処理して」
 - ③ の結果は PR として上がる。マージは人間
 
 ## やらないこと
