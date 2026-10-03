@@ -80,7 +80,8 @@ Codex の結果は **差分と指摘だけ** を Claude に戻す。生ログを
 
 ②③は PC の Orca が自動で回す。第3章の4項目は、そのまま依頼書（`projects/<slug>/handoff/*.md`）に書く。
 
-- ① claude.ai で依頼書を作って main に入れる（`gg-handoff`）
+- **Codex 起点（基本）**：PC で Codex に直接頼む。Codex が `②完了` で終えると ③ Claude Code が自動で起動する（`.codex/hooks.json`）
+- **claude.ai 起点**：① claude.ai で依頼書を作って main に入れる（`gg-handoff`）
 - Orca の定期実行が 15 分ごとに依頼書を拾い、同じ worktree で ②Codex → ③Claude Code を回して PR にする（`gg-orca-flow`）
 - 手順・命名・CLI は `references/orca-workflow.md`
 

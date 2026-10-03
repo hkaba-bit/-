@@ -19,6 +19,19 @@
 
 ## 直近
 
+### [2026-10-03] Codex 起点で ③ Claude Code を自動起動 — Claude
+- 経緯: 人間（蒲）から「毎回うまく機能していない。Codex 起点で自動で動くようにしたい」。確認すると main に依頼書は1件も無く、claude.ai 起点のパイプライン（2026-09-28）は一度も実走していなかった。①がクラウドのため、依頼書を main に入れる段で止まりやすい構造だった
+- 成果物: `.codex/hooks.json`（Codex の Stop フック）/ `scripts/codex-stop.mjs` / `AGENTS.md` 第2・4・9章（Codex へのルール：成果物を作り終えたら最後の行を `②完了`）/ `CLAUDE.md` / `references/orca-workflow.md` §1・§2（Codex 起点を基本に）・§2.5・§3 / `references/role-split.md` 4.5
+- 検証: `codex-stop.mjs` を偽 orca で7ケース ＝ **OK**（合図なし→何もしない／stop_hook_active→何もしない／`②完了`→Orca ターミナルで claude 起動／同じ状態の2回目→起動しない／変更が増えた→再起動／Orca なし・Linux→起動も記録もしない／worktree から→`path:<worktree>` で起動し記録は元チェックアウト）。Codex のフック仕様（`.codex/hooks.json`、Stop の入力 `cwd` `last_assistant_message` `stop_hook_active`、Windows は cmd.exe /C、hooks 機能は既定で有効）は openai/codex のソースで確認。Windows 実機は **未確認**
+- 判断メモ:
+  - 合図はファイル差分ではなく Codex の最終メッセージの `②完了` にした。Codex は質問や途中報告でもターンを終えるため、差分だけで判定すると③が早すぎる・空振りする
+  - 起動先は Orca（同じ worktree のターミナル）を優先し、Orca に接続できないときは Windows の新しいコンソールで起動する（どちらでも必ず③が始まる）
+  - claude.ai 起点（依頼書＋定期実行）は残したが、任意の経路に格下げした
+- 残課題（人間・Windows）:
+  1. `git pull`
+  2. `C:\work\gg` で `codex` を起動し、プロジェクトフック（`.codex/hooks.json`）を信頼する。フックが認識されなければ `npm install -g @openai/codex` で更新
+  3. Codex に「test5 の TOP ワイヤーを作って」と頼み、終了時に `②完了` → Claude Code が自動で開くことを確認
+
 ### [2026-09-28] 分担改定と Orca 自動パイプライン（①整理 → ②Codex 作成 → ③Claude Code チェック） — Claude
 - 経緯: 人間（蒲）の指示で分担を改定。①claude.ai で情報整理、②Codex で資料・ワイヤー作成、③Claude Code でチェック・ブラッシュアップ、②③は Orca で自動
 - 成果物: `skills/gg-handoff/SKILL.md`（新規・①）/ `skills/gg-orca-flow/SKILL.md`（②③の進行役に書き直し）/ `scripts/handoff-scan.mjs` / `scripts/setup-orca-pipeline.ps1` / `scripts/orca-context.mjs`（モード文言）/ `references/orca-workflow.md`（全面改訂）/ `references/role-split.md` 第2章・4.5・第6章 / `AGENTS.md` 第2・4・5・9章 / `CLAUDE.md` / `.gitignore`（`.orca-pipeline/`）
