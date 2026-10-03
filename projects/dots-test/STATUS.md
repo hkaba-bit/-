@@ -45,12 +45,18 @@
 - 判断メモ: —
 - 残課題: 与件の確定
 
+### [2026-10-03] TOP ワイヤー作成（②） — Claude Code（クラウド・runner: claude）
+- 成果物: `projects/dots-test/wireframe/index.html`（共通 CSS は `skills/gg-wireframe/assets/wireframe.css` を相対パスで読み込み、編集なし）
+- 検証: `python scripts/qa-wireframe.py projects/dots-test/wireframe/index.html` → OK（JS エラーなし・SP 390px でグリッド組み替え・注釈トグル・リンク切れなし）
+- 判断メモ: 与件で確定の数値は従業員80名のみ。それ以外の数値・事例・強みは「仮」「◯◯」で置き、注釈に要確認として記載
+- 残課題: ③チェック（別セッション）。創業年・取引社数・加工精度・加工の種類・事例・技術資料の有無・所在地の確認
+
 ---
 
 ## 成果物
 
 | ファイル | 用途 | 状態（下書き / レビュー済 / 提出済） |
 |---|---|---|
-| | | |
+| `wireframe/index.html` | TOP ワイヤー（Dots/claude 経路の動作確認） | 下書き |
 
 > 納品候補は `outputs/` へ。`outputs/` は Git 追跡外。
