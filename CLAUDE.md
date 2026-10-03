@@ -32,6 +32,7 @@ Codex が `②完了` で作業を終えると、Codex の Stop フック（`scr
 
 - ワイヤー依頼を送ると、Windows で Orca が止まっていれば自動で起動してから `[Orca] ワイヤー依頼を検知…` の行を出す
 - 人間が「Orca を使わずに」「ここで直接」と言ったら、モードに関係なくその指示を優先する
+- PC を使わない経路（OpenAI Dots → Codex クラウド → Claude Code クラウド）は `references/dots-workflow.md`。定期実行「gg dots ③チェック」から起動されたときは、モードに関係なく同ファイル §5 の ③ を行う
 - 行が出ていない（フックが動かなかった）ときは、自分で `node scripts/orca-context.mjs` を実行して判定する
 
 ### モデルの使い分け

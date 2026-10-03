@@ -8,6 +8,7 @@
 //   node scripts/handoff-scan.mjs --list             # ready の一覧（着手済みかどうか付き）
 //
 // 着手記録は .orca-pipeline/claimed.json（Git 追跡外）。同じ依頼書を二重に処理しないためだけに使う。
+// front matter の runner が dots の依頼書は OpenAI Dots（クラウド）が処理するので、--check / --next では拾わない（references/dots-workflow.md）。
 
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -52,7 +53,7 @@ function readyHandoffs() {
       const fm = frontMatter(text);
       if (fm.status !== "ready") continue;
       const title = (text.match(/^#\s+(.+)$/m) || [, f])[1].trim();
-      found.push({ path: rel, slug: fm.slug || slug, type: fm.type || "other", title });
+      found.push({ path: rel, slug: fm.slug || slug, type: fm.type || "other", runner: fm.runner || "orca", title });
     }
   }
   return found;
@@ -80,7 +81,7 @@ function pullMain() {
 
 const [cmd, arg] = process.argv.slice(2);
 const claimed = loadClaimed();
-const pending = () => readyHandoffs().filter((h) => !claimed[h.path]);
+const pending = () => readyHandoffs().filter((h) => h.runner !== "dots" && !claimed[h.path]);
 
 switch (cmd) {
   case "--check": {
@@ -109,7 +110,10 @@ switch (cmd) {
     break;
   }
   case "--list": {
-    for (const h of readyHandoffs()) console.log(`${claimed[h.path] ? "着手済" : "未着手"}  ${h.path}  [${h.type}] ${h.title}`);
+    for (const h of readyHandoffs()) {
+      const state = h.runner === "dots" ? "Dots  " : claimed[h.path] ? "着手済" : "未着手";
+      console.log(`${state}  ${h.path}  [${h.type}] ${h.title}`);
+    }
     break;
   }
   default:
