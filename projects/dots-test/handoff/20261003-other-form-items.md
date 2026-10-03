@@ -1,5 +1,5 @@
 ---
-status: ready
+status: review
 runner: claude
 type: other
 slug: dots-test
