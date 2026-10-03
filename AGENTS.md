@@ -45,7 +45,7 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 | `scripts\setup-orca.ps1`（Windows のみ） | Orca（stablyai/orca）と Git・Node・gh・Codex CLI を導入。インストーラーの署名が Valid かつ署名者が SignPath Foundation でなければ中止する |
 | `node scripts/orca-context.mjs` | Orca 運用モード（A: worktree 内 / B: 元チェックアウト / C: Orca 不可）を判定。Claude Code の SessionStart フックから自動実行。`--on-prompt` はワイヤー依頼時に Orca を自動起動（UserPromptSubmit フック） |
 | `scripts\setup-orca-pipeline.ps1`（Windows のみ） | Orca に定期実行「gg handoff pipeline」（15分ごと）を登録 |
-| `node scripts/handoff-scan.mjs --check / --next / --release / --list` | 依頼書（status: ready）の検出と着手記録。Orca の定期実行から使う。`runner: dots` の依頼書は拾わない（Dots が処理） |
+| `node scripts/handoff-scan.mjs --check / --next / --release / --list` | 依頼書（status: ready）の検出と着手記録。Orca の定期実行から使う。`runner: dots` / `runner: claude` の依頼書は拾わない（クラウドで処理） |
 | `node scripts/codex-stop.mjs`（Codex の Stop フックから自動実行） | Codex が `②完了` で終えたら、同じ作業フォルダで ③ Claude Code を起動（Orca のターミナル、無ければ新しいコンソール） |
 | `python scripts/check-skills-table.py` | 第5章の一覧表と `skills/` の実体が一致しているか検証 |
 | `python scripts/find-skill-script.py <skill> <スクリプト>` | Skill 同梱スクリプトの実パスを解決（環境ごとに置き場所が違うため直書きしない） |
@@ -93,6 +93,12 @@ PC ではなくクラウドで起動され、依頼書（`runner: dots`）を渡
 - PR タイトルは `<slug>: <依頼書タイトル> [handoff:<依頼書のファイル名から .md を除いたもの>]`
 - PR 本文には、依頼書のパス／作ったファイル一覧／Done when の各項目をどう確かめたか／要確認として残した点を書く
 - 最終メッセージの最後の行は、PC と同じく `②完了`
+
+
+### Claude Code がクラウドで②を作るとき（`runner: claude`）
+依頼書が `runner: claude` のときは、② も Claude Code（クラウドの子セッション）が作る。手順は `references/claude-pipeline.md`。
+- 上の「Codex がクラウドで動くとき」と同じ書式で PR まで作る（依頼書を `status: review` に、PR タイトルに `[handoff:…]`、本文に Done when の確かめ方）
+- ② を作ったセッションは自分の成果物を検品済みにしない。③ は別のセッション（定期実行）が行う
 
 ---
 
@@ -169,3 +175,4 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 | 2026-09-28 | 第4章の分担を改定（①Claude 整理 → ②Codex 作成 → ③Claude Code チェック）。第2章に `setup-orca-pipeline.ps1` `handoff-scan.mjs`、第5章に `gg-handoff` |
 | 2026-10-03 | 第4章に Codex（②）へのルール（終了時に `②完了`）を追加。②の終了で ③ を自動起動（`.codex/hooks.json`、`codex-stop.mjs`）。第2章に追記 |
 | 2026-10-03 | 第4章に「Codex がクラウドで動くとき」（OpenAI Dots 経由。PR まで作る）を追加。依頼書の `runner: dots` で Orca 経路と振り分け |
+| 2026-10-03 | 第4章に「Claude Code がクラウドで②を作るとき」（`runner: claude`）を追加。PC・ChatGPT の設定なしで依頼書が流れる経路 |

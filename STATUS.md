@@ -19,6 +19,16 @@
 
 ## 直近
 
+### [2026-10-03] Claude だけで依頼書を消化する経路（runner: claude） — Claude
+- 経緯: Dots・Codex 側の設定が動かず（Issue #17 の @codex にも無反応）、人間（蒲）から「Claude 側でも AI エージェントを作って」
+- 成果物: `references/claude-pipeline.md`（新規）/ `AGENTS.md` 第2・4・9章（Claude Code がクラウドで②を作るとき）/ `skills/gg-handoff/SKILL.md`（runner の既定を claude に）/ `scripts/handoff-scan.mjs`（Orca は runner: orca だけ拾う）/ `CLAUDE.md` / テスト用依頼書 `projects/dots-test/handoff/20261003-wireframe-top-claude.md`
+- 検証: `handoff-scan.mjs --list` で Claude／Dots を区別、`--check` は 0 件（Orca は拾わない）＝ **OK**。`check-skills-table.py` `check-skill-assets.py` ＝ **OK**。子セッションでの実走は下の追記で確認
+- 判断メモ:
+  - ② と ③ を別セッションにして「作った側に検品させない」を守った
+  - ② 作業中の二重起動は、セッションのタイトル `gg②: <ファイル名>` で避ける（ローカルの記録は持たない）
+  - 既定の runner を claude にした。PC・ChatGPT の設定なしで流れるため。Codex に回したいときは runner: dots
+- 残課題: なし（定期実行「gg パイプライン」は Claude が登録）
+
 ### [2026-10-03] Dots 経路のドライラン（後半：PR 検出 → ③ → 記録コメント） — Claude
 - 経緯: 人間（蒲）から「テストしてみて」。Dot は ChatGPT 側で Claude から起動できないため、② を Claude が Codex の代役で作り、後半だけを確かめた
 - 成果物: テスト用依頼書 `projects/dots-test/handoff/20261003-wireframe-top.md`（本番用・Dot 待ち、#13 でマージ済み）/ ドライラン PR #14（確認後クローズ）/ `references/dots-workflow.md`（Playwright のセットアップを追記）

@@ -8,7 +8,7 @@
 //   node scripts/handoff-scan.mjs --list             # ready の一覧（着手済みかどうか付き）
 //
 // 着手記録は .orca-pipeline/claimed.json（Git 追跡外）。同じ依頼書を二重に処理しないためだけに使う。
-// front matter の runner が dots の依頼書は OpenAI Dots（クラウド）が処理するので、--check / --next では拾わない（references/dots-workflow.md）。
+// front matter の runner が dots / claude の依頼書はクラウドで処理するので、--check / --next では拾わない（references/dots-workflow.md、references/claude-pipeline.md）。
 
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -81,7 +81,7 @@ function pullMain() {
 
 const [cmd, arg] = process.argv.slice(2);
 const claimed = loadClaimed();
-const pending = () => readyHandoffs().filter((h) => h.runner !== "dots" && !claimed[h.path]);
+const pending = () => readyHandoffs().filter((h) => h.runner === "orca" && !claimed[h.path]);
 
 switch (cmd) {
   case "--check": {
@@ -111,7 +111,7 @@ switch (cmd) {
   }
   case "--list": {
     for (const h of readyHandoffs()) {
-      const state = h.runner === "dots" ? "Dots  " : claimed[h.path] ? "着手済" : "未着手";
+      const state = h.runner === "dots" ? "Dots  " : h.runner === "claude" ? "Claude" : claimed[h.path] ? "着手済" : "未着手";
       console.log(`${state}  ${h.path}  [${h.type}] ${h.title}`);
     }
     break;
