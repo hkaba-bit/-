@@ -50,7 +50,7 @@ Dot・Codex・Claude Code はそれぞれ別のクラウドで動くので、状
 |---|---|
 | 1 | ChatGPT で Dot を新規作成する。名前は `gg-pipeline` |
 | 2 | GitHub プラグインを接続し、リポジトリ `hkaba-bit/-` への読み書きを許可する |
-| 3 | Codex（クラウド）でこのリポジトリの環境を作る。セットアップスクリプトは `pip install -r requirements.txt && npm ci`（ワイヤーの検品に Python と Node を使う） |
+| 3 | Codex（クラウド）でこのリポジトリの環境を作る。セットアップスクリプトは `pip install -r requirements.txt && pip install playwright && python -m playwright install --with-deps chromium && npm ci`（ワイヤーの検品 `qa-wireframe.py` に Playwright と Chromium を使う。`requirements.txt` には入っていない） |
 | 4 | 下の「Dot への指示文」をそのまま Dot の指示（ゴール／常駐の指示）に貼る |
 | 5 | 承認の設定：Codex タスクの起動と PR 作成は承認なし、**PR のマージと main への直接 push は不可** にする |
 | 6 | 動作確認：テスト用の依頼書（`runner: dots`）を main に入れ、Dot に「今すぐ回して」と頼む |
@@ -110,7 +110,7 @@ Claude Code on the web の定期実行（Routine）で、毎回新しいセッ�
 3. 残った PR を古い順に、1回の起動で最大3件処理する：
    1. PR のブランチをチェックアウトし、本文にある依頼書を読む
    2. `gg-proposal-standard` の P0/P1 と、依頼書の「③ チェック観点」「Done when」で検品する
-   3. 種類別の検品を実行する（`skills/gg-handoff/SKILL.md` の type 表。ワイヤーなら `python scripts/qa-wireframe.py`）
+   3. 種類別の検品を実行する（`skills/gg-handoff/SKILL.md` の type 表。ワイヤーなら `python scripts/qa-wireframe.py`。Playwright が無ければ先に `pip install playwright`。Chromium は Claude Code のクラウド環境に入っている）
    4. 直せるものはその場で直してコミットし、PR のブランチへ push する。push が拒否されたら、`claude/` で始まるブランチに push して PR のブランチ向けの PR を作り、その URL をコメントに書く
    5. PR にコメントを1件書く：検品結果（OK／直した点／人間に判断してほしい点）を表で。最後の行に `<!-- gg-review sha=<push 後の最新 SHA> -->` を入れる（自分の push で再検品が回らないようにするため）
 4. Codex 側の作り直しが必要なほど外れている（Done when の過半が未達など）ときは、直さずにコメントで理由を書き、PR に `③差し戻し` と明記する。Dot は次の回で拾わない（PR が open のため）。人間が判断する

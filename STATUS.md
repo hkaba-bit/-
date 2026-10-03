@@ -19,6 +19,13 @@
 
 ## 直近
 
+### [2026-10-03] Dots 経路のドライラン（後半：PR 検出 → ③ → 記録コメント） — Claude
+- 経緯: 人間（蒲）から「テストしてみて」。Dot は ChatGPT 側で Claude から起動できないため、② を Claude が Codex の代役で作り、後半だけを確かめた
+- 成果物: テスト用依頼書 `projects/dots-test/handoff/20261003-wireframe-top.md`（本番用・Dot 待ち、#13 でマージ済み）/ ドライラン PR #14（確認後クローズ）/ `references/dots-workflow.md`（Playwright のセットアップを追記）
+- 検証: **OK**＝`[handoff:…]` の PR を検出／記録コメントが無いので ③ 対象と判定／`qa-wireframe.py` 通過／③ が `codex/` ブランチへ修正を push できた／記録コメントの SHA と PR の最新 SHA が一致し、次回は飛ばされる。③ が P0（架空の数値を事実として記載）を1件見つけて修正
+- 見つかった問題: `requirements.txt` に playwright が無く、手順書どおりのセットアップでは `qa-wireframe.py` が動かない → 手順書のセットアップスクリプトに追記
+- 残課題（人間）: Dot に「今すぐ回して」で前半（Dot → Codex クラウド → PR）を確認。定期実行「gg dots ③チェック」にリポジトリ `hkaba-bit/-` を設定
+
 ### [2026-10-03] OpenAI Dots で依頼書を自律的に消化する経路を追加 — Claude
 - 経緯: 人間（蒲）から「AI エージェントを作り、Codex の Dots と紐付けてどんどんタスクを消化させたい」。Dots は利用可（作成済み）。タスクは既存の依頼書、③ は Claude Code クラウドで、と決定
 - 成果物: `references/dots-workflow.md`（新規。全体像・GitHub だけで持つ状態・Dot への指示文・③ 定期実行の手順）/ `AGENTS.md` 第2・4・9章（Codex がクラウドで動くときは PR まで作る）/ `skills/gg-handoff/SKILL.md`（front matter `runner: dots` を既定に）/ `scripts/handoff-scan.mjs`（`runner: dots` は Orca 側で拾わない）/ `CLAUDE.md`
