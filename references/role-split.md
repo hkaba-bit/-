@@ -85,6 +85,18 @@ Codex の結果は **差分と指摘だけ** を Claude に戻す。生ログを
 - Orca の定期実行が 15 分ごとに依頼書を拾い、同じ worktree で ②Codex → ③Claude Code を回して PR にする（`gg-orca-flow`）
 - 手順・命名・CLI は `references/orca-workflow.md`
 
+## 4.6 PC を使わずクラウドで回す場合（依頼書の `runner`）
+
+依頼書の front matter `runner` で、誰が②を作るかを決める。③ はどれも Claude Code が別のセッションで行う。
+
+| runner | ② を作る | ③ | 手順 |
+|---|---|---|---|
+| `claude`（既定） | Claude Code の子セッション | 定期実行「gg パイプライン」 | `references/claude-pipeline.md` |
+| `dots` | Codex クラウド（OpenAI Dots が起動） | 同上 | `references/dots-workflow.md` |
+| `orca` | Codex（PC の Orca） | Claude Code（PC の Orca） | `references/orca-workflow.md` |
+
+`claude` は設定なしで動く代わりに、②のトークンも Claude で払う（第1章の「クレジット消費を逃がす」は効かない）。量産や定型の作業は、Dots・Codex の設定が済んだら `dots` に回す。
+
 ---
 
 ## 5. Skill を改訂したときの手順

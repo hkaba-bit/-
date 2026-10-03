@@ -10,6 +10,8 @@
 | [CLAUDE.md](CLAUDE.md) | Claude Code 用の薄い入口（`AGENTS.md` を参照＋Claude 固有のみ） |
 | [STATUS.md](STATUS.md) | 進捗・申し送り。**ルールは書かない** |
 | [references/role-split.md](references/role-split.md) | Claude / Codex の役割分担と引き渡しの型 |
+| [references/claude-pipeline.md](references/claude-pipeline.md) | 依頼書を Claude だけで自動消化する経路（`runner: claude`・既定） |
+| [references/dots-workflow.md](references/dots-workflow.md) | 依頼書を OpenAI Dots → Codex で消化する経路（`runner: dots`） |
 
 ## セットアップ
 
@@ -17,6 +19,7 @@
 # 1. 依存の導入
 npm ci                                   # pptxgenjs / react-icons / sharp
 pip install -r requirements.txt          # openpyxl
+pip install playwright                   # ワイヤー検品（scripts/qa-wireframe.py）
 
 # 2. Skill を Claude Code 側へ配布
 bash scripts/sync-skills.sh              # Windows: scripts\sync-skills.ps1
