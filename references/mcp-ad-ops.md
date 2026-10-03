@@ -1,146 +1,191 @@
-# MCP で広告・解析を「管理画面に入らず」運用する
+# MCP で広告・解析を「管理画面に入らず」運用する — 実装手順
 
 > 目的：Supermetrics MCP でやっている「データ収集」に加えて、**予算変更・停止・入札・キーワード追加などの運用操作**も、管理画面にログインせず Claude から行えるようにする。
-> 調査日：2026-10-03（接続状況は Claude Code on the web から実測。外部サービスの仕様は公開情報ベースで、実機未確認のものは「未確認」と書く）
+> 初版 2026-10-03。接続状況は Claude Code on the web から実測。外部サービスの仕様のうち実機未確認のものは「未確認」と書く。
 
 ---
 
-## 1. 結論
+## 0. 実測でわかった前提（2026-10-03）
 
-| やりたいこと | 使うもの | 状態 |
+| 項目 | 実測値 | 影響 |
 |---|---|---|
-| Google 広告・Meta 広告の数値取得 | Supermetrics MCP（`data_query`） | **すぐ使える**（接続済み） |
-| GA4・Search Console・Shopify の数値取得 | Supermetrics MCP（`GAWA` / `GW` / `SHP`） | **すぐ使える**（接続済み） |
-| Google 広告・Meta 広告の運用操作（予算・停止・入札・KW・広告作成） | Supermetrics MCP（`manage_campaign`）※Beta | **Hub で書き込み権限を有効化すれば使える**（第3章） |
-| Meta 広告の運用操作（代替） | Meta 公式 MCP `https://mcp.facebook.com/ads`（2026-04 オープンベータ） | 未接続。取り消し・確認画面が無いので第2候補 |
-| Google 広告の詳細分析（GAQL） | Google 公式 Google Ads MCP（読み取り専用・3ツール） | 未接続。書き込みは不可 |
-| GA4 の詳細（ファネル・カスタム定義） | Google 公式 Analytics MCP（`analytics-mcp`・ローカル実行） | 未接続。gg-manager の `google_analytics_run_report` でも代替可 |
-| **Yahoo!広告（検索・ディスプレイ）** | MCP 無し。Supermetrics も非対応（Yahoo DSP のみ） | **穴**。第5章の方法で埋める |
-| LINE 広告 | Supermetrics `LINEA`（読み取りのみ） | 未認証 |
+| Supermetrics ライセンス | FULL・2026-11-01 まで（残り29日）・2席とも使用中 | **更新しないと11月から全部止まる** |
+| Supermetrics「優先アカウント」 | 1データソースにつき **8件まで**（Google 広告 8 / Meta 8 / GA4 8 / Search Console 7 が設定済み） | 優先外のアカウントはクエリ自体が拒否される |
+| 優先アカウントの入れ替え | 1データソースにつき**月10回まで**（11/1 リセット） | 毎月の運用対象を決めて固定する必要がある |
+| 接続アカウント数 | Google 広告 77 / Meta 54 / GA4 数百 / Search Console 数百 | Supermetrics だけでは全体を見られない |
+| Supermetrics 書き込み | `WRITE_ACCESS_NOT_ENABLED`（研修用テストアカウントで確認） | Hub で有効化が必要（第2章） |
+| Supermetrics 読み取り | 優先8アカウントで費用・クリック・CV を取得できた | データ収集は今すぐ使える |
+| gg-manager の GA4 / Search Console | 未連携 | gg-manager のアカウント設定で連携すれば件数制限なしで使える |
 
-**方針：運用操作は Supermetrics `manage_campaign` に一本化する。** 理由は、①既に接続済み、②新規キャンペーンは必ず停止状態で作成、③変更は Hub の「Campaign history」に記録され取り消しできる、の3点。Meta 公式 MCP は操作が即時反映で取り消し機能が無いため、Supermetrics で足りない操作だけに使う。
+**結論：Supermetrics は「少数アカウントの読み書き」に、全アカウントの取得は公式 MCP に分ける。**
 
 ---
 
-## 2. 現在の接続状況（Supermetrics・2026-10-03 実測）
+## 1. 構成（どれで何をするか）
 
-| ds_id | サービス | 認証 | 運用操作 |
+| サービス | 数値取得（全アカウント） | 運用操作 | 状態 |
 |---|---|---|---|
-| `AW` | Google 広告 | 済 | 対応 |
-| `FA` | Meta（Facebook / Instagram）広告 | 済 | 対応 |
-| `GAWA` | GA4 | 済 | — |
-| `GW` | Search Console | 済 | — |
-| `SHP` | Shopify | 済 | — |
-| `AC` | Microsoft 広告 | 未 | 対応 |
-| `TIK` | TikTok 広告 | 未 | 対応 |
-| `LIA` | LinkedIn 広告 | 未 | 対応（Hub の案内では読み取りのみ。要確認） |
-| `LINEA` | LINE 広告 | 未 | 非対応 |
-| `IGI` | Instagram インサイト | 未 | — |
-| `TA` | X 広告 | 未 | 非対応 |
-
-未認証のものは、Claude で「Supermetrics で TikTok 広告を接続したい」と頼むとログインリンクが返る。
+| Google 広告 | 公式 Google Ads MCP（MCC 経由で全77件・GAQL） | Supermetrics `manage_campaign`（優先8件） | 公式 MCP：第4章で導入／書き込み：第2章で有効化 |
+| Meta 広告 | 公式 Meta Ads MCP（全54件） | 公式 Meta Ads MCP、または Supermetrics（優先8件） | 第3章で接続 |
+| GA4 | 公式 Analytics MCP、または gg-manager | — | 第4章、または gg-manager で連携 |
+| Search Console | gg-manager `google_search_console_*` | — | gg-manager で連携 |
+| 横断レポート（Google×Meta） | Supermetrics `data_query`（優先8件） | — | 今すぐ使える |
+| LINE 広告・TikTok・Instagram | Supermetrics（ログインリンクは第5章） | TikTok のみ可 | 未接続 |
+| Yahoo!広告（検索・ディスプレイ） | MCP なし | MCP なし | 第6章の方法で補う |
 
 ---
 
-## 3. セットアップ（人間・1回だけ）
+## 2. Supermetrics の書き込みを有効にする（人間・5分）
 
-### 3.1 Supermetrics の書き込み権限（最優先）
+| # | 作業 | リンク・場所 |
+|---|---|---|
+| 1 | Google 広告の Write settings を開き、**まず `【研修用】テストアカウント`（5939042180）だけ**を有効化して保存 | https://hub.supermetrics.com/write-settings?platform=AW&teamId=bl2C7p8B_rTIfAjqVQ1b |
+| 2 | Meta も同様に `【研修用】テストアカウンt`（act_713557375710899）だけ有効化 | Hub の Write settings で platform を Facebook Ads に切り替え |
+| 3 | claude.ai → 設定 → コネクタ → Supermetrics を**切断して再接続** | 既存セッションには反映されない |
+| 4 | Claude に「研修用テストアカウントに、停止状態の検索キャンペーンを日予算100円で作って、すぐ削除して」 | 書き込み確認。作成は必ず停止状態なので費用は発生しない |
+| 5 | 問題なければ、運用対象のアカウントを Write settings に追加 | 優先アカウント8件の中から選ぶ |
+
+- 運用ルールは Supermetrics のチーム設定（Business context）に**保存済み**（タグ `operations-policy` / `reporting`）。claude.ai・Claude Code どちらから使っても自動で適用される
+  - 変更前に「現在 → 変更後」の表を出し、OK まで書き込まない／配信開始は明示指示のみ／1承認1アカウント／予算+50%超か日予算3万円超は再確認／変更後に反映確認
+  - 研修用・テストアカウントは集計から除外、JPY・Asia/Tokyo
+- 書き込みが優先アカウント以外にも効くかは **未確認**。テスト後に確認する
+
+### 優先アカウントの入れ替え
+
+Claude に「Supermetrics の Google 広告の優先アカウントを見せて」→「〇〇を外して△△を入れて」で変更できる（月10回まで）。毎月1日に、その月に運用するアカウントへ入れ替えるのが無駄がない。
+
+---
+
+## 3. Meta 公式 MCP を接続する（人間・5分）
+
+| 使う場所 | 手順 |
+|---|---|
+| claude.ai / デスクトップ | 設定 → コネクタ → カスタムコネクタを追加 → URL `https://mcp.facebook.com/ads` → Meta でログイン |
+| Claude Code（PC） | `scripts\setup-ads-mcp.ps1 -Targets meta-ads` → Claude Code で `/mcp` → meta-ads → Authenticate |
+
+- 開発者アプリ・トークン不要。Business Manager の管理者権限が必要（公開情報）
+- **操作は即時反映で、取り消し・確認画面が無い**（公開情報）。第7章のルールで使う。Supermetrics のルールは Meta 公式 MCP には効かないので、依頼文に「変更前後を表で見せて、OK まで反映しないで」を必ず付ける
+
+---
+
+## 4. Google 公式 MCP（Google 広告・GA4）を入れる（人間・初回30分）
+
+全アカウントの数値を件数制限なしで取るための経路。どちらも読み取り専用で、PC 上で動く（クラウドの Claude Code からは使えない）。
+
+### 4.1 事前準備（1回だけ）
 
 | # | 作業 | 場所 |
 |---|---|---|
-| 1 | Supermetrics Hub →「Write settings」で、操作したい広告アカウントだけを有効化して保存 | Supermetrics Hub |
-| 2 | claude.ai の Supermetrics コネクタを**切断して再接続**（既存セッションには反映されない） | claude.ai → 設定 → コネクタ |
-| 3 | 広告プラットフォーム側で自分の権限が「編集」以上か確認（閲覧のみだと失敗する） | 各広告管理画面（最初の1回だけ） |
-| 4 | Claude で「Google 広告のキャンペーン一覧を出して」→ 動作確認 | Claude |
+| 1 | Google Cloud プロジェクトを用意（既存で可）し、**Google Ads API / Google Analytics Admin API / Google Analytics Data API** を有効化 | Google Cloud コンソール → API とサービス → ライブラリ |
+| 2 | OAuth 同意画面（内部）を作り、OAuth クライアント ID（種類：デスクトップ）を作成して JSON をダウンロード。保存先はリポジトリの外（例：`C:\Users\<you>\secrets\`） | API とサービス → 認証情報 |
+| 3 | Google 広告 API の**開発者トークン**を発行（Explorer 以上で本番アカウントを読める） | MCC の Google 広告 → 管理者 → API センター |
+| 4 | MCC の顧客 ID を控える | Google 広告 画面右上 |
+| 5 | Python・pipx・gcloud CLI を入れる | `py -m pip install --user pipx; py -m pipx ensurepath` ／ https://cloud.google.com/sdk/docs/install |
 
-- 書き込み権限を付けられるのは**自分が所有する接続**のアカウントだけ
-- エラー `WRITE_ACCESS_NOT_ENABLED` が出たら 1→2 をやり直す
-- 料金：MCP は AI クレジット制（Starter 4,000／Growth 12,000 クレジット/月と公開情報。現契約の残量は Hub で確認）
+### 4.2 登録（スクリプト）
 
-### 3.2 Meta 公式 MCP（必要になったら）
-
-| # | 作業 |
+| OS | コマンド |
 |---|---|
-| 1 | claude.ai → 設定 → コネクタ →「カスタムコネクタを追加」→ URL に `https://mcp.facebook.com/ads` |
-| 2 | Meta ビジネスアカウントでログインして承認（開発者アプリ・トークン不要） |
+| Windows | `scripts\setup-ads-mcp.ps1`（対象を絞るなら `-Targets google-ads,analytics`） |
+| Mac / Linux | `bash scripts/setup-ads-mcp.sh`（対象を絞るなら `google-ads analytics`） |
 
-注意：操作は即時反映。下書き・確認画面・取り消しが無い（公開情報）。予算・ターゲティングの変更は必ず第4章のルールで行う。
+スクリプトがやること：プロジェクト ID・クライアント JSON・開発者トークン・MCC ID を対話で聞く → `gcloud auth application-default login`（広告・GA4 の読み取り権限）→ `claude mcp add --scope user` で `google-ads` / `google-analytics` / `meta-ads` を登録 → `claude mcp list`。
 
-### 3.3 Google 公式 MCP（必要になったら）
+- 開発者トークンは Claude Code のユーザー設定（`~/.claude.json`）に保存される。リポジトリ・`.env` には書かない
+- 登録後、Claude Code を開き直して「Google 広告のアクセス可能なアカウント数を教えて」で確認
 
-| MCP | 用途 | 導入 |
-|---|---|---|
-| Google Ads MCP | GAQL で任意の項目を取得（読み取り専用・`list_accessible_customers` / `search` / `get_resource_metadata`） | 開発者トークンが必要。PC のローカル MCP として設定 |
-| Analytics MCP（`analytics-mcp`） | GA4 のレポート・ファネル・カスタム定義・広告リンク確認 | `pipx` でローカル実行。Google Cloud の認証（ADC）が必要 |
+### 4.3 使えるツール
 
-Supermetrics で取れない項目が出てきたときだけ入れる。普段は不要。
+| MCP | ツール |
+|---|---|
+| google-ads | `list_accessible_customers` / `search`（GAQL）/ `get_resource_metadata` |
+| google-analytics | `get_account_summaries` / `get_property_details` / `list_google_ads_links` / `run_report` / `run_funnel_report` / `run_realtime_report` / `get_custom_dimensions_and_metrics` |
 
 ---
 
-## 4. 運用ルール（Claude に操作させるとき）
+## 5. 未接続データソースのログイン（人間・各1分）
 
-| ルール | 内容 |
+Supermetrics のログインリンク（**2026-10-04 正午ごろまで有効**。切れたら Claude に「Supermetrics で LINE 広告にログインしたい」と頼めば再発行される）。
+
+| サービス | 使い道 |
 |---|---|
-| 変更前に読む | 変更前に `campaign_and_resource_get` で現状（予算・入札・状態）を取得し、表で示す |
-| 差分を見せて承認 | 「現在 → 変更後」の表を出し、人間が「OK」と言うまで書き込まない |
-| 配信開始は人間 | `ENABLED`（配信開始）は人間が明示的に指示したときだけ。新規作成は常に `PAUSED` |
-| ターゲティングは全量 | `targeting` は**置き換え**。追加だけしたいときは `add_keywords`、除外は `negative_keywords` を使う |
-| 一部失敗を確認 | 返り値の `write_status` / `failures` を確認。失敗分を盲目的に再実行しない |
-| 記録 | 変更内容（日時・アカウント・現在→変更後・理由）を案件の `projects/<slug>/` にメモ。Hub の Campaign history でも追える |
-| 金額の扱い | 見積・予算額を含む出力を外部サービスへ送らない（AGENTS.md 第3章） |
+| LINE 広告（`LINEA`） | 読み取りのみ |
+| Instagram インサイト（`IGI`） | オーガニック投稿の数値 |
+| TikTok 広告（`TIK`） | 読み書き |
+
+リンクはこのセッションの回答に記載（URL に一時トークンを含むためリポジトリには書かない）。注意：ログインすると、そのデータソースも優先アカウント8件の枠を使う。
+
+gg-manager の GA4・Search Console は、gg-manager のアカウント設定から Google 連携する（件数制限なし）。
 
 ---
 
-## 5. Yahoo!広告の穴を埋める
+## 6. Yahoo!広告の穴を埋める
 
-Supermetrics・公式 MCP とも Yahoo!広告（検索・ディスプレイ）には対応していない（2026-10-03 時点）。
+Supermetrics・公式 MCP とも Yahoo!広告（検索・ディスプレイ）に対応していない（Supermetrics は Yahoo DSP のみ）。
 
 | 方法 | できること | 手間 | 推奨 |
 |---|---|---|---|
-| A. Yahoo!広告スクリプト | 管理画面内で JavaScript を定期実行。日予算変更・入札調整・レポートをスプレッドシートへ出力 | 小（設定は管理画面で1回） | **まずこれ**。出力先のスプレッドシートを Google Drive MCP で読めば、Claude から数値を見られる |
-| B. Yahoo!広告 API ＋自前 MCP | Claude から直接取得・操作 | 大（API 利用申請・OAuth アプリ登録・サーバー運用） | 運用アカウントが多くなったら検討 |
-| C. ETL 製品（CData 等）経由 | SQL 的に取得 | 中（有償） | 他ツールで既に使っていれば |
+| A. Yahoo!広告スクリプト → Google スプレッドシート | 管理画面内の JavaScript を毎日自動実行し、レポートをスプレッドシートへ出力。日予算変更・入札調整の自動化も可 | 小（設定は1回） | **まずこれ**。Claude は Google Drive MCP でシートを読む |
+| B. Yahoo!広告 API ＋自前 MCP | Claude から直接取得・操作 | 大（API 利用申請・OAuth・サーバー運用） | 運用アカウントが増えたら |
 
-A の流れ：スクリプトで毎朝レポートを Google スプレッドシートへ出力 → Claude が Google Drive MCP で読む → 変更が必要なら、スクリプトの設定シート（例：キャンペーンID・新しい日予算）を人間が書き換える。
+A の手順：Yahoo!広告の管理画面 → ツール → スクリプト → 新規作成（テンプレート「レポートをスプレッドシートに出力」系を使う）→ 毎日 7:00 実行を設定 → 出力シートを共有ドライブの `広告レポート/Yahoo/` に置く。スクリプト本文は Yahoo!広告 開発者センターの公式サンプルを使う（この環境からは開発者センターに接続できず、本文は未作成）。
 
 ---
 
-## 6. そのまま使える依頼文
+## 7. 運用ルール（どの MCP で操作するときも）
+
+| ルール | 内容 |
+|---|---|
+| 変更前に読む | 現状（予算・入札・状態）を取得して表で示す |
+| 差分を見せて承認 | 「現在 → 変更後」の表を出し、OK まで書き込まない |
+| 配信開始は人間 | 配信開始・再開は明示指示のみ。新規作成は停止状態 |
+| ターゲティングは置き換え | Supermetrics の `targeting` は全量置き換え。追加は `add_keywords`、除外は `negative_keywords` |
+| 一部失敗を確認 | `write_status` / `failures` を確認し、失敗分を自動再実行しない |
+| 記録 | 日時・アカウント・現在→変更後・理由を案件の `projects/<slug>/` にメモ（Supermetrics は Hub の Campaign history でも追える） |
+| 外部送信 | クライアント名・金額を含む出力を外部サービスへ送らない（AGENTS.md 第3章） |
+
+---
+
+## 8. そのまま使える依頼文
 
 | 用途 | 依頼文 |
 |---|---|
-| 週次レポート | 「Supermetrics で Google 広告と Meta 広告の先週の費用・CV・CPA をキャンペーン別に出して、前週比も付けて」 |
-| 異常検知 | 「直近7日で CPA が前の7日より30%以上悪化したキャンペーンを Google 広告と Meta 広告から洗い出して」 |
-| 予算変更 | 「Google 広告の〇〇キャンペーンの日予算を 5,000円 → 7,000円にしたい。現状と変更後を表で見せて、OK したら反映して」 |
-| 停止 | 「Meta 広告で直近14日 CV 0 かつ費用 1万円以上の広告セットを一覧にして。停止は私が選ぶ」 |
-| キーワード追加 | 「Google 広告の〇〇広告グループに、このキーワードをフレーズ一致で追加して（既存は触らない）」 |
-| 除外 KW | 「先月の検索語句で CV 0・費用上位20件を出して、除外キーワード候補にして」 |
-| 新規入稿（下書き） | 「〇〇の検索キャンペーンを停止状態で作って。見出し・説明文の案から先に見せて」 |
-| ヘルスチェック | 「Google 広告のキャンペーンをヘルスチェックして、設定ミスを指摘して」 |
+| 週次（優先8件） | 「Supermetrics で Google 広告と Meta 広告の先週の費用・CV・CPA をアカウント別に、前週比つきで」 |
+| 全アカウント棚卸し | 「google-ads MCP で MCC 配下の全アカウントの直近30日の費用と CV を GAQL で出して、費用0のアカウントも一覧に」 |
+| 異常検知 | 「直近7日で CPA が前の7日より30%以上悪化したキャンペーンを洗い出して」 |
+| 予算変更 | 「〇〇の△△キャンペーンの日予算を 5,000円 → 7,000円に。現状と変更後を表で見せて、OK したら反映して」 |
+| 停止候補 | 「Meta で直近14日 CV 0 かつ費用1万円以上の広告セットを一覧に。停止は私が選ぶ」 |
+| キーワード追加 | 「〇〇広告グループにこのキーワードをフレーズ一致で追加して（既存は触らない）」 |
+| 除外 KW | 「先月の検索語句で CV 0・費用上位20件を出して、除外キーワード候補に」 |
+| 新規入稿 | 「〇〇の検索キャンペーンを停止状態で作って。見出し・説明文の案から先に見せて」 |
+| ヘルスチェック | 「〇〇の Google 広告をヘルスチェックして、設定ミスを指摘して」 |
+| GA4 | 「google-analytics MCP で〇〇の直近28日の流入元別 CV をファネルで見せて」 |
 | SEO | 「Search Console で直近28日、表示回数が多いのに CTR 1% 未満のクエリを出して」 |
 
 ---
 
-## 7. 次の一手
+## 9. 残作業
 
-| # | 作業 | 担当 |
-|---|---|---|
-| 1 | 3.1 の書き込み権限を有効化（まずはテスト用か小規模な1アカウント） | 人間 |
-| 2 | 依頼文「予算変更」で1件、少額の変更→戻すまでを試す | 人間＋Claude |
-| 3 | Yahoo!広告スクリプトでレポート出力（5章 A） | 人間 |
-| 4 | うまく回ったら、第4章のルールを Skill（`gg-ad-ops` 案）にする | 人間承認のうえ Claude |
+| # | 作業 | 担当 | 期限の目安 |
+|---|---|---|---|
+| 1 | Supermetrics ライセンス（11/1 終了）を更新するか決める。更新しない場合は第4章・第3章の公式 MCP を先に入れる | 人間 | 10月中旬 |
+| 2 | 第2章 1〜4（書き込み有効化→テストアカウントで作成・削除） | 人間＋Claude | すぐ |
+| 3 | 第3章（Meta 公式 MCP） | 人間 | すぐ |
+| 4 | 第4章（Google 公式 MCP）。開発者トークンの発行が一番時間がかかる | 人間 | 今週 |
+| 5 | gg-manager で GA4・Search Console を連携 | 人間 | すぐ |
+| 6 | 第6章 A（Yahoo!広告スクリプト） | 人間 | 来週 |
+| 7 | 回ったら第7章を Skill `gg-ad-ops` にする（`skills/` と AGENTS.md 第5章の更新が要るので承認後） | Claude | 運用開始後 |
 
 ---
 
 ## 出典
 
-- Supermetrics MCP の `supermetrics_guide`（tour / write_access）と `data_source_discovery` の応答（2026-10-03 実行）
+- Supermetrics MCP の応答（`supermetrics_guide` tour / write_access、`data_source_discovery`、`manage_user_and_team`、`manage_campaign` のエラー）2026-10-03 実行
 - [How to manage ad campaigns with AI tools（Supermetrics Docs）](https://docs.supermetrics.com/docs/how-to-manage-ad-campaigns-with-ai-tools)
-- [Supermetrics Pricing Breakdown](https://metricnexus.ai/blog/supermetrics-pricing)
+- [googleads/google-ads-mcp README](https://github.com/googleads/google-ads-mcp)
+- [googleanalytics/google-analytics-mcp README](https://github.com/googleanalytics/google-analytics-mcp)
 - [Google 広告 MCP サーバー（Google for Developers）](https://developers.google.com/google-ads/api/docs/developer-toolkit/mcp-server?hl=ja)
-- [Google Ads MCP vs API（Scalekit）](https://www.scalekit.com/blog/google-ads-mcp-vs-api)
 - [Official Meta Ads MCP for Claude: 29 tools](https://pasqualepillitteri.it/en/news/1707/official-meta-ads-mcp-claude-29-tools-2026)
 - [Meta Ads MCP（adkit）](https://adkit.so/resources/meta-ads-mcp)
-- [Google Analytics MCP server（fast.io）](https://fast.io/resources/mcp-server-for-google-analytics/)
 - [Yahoo!広告スクリプトで広告レポートを自動作成（Web担当者Forum）](https://webtan.impress.co.jp/e/2025/06/03/48738)
 - [Yahoo!広告 開発者センター](https://ads-developers.yahoo.co.jp/)

@@ -19,11 +19,14 @@
 
 ## 直近
 
-### [2026-10-03] MCP で管理画面に入らず広告・解析を運用する方法の調査 — Claude
-- 成果物: `references/mcp-ad-ops.md`
-- 検証: Supermetrics MCP の接続状況を実測（認証済み：AW / FA / GAWA / GW / SHP。運用操作対応：AW / FA / AC / TIK / LIA / SCM / CGPTA）。`manage_campaign` の仕様を確認。Google Ads 公式 MCP（読み取り専用）・Meta 公式 MCP（オープンベータ・書き込み可）は公開情報で確認、実機は **未確認**
-- 判断メモ: 運用操作は Supermetrics `manage_campaign` に一本化（接続済み・新規は停止状態で作成・Campaign history で取り消し可）。Meta 公式 MCP は取り消しが無いので第2候補。Yahoo!広告（検索・ディスプレイ）はどの MCP も非対応のため、Yahoo!広告スクリプト→スプレッドシート→Drive MCP で読む方式を推奨
-- 残課題（人間）: Supermetrics Hub の Write settings で書き込み権限を有効化 → claude.ai のコネクタ再接続 → 少額の予算変更を1件試す
+### [2026-10-03] MCP で管理画面に入らず広告・解析を運用する — Claude
+- 成果物: `references/mcp-ad-ops.md`（実装手順）/ `scripts/setup-ads-mcp.ps1`・`.sh`（Google 広告・GA4・Meta の公式 MCP を Claude Code に登録）/ Supermetrics のチーム設定に運用ルール・レポート規約を保存（タグ `operations-policy` `reporting`）
+- 検証: Supermetrics 読み取り＝**OK**（優先8アカウントで費用・クリック・CV を取得）。書き込み＝`WRITE_ACCESS_NOT_ENABLED`（研修用テストアカウント、想定どおり）。`setup-ads-mcp.sh` を偽 claude/pipx/gcloud で実行＝**OK**（登録コマンドとスコープを確認）。`.ps1` は UTF-8 BOM・CRLF で保存したが、pwsh が無く構文チェックは **未実施**。公式 MCP の実接続は **未確認**（PC で実施）
+- 判断メモ:
+  - Supermetrics は1データソースにつき優先アカウント8件・入れ替え月10回の制限があり、77件（Google 広告）・54件（Meta）を全部は見られない。全件取得は公式 MCP（Google Ads・Analytics・Meta）に分け、Supermetrics は少数アカウントの読み書きと横断レポートに使う
+  - 運用ルールは Supermetrics の Business context に置いた。claude.ai からの操作にも効くため
+  - Yahoo!広告は MCP が無いので、Yahoo!広告スクリプト→スプレッドシート→Drive MCP を推奨
+- 残課題（人間）: Supermetrics ライセンス 2026-11-01 終了の扱い／Hub で研修用アカウントの書き込み有効化→コネクタ再接続／Meta 公式 MCP 接続／Google 広告 API 開発者トークン発行→`setup-ads-mcp.ps1`／gg-manager で GA4・Search Console 連携／AGENTS.md 第2章の環境スクリプト表に `setup-ads-mcp` を追記（AGENTS.md は人間のみ編集）
 
 ### [2026-10-03] Codex 起点で ③ Claude Code を自動起動 — Claude
 - 経緯: 人間（蒲）から「毎回うまく機能していない。Codex 起点で自動で動くようにしたい」。確認すると main に依頼書は1件も無く、claude.ai 起点のパイプライン（2026-09-28）は一度も実走していなかった。①がクラウドのため、依頼書を main に入れる段で止まりやすい構造だった
