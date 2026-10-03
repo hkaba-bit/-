@@ -19,14 +19,15 @@
 
 ## 直近
 
-### [2026-10-03] MCP で管理画面に入らず広告・解析を運用する — Claude
-- 成果物: `references/mcp-ad-ops.md`（実装手順）/ `scripts/setup-ads-mcp.ps1`・`.sh`（Google 広告・GA4・Meta の公式 MCP を Claude Code に登録）/ Supermetrics のチーム設定に運用ルール・レポート規約を保存（タグ `operations-policy` `reporting`）
-- 検証: Supermetrics 読み取り＝**OK**（優先8アカウントで費用・クリック・CV を取得）。書き込み＝`WRITE_ACCESS_NOT_ENABLED`（研修用テストアカウント、想定どおり）。`setup-ads-mcp.sh` を偽 claude/pipx/gcloud で実行＝**OK**（登録コマンドとスコープを確認）。`.ps1` は UTF-8 BOM・CRLF で保存したが、pwsh が無く構文チェックは **未実施**。公式 MCP の実接続は **未確認**（PC で実施）
+### [2026-10-03] MCP で管理画面に入らず広告・解析を運用する（Supermetrics 解約前提） — Claude
+- 経緯: 人間（蒲）から「Supermetrics は解約したいのでその前提で」。Supermetrics は優先アカウント8件/データソースの上限があり、ライセンスも 2026-11-01 まで
+- 成果物: `references/mcp-ad-ops.md`（実装手順）/ `scripts/google_ads_ops_mcp.py`（自作 MCP：Google 広告の日予算・停止/再開・キーワード・除外キーワードを propose → apply の2段階で変更）/ `scripts/setup-ads-mcp.ps1`・`.sh`（公式 google-ads・analytics-mcp・Meta Ads MCP と google-ads-ops を Claude Code に登録）
+- 検証: `google_ads_ops_mcp.py` を google-ads 33.0.0（API v25）で、偽のサービスに差し替えて実行＝**OK**（リクエスト組み立て・validate_only の切り替え・token 再利用拒否・提案後の値変化の検知・不正入力の拒否・ツール9件の登録）。`setup-ads-mcp.sh` を偽 claude/pipx/gcloud で実行＝**OK**。`.ps1` は UTF-8 BOM・CRLF で保存。pwsh が無いため構文チェックは **未実施**。実アカウントへの接続・反映は **未確認**（開発者トークン発行後に研修用テストアカウントで確認）
 - 判断メモ:
-  - Supermetrics は1データソースにつき優先アカウント8件・入れ替え月10回の制限があり、77件（Google 広告）・54件（Meta）を全部は見られない。全件取得は公式 MCP（Google Ads・Analytics・Meta）に分け、Supermetrics は少数アカウントの読み書きと横断レポートに使う
-  - 運用ルールは Supermetrics の Business context に置いた。claude.ai からの操作にも効くため
-  - Yahoo!広告は MCP が無いので、Yahoo!広告スクリプト→スプレッドシート→Drive MCP を推奨
-- 残課題（人間）: Supermetrics ライセンス 2026-11-01 終了の扱い／Hub で研修用アカウントの書き込み有効化→コネクタ再接続／Meta 公式 MCP 接続／Google 広告 API 開発者トークン発行→`setup-ads-mcp.ps1`／gg-manager で GA4・Search Console 連携／AGENTS.md 第2章の環境スクリプト表に `setup-ads-mcp` を追記（AGENTS.md は人間のみ編集）
+  - 公式 Google Ads MCP は読み取り専用（Google の方針）なので、書き込みだけの小さな MCP を自作した。反映は apply_change に限定し、Claude Code の許可プロンプトで毎回人間が承認する前提
+  - Meta は公式 MCP が読み書きできるので自作しない。取り消しが無いため依頼文で「OK まで反映しない」を指定する運用にした
+  - Supermetrics のチーム設定に入れた運用ルールは解約で消えてよい（同内容を手順書第7章に移した）
+- 残課題（人間）: Google 広告 API の開発者トークン申請／Meta 公式 MCP 接続／`setup-ads-mcp.ps1`／gg-manager で GA4・Search Console 連携／Supermetrics 依存レポートの確認→解約／CLAUDE.md の MCP 節と AGENTS.md 第2章の更新
 
 ### [2026-10-03] Codex 起点で ③ Claude Code を自動起動 — Claude
 - 経緯: 人間（蒲）から「毎回うまく機能していない。Codex 起点で自動で動くようにしたい」。確認すると main に依頼書は1件も無く、claude.ai 起点のパイプライン（2026-09-28）は一度も実走していなかった。①がクラウドのため、依頼書を main に入れる段で止まりやすい構造だった

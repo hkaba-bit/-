@@ -1,5 +1,5 @@
 ﻿# 広告・解析の MCP を Claude Code（ユーザー設定）に登録する。
-# 対象：Google 広告（公式・読み取り専用）／GA4（公式・読み取り専用）／Meta 広告（公式・読み書き）
+# 対象：Google 広告（公式・読み取り）＋ google-ads-ops（自作・運用操作）／GA4（公式・読み取り）／Meta 広告（公式・読み書き）
 #
 #   scripts\setup-ads-mcp.ps1                          # 3つとも
 #   scripts\setup-ads-mcp.ps1 -Targets google-ads,analytics
@@ -13,6 +13,7 @@ param(
   [string[]]$Targets = @('google-ads', 'analytics', 'meta-ads')
 )
 $ErrorActionPreference = 'Stop'
+$root = Split-Path -Parent $PSScriptRoot
 
 function Need($cmd, $hint) {
   if (-not (Get-Command $cmd -ErrorAction SilentlyContinue)) { throw "見つからない: $cmd — $hint" }
@@ -52,6 +53,13 @@ if (Want 'google-ads') {
     -e "GOOGLE_ADS_DEVELOPER_TOKEN=$devToken" `
     -e "GOOGLE_ADS_LOGIN_CUSTOMER_ID=$mccId" `
     -- pipx run --spec git+https://github.com/googleads/google-ads-mcp.git google-ads-mcp
+  # 運用操作（予算・停止/再開・キーワード）。apply_change は許可リストに入れず、毎回承認する
+  claude mcp remove google-ads-ops --scope user 2>$null | Out-Null
+  claude mcp add google-ads-ops --scope user `
+    -e "GOOGLE_APPLICATION_CREDENTIALS=$adc" `
+    -e "GOOGLE_ADS_DEVELOPER_TOKEN=$devToken" `
+    -e "GOOGLE_ADS_LOGIN_CUSTOMER_ID=$mccId" `
+    -- pipx run (Join-Path $root 'scripts\google_ads_ops_mcp.py')
 }
 
 if (Want 'analytics') {

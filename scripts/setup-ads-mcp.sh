@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 広告・解析の MCP を Claude Code（ユーザー設定）に登録する。
-# 対象：Google 広告（公式・読み取り専用）／GA4（公式・読み取り専用）／Meta 広告（公式・読み書き）
+# 対象：Google 広告（公式・読み取り）＋ google-ads-ops（自作・運用操作）／GA4（公式・読み取り）／Meta 広告（公式・読み書き）
 #
 #   bash scripts/setup-ads-mcp.sh            # 3つとも
 #   bash scripts/setup-ads-mcp.sh google-ads analytics   # 選んで登録
@@ -10,6 +10,8 @@
 #   - Google 広告 API の開発者トークン（MCC の API センターで発行）と MCC の顧客 ID
 # 値は対話で入力する。リポジトリには何も書き込まない。
 set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 TARGETS=("$@")
 [ ${#TARGETS[@]} -eq 0 ] && TARGETS=(google-ads analytics meta-ads)
@@ -47,6 +49,13 @@ if want google-ads; then
     -e "GOOGLE_ADS_DEVELOPER_TOKEN=$DEV_TOKEN" \
     -e "GOOGLE_ADS_LOGIN_CUSTOMER_ID=$MCC_ID" \
     -- pipx run --spec git+https://github.com/googleads/google-ads-mcp.git google-ads-mcp
+  # 運用操作（予算・停止/再開・キーワード）。apply_change は許可リストに入れず、毎回承認する
+  claude mcp remove google-ads-ops --scope user >/dev/null 2>&1 || true
+  claude mcp add google-ads-ops --scope user \
+    -e "GOOGLE_APPLICATION_CREDENTIALS=$ADC" \
+    -e "GOOGLE_ADS_DEVELOPER_TOKEN=$DEV_TOKEN" \
+    -e "GOOGLE_ADS_LOGIN_CUSTOMER_ID=$MCC_ID" \
+    -- pipx run "$ROOT/scripts/google_ads_ops_mcp.py"
 fi
 
 if want analytics; then
