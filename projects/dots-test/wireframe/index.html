@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TOP | サンプル精工 ワイヤーフレーム</title>
+<link rel="stylesheet" href="wireframe.css">
+</head>
+<body data-device="pc" data-notes="on">
+
+<div class="wf-bar">
+  <span class="wf-bar__title">サンプル精工 WF（架空案件）</span>
+  <span class="wf-bar__meta">top / TOPページ ※デザインではなく構成案です</span>
+  <span class="wf-bar__spacer"></span>
+  <a href="index.html">TOP</a>
+  <button type="button" data-wf="pc" aria-pressed="true">PC</button>
+  <button type="button" data-wf="sp" aria-pressed="false">SP</button>
+  <button type="button" data-wf="notes" aria-pressed="true">注釈</button>
+</div>
+
+<div class="wf-canvas">
+
+  <header class="wf-header">
+    <div class="wf-logo"><span>LOGO</span></div>
+    <ul class="wf-gnav">
+      <li><a href="#">課題から探す</a></li>
+      <li><a href="#">加工技術・設備</a></li>
+      <li><a href="#">加工事例</a></li>
+      <li><a href="#">技術資料</a></li>
+      <li><a href="#">会社情報</a></li>
+    </ul>
+    <div class="wf-header__cta">
+      <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">技術資料DL</a>
+      <a href="#" class="wf-btn wf-btn--sm">見積依頼</a>
+    </div>
+    <div class="wf-burger">≡</div>
+  </header>
+
+  <main>
+
+    <!-- 1. FV -->
+    <section class="wf-hero wf-hero--split">
+      <div class="wf-hero__copy">
+        <span class="wf-en">PRECISION METAL MACHINING</span>
+        <h1 class="wf-h1">装置設計者の図面を、<br>そのまま精密部品に。</h1>
+        <p class="wf-lead">精密金属加工の専門メーカー。図面1枚から、試作・小ロットの見積をお受けします。</p>
+        <div class="wf-btns">
+          <a href="#" class="wf-btn wf-btn--lg">図面を送って見積依頼</a>
+          <a href="#" class="wf-btn wf-btn--lg wf-btn--ghost">技術資料をダウンロード</a>
+        </div>
+      </div>
+      <div class="wf-img wf-img--hero"><span>KEY VISUAL（加工品・設備）</span></div>
+    </section>
+
+    <div class="wf-inner">
+      <div class="wf-note" data-n="1">
+        <b>意図</b>FVで「何屋か（精密金属加工）」と「誰向けか（装置メーカーの設計者）」を言い切る。主CV（見積依頼）を1つ目のボタンに置き、ヘッダーにも常設する。
+      </div>
+      <div class="wf-note" data-n="2">
+        <b>根拠</b>与件の主CV＝見積依頼、副CV＝技術資料DL、ターゲット＝設計・購買担当に対応。主CTAは「お問い合わせ」ではなく「図面を送って見積依頼」と行動を具体化する。
+      </div>
+    </div>
+
+    <!-- 2. 信頼バー -->
+    <section class="wf-sec wf-sec--tight">
+      <div class="wf-inner">
+        <div class="wf-stats">
+          <div class="wf-stat"><span class="wf-stat__num">80名</span><span class="wf-stat__label">従業員数</span></div>
+          <div class="wf-stat"><span class="wf-stat__num">◯◯年</span><span class="wf-stat__label">創業（仮）</span></div>
+          <div class="wf-stat"><span class="wf-stat__num">◯◯社</span><span class="wf-stat__label">取引社数（仮）</span></div>
+          <div class="wf-stat"><span class="wf-stat__num">±◯μm</span><span class="wf-stat__label">加工精度（仮）</span></div>
+        </div>
+        <div class="wf-note" data-n="3">
+          <b>要確認</b>与件で確定しているのは従業員80名のみ。創業年・取引社数・加工精度はすべて仮置き。実数値をご提供いただき、数字で与信を示すブロックにする。
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 課題提起 -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead wf-center">
+          <span class="wf-en">ISSUE</span>
+          <h2 class="wf-h2">装置設計・購買のこんな課題に</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--icon"><span></span></div>
+            <h3 class="wf-h3">試作1点から頼める先がない</h3>
+            <p class="wf-p">小ロットを理由に断られ、開発が止まる。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--icon"><span></span></div>
+            <h3 class="wf-h3">公差が厳しく加工先が限られる</h3>
+            <p class="wf-p">図面どおりの精度が出る先を探すのに時間がかかる。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <div class="wf-img wf-img--icon"><span></span></div>
+            <h3 class="wf-h3">見積の回答が遅い</h3>
+            <p class="wf-p">相見積が揃わず、購買判断が後ろ倒しになる。</p>
+          </div></div>
+        </div>
+        <div class="wf-note" data-n="4">
+          <b>意図</b>製品名ではなく設計・購買担当の課題語で入口を作り、各カードから「課題から探す」下層へ振り分ける。
+          <br><b>要確認</b>3つの課題は仮説。実際の問い合わせ内容・営業の受注理由から差し替えたい。
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 加工技術・設備 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">TECHNOLOGY</span>
+          <h2 class="wf-h2">加工技術・設備</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <div class="wf-card__body">
+              <h3 class="wf-h3">切削加工</h3>
+              <p class="wf-p">対応材質・サイズ・精度を一覧で。</p>
+              <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">詳しく見る</a>
+            </div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <div class="wf-card__body">
+              <h3 class="wf-h3">研削・仕上げ加工</h3>
+              <p class="wf-p">対応材質・サイズ・精度を一覧で。</p>
+              <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">詳しく見る</a>
+            </div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <div class="wf-card__body">
+              <h3 class="wf-h3">検査・品質保証</h3>
+              <p class="wf-p">測定機器と検査成績書の対応範囲。</p>
+              <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">詳しく見る</a>
+            </div>
+          </div>
+        </div>
+        <div class="wf-note" data-n="5">
+          <b>要確認</b>加工の種類は仮置き（与件は「精密金属加工」のみ）。保有設備と得意領域を伺い、2〜4枚に整理する。
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 選ばれる理由 -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead wf-center">
+          <span class="wf-en">REASON</span>
+          <h2 class="wf-h2">サンプル精工が選ばれる3つの理由</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card"><div class="wf-card__body">
+            <h3 class="wf-h3">01 試作1点から対応（仮）</h3>
+            <p class="wf-p">最小ロット・対応可否の条件を明記。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <h3 class="wf-h3">02 見積回答◯営業日（仮）</h3>
+            <p class="wf-p">回答までの日数を数字で約束する。</p>
+          </div></div>
+          <div class="wf-card"><div class="wf-card__body">
+            <h3 class="wf-h3">03 加工から検査まで一貫（仮）</h3>
+            <p class="wf-p">窓口が1つで済むことを示す。</p>
+          </div></div>
+        </div>
+        <div class="wf-note" data-n="6">
+          <b>要確認</b>3つの理由はすべて仮説で、数値は未確認。競合（同業の加工メーカー）との差をヒアリングで確定し、各理由に数字か固有名詞を1つ入れる。
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. 加工事例 -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">CASE</span>
+          <h2 class="wf-h2">加工事例</h2>
+        </div>
+        <div class="wf-filter"><span>すべて</span><span>業界</span><span>材質</span><span>加工方法</span><span>ロット</span></div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <div class="wf-card__body">
+              <span class="wf-tag">半導体製造装置（仮）</span>
+              <h3 class="wf-h3">事例見出し：成果を数字で（仮）</h3>
+              <div class="wf-dummy"><span></span></div>
+            </div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <div class="wf-card__body">
+              <span class="wf-tag">産業用ロボット（仮）</span>
+              <h3 class="wf-h3">事例見出し：成果を数字で（仮）</h3>
+              <div class="wf-dummy"><span></span></div>
+            </div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-img wf-img--wide"><span>IMAGE</span></div>
+            <div class="wf-card__body">
+              <span class="wf-tag">検査装置（仮）</span>
+              <h3 class="wf-h3">事例見出し：成果を数字で（仮）</h3>
+              <div class="wf-dummy"><span></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-btns wf-btns--center">
+          <a href="#" class="wf-btn wf-btn--ghost">加工事例一覧へ</a>
+        </div>
+        <div class="wf-note" data-n="7">
+          <b>意図</b>事例の見出しは社名ではなく成果（精度・納期・コスト）にする。設計者は「自分の図面が作れるか」を材質・加工方法で探すため、絞り込み軸を出す。
+          <br><b>要確認</b>業界タグ・成果はすべて仮。掲載可能な事例の有無と、取引先名を伏せる必要があるかを確認したい。
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. 見積の流れ -->
+    <section class="wf-sec wf-sec--fill">
+      <div class="wf-inner">
+        <div class="wf-sechead wf-center">
+          <span class="wf-en">FLOW</span>
+          <h2 class="wf-h2">見積依頼から納品までの流れ</h2>
+        </div>
+        <div class="wf-steps wf-steps--row">
+          <div class="wf-step"><h3 class="wf-h4">図面送付</h3><p class="wf-p">フォームから添付</p></div>
+          <div class="wf-step"><h3 class="wf-h4">お見積り</h3><p class="wf-p">◯営業日以内（仮）</p></div>
+          <div class="wf-step"><h3 class="wf-h4">ご発注・加工</h3><p class="wf-p">納期は都度ご相談</p></div>
+          <div class="wf-step"><h3 class="wf-h4">検査・納品</h3><p class="wf-p">検査成績書の添付可否は要確認</p></div>
+        </div>
+        <div class="wf-note" data-n="8">
+          <b>意図</b>初めて発注する購買担当の「どう頼めばいいか」を消す。見積依頼の直前に置き、次の資料DL・CTAバンドへ流す。
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. 技術資料DL -->
+    <section class="wf-sec">
+      <div class="wf-inner">
+        <div class="wf-sechead">
+          <span class="wf-en">DOWNLOAD</span>
+          <h2 class="wf-h2">設計に使える技術資料</h2>
+        </div>
+        <div class="wf-grid wf-grid--3">
+          <div class="wf-card">
+            <div class="wf-img wf-img--wide"><span>資料サムネイル</span></div>
+            <div class="wf-card__body">
+              <h3 class="wf-h3">対応材質・公差一覧（仮）</h3>
+              <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">ダウンロード</a>
+            </div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-img wf-img--wide"><span>資料サムネイル</span></div>
+            <div class="wf-card__body">
+              <h3 class="wf-h3">設備一覧（仮）</h3>
+              <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">ダウンロード</a>
+            </div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-img wf-img--wide"><span>資料サムネイル</span></div>
+            <div class="wf-card__body">
+              <h3 class="wf-h3">会社案内（仮）</h3>
+              <a href="#" class="wf-btn wf-btn--sm wf-btn--ghost">ダウンロード</a>
+            </div>
+          </div>
+        </div>
+        <div class="wf-note" data-n="9">
+          <b>意図</b>副CV。まだ図面が固まっていない設計者のリードを取る受け皿。
+          <br><b>要確認</b>既存の技術資料があるか、新規作成が必要か。【梅】既存PDFを掲載／【竹】フォーム付きDL／【松】資料を新規制作。
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. お知らせ -->
+    <section class="wf-sec wf-sec--tight">
+      <div class="wf-inner">
+        <div class="wf-sechead"><span class="wf-en">NEWS</span><h2 class="wf-h2">お知らせ</h2></div>
+        <ul class="wf-newslist">
+          <li><a href="#"><span class="wf-date">2026.00.00</span><span class="wf-tag">お知らせ</span>ニュースタイトルが入ります</a></li>
+          <li><a href="#"><span class="wf-date">2026.00.00</span><span class="wf-tag">設備</span>ニュースタイトルが入ります</a></li>
+          <li><a href="#"><span class="wf-date">2026.00.00</span><span class="wf-tag">展示会</span>ニュースタイトルが入ります</a></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 10. CTAバンド（末尾の主CV導線） -->
+  <section class="wf-sec wf-sec--fill">
+    <div class="wf-inner wf-center">
+      <h2 class="wf-h2">図面があれば、まずはお見積りを</h2>
+      <p class="wf-lead">試作1点・仕様検討段階のご相談も承ります（対応範囲は要確認）。</p>
+      <div class="wf-btns wf-btns--center">
+        <a href="#" class="wf-btn wf-btn--lg">図面を送って見積依頼</a>
+        <a href="#" class="wf-btn wf-btn--lg wf-btn--ghost">技術資料をダウンロード</a>
+      </div>
+      <div class="wf-note" data-n="10">
+        <b>意図</b>ページ末尾で主CV（見積依頼）を再提示。FV・ヘッダー・ここ・SP固定CTAの4か所で見積依頼に到達できる。
+        <br><b>要確認</b>見積フォームの項目数と図面ファイルの添付可否（形式・容量）。
+      </div>
+    </div>
+  </section>
+
+  <footer class="wf-footer">
+    <div class="wf-inner">
+      <div class="wf-footer__nav">
+        <div><h4 class="wf-h4">課題から探す</h4><ul><li><a href="#">試作・小ロット</a></li><li><a href="#">高精度加工</a></li></ul></div>
+        <div><h4 class="wf-h4">加工技術・設備</h4><ul><li><a href="#">加工技術</a></li><li><a href="#">設備一覧</a></li></ul></div>
+        <div><h4 class="wf-h4">会社情報</h4><ul><li><a href="#">会社概要</a></li><li><a href="#">アクセス（所在地は要確認）</a></li></ul></div>
+        <div><h4 class="wf-h4">その他</h4><ul><li><a href="#">採用情報</a></li><li><a href="#">個人情報保護方針</a></li></ul></div>
+      </div>
+      <p class="wf-copy">© サンプル精工（架空）</p>
+    </div>
+  </footer>
+
+  <div class="wf-fixcta">
+    <a href="#" class="is-sub">技術資料</a>
+    <a href="#">見積依頼</a>
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll('[data-wf]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var k = b.dataset.wf, d = document.body;
+    if (k === 'notes'){
+      var on = d.dataset.notes === 'on';
+      d.dataset.notes = on ? 'off' : 'on';
+      b.setAttribute('aria-pressed', String(!on));
+    } else {
+      d.dataset.device = k;
+      document.querySelectorAll('[data-wf="pc"],[data-wf="sp"]').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x.dataset.wf === k));
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>
