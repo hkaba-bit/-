@@ -19,6 +19,12 @@
 
 ## 直近
 
+### [2026-10-03] MCP で管理画面に入らず広告・解析を運用する方法の調査 — Claude
+- 成果物: `references/mcp-ad-ops.md`
+- 検証: Supermetrics MCP の接続状況を実測（認証済み：AW / FA / GAWA / GW / SHP。運用操作対応：AW / FA / AC / TIK / LIA / SCM / CGPTA）。`manage_campaign` の仕様を確認。Google Ads 公式 MCP（読み取り専用）・Meta 公式 MCP（オープンベータ・書き込み可）は公開情報で確認、実機は **未確認**
+- 判断メモ: 運用操作は Supermetrics `manage_campaign` に一本化（接続済み・新規は停止状態で作成・Campaign history で取り消し可）。Meta 公式 MCP は取り消しが無いので第2候補。Yahoo!広告（検索・ディスプレイ）はどの MCP も非対応のため、Yahoo!広告スクリプト→スプレッドシート→Drive MCP で読む方式を推奨
+- 残課題（人間）: Supermetrics Hub の Write settings で書き込み権限を有効化 → claude.ai のコネクタ再接続 → 少額の予算変更を1件試す
+
 ### [2026-10-03] Codex 起点で ③ Claude Code を自動起動 — Claude
 - 経緯: 人間（蒲）から「毎回うまく機能していない。Codex 起点で自動で動くようにしたい」。確認すると main に依頼書は1件も無く、claude.ai 起点のパイプライン（2026-09-28）は一度も実走していなかった。①がクラウドのため、依頼書を main に入れる段で止まりやすい構造だった
 - 成果物: `.codex/hooks.json`（Codex の Stop フック）/ `scripts/codex-stop.mjs` / `AGENTS.md` 第2・4・9章（Codex へのルール：成果物を作り終えたら最後の行を `②完了`）/ `CLAUDE.md` / `references/orca-workflow.md` §1・§2（Codex 起点を基本に）・§2.5・§3 / `references/role-split.md` 4.5
