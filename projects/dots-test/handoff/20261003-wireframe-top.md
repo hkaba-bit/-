@@ -1,6 +1,6 @@
 ---
 status: ready
-runner: dots
+runner: claude
 type: wireframe
 slug: dots-test
 created: 2026-10-03
@@ -21,7 +21,7 @@ Dots → Codex クラウド → Claude Code クラウドの1周を確認する�
 - 参照ファイル：projects/dots-test/STATUS.md
 
 ## Constraints
-- AGENTS.md 準拠。クラウドで動いているので第4章「Codex がクラウドで動くとき」に従い PR まで作る
+- AGENTS.md 準拠。第4章「Claude Code がクラウドで②を作るとき」に従い PR まで作る（2026-10-03 に runner を dots から claude に切り替え）
 - 作るのは TOP の1ページだけ。下層ページへのリンクは `#` でよい
 - 共通 CSS（skills/gg-wireframe/assets/wireframe.css）は編集せず読み込む
 - 架空案件なので、数値・実績はすべて「仮」「要確認」と注釈に書く
