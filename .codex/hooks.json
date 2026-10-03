@@ -1,0 +1,18 @@
+{
+  "description": "② Codex が最後に「②完了」と書いたら、③ Claude Code（チェック・ブラッシュアップ）を同じ作業フォルダで自動起動する。references/orca-workflow.md 第2章",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/codex-stop.mjs",
+            "commandWindows": "node scripts\\codex-stop.mjs",
+            "timeout": 30,
+            "statusMessage": "③ Claude Code を起動しています"
+          }
+        ]
+      }
+    ]
+  }
+}

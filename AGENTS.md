@@ -30,6 +30,7 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 | `.env` | 認証情報 | **読み書き禁止（人間のみ）** |
 | `.env.example` | キー名のみ（値は空） | 可 |
 | `.claude/settings.json` | Claude Code のプロジェクト設定（SessionStart フック） | 人間承認のうえ可 |
+| `.codex/hooks.json` | Codex のプロジェクトフック（Stop → ③ 起動） | 人間承認のうえ可 |
 | `orca.yaml` / `.worktreeinclude` | Orca の worktree 設定（共有する依存・コピーする追跡外ファイル） | 人間承認のうえ可 |
 
 - 案件スラッグは英小文字ハイフン（例：`bikkuri-donkey`、`lizon`、`tokyo-weld`）
@@ -45,6 +46,7 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 | `node scripts/orca-context.mjs` | Orca 運用モード（A: worktree 内 / B: 元チェックアウト / C: Orca 不可）を判定。Claude Code の SessionStart フックから自動実行。`--on-prompt` はワイヤー依頼時に Orca を自動起動（UserPromptSubmit フック） |
 | `scripts\setup-orca-pipeline.ps1`（Windows のみ） | Orca に定期実行「gg handoff pipeline」（15分ごと）を登録 |
 | `node scripts/handoff-scan.mjs --check / --next / --release / --list` | 依頼書（status: ready）の検出と着手記録。Orca の定期実行から使う |
+| `node scripts/codex-stop.mjs`（Codex の Stop フックから自動実行） | Codex が `②完了` で終えたら、同じ作業フォルダで ③ Claude Code を起動（Orca のターミナル、無ければ新しいコンソール） |
 | `python scripts/check-skills-table.py` | 第5章の一覧表と `skills/` の実体が一致しているか検証 |
 | `python scripts/find-skill-script.py <skill> <スクリプト>` | Skill 同梱スクリプトの実パスを解決（環境ごとに置き場所が違うため直書きしない） |
 | `python scripts/check-skill-assets.py` | SKILL.md が参照する assets / scripts / references が実在するか検証 |
@@ -75,7 +77,13 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 | 最終判断・マージ・クライアント向け文言 | **人間（蒲）** | — | — |
 
 **原則：① Claude が整理 → ② Codex が作る → ③ Claude Code がチェック。** 作った側（Codex）に検品させない。
-②③は Orca が自動で回す。受け渡しは依頼書（`projects/<slug>/handoff/*.md`）。手順は `references/orca-workflow.md`。
+③ は ② の終了を合図に自動で起動する（`.codex/hooks.json` → `scripts/codex-stop.mjs`）。手順は `references/orca-workflow.md`。
+
+### Codex（②）へのルール
+- 資料・ワイヤー・Excel などの成果物を作り終えたら、**最終メッセージの最後の行を `②完了` だけにする**。これが ③ Claude Code を自動起動する合図になる
+- 作成の途中、質問への回答、相談、作業を中断するときは `②完了` を書かない（③ が空振りする）
+- 成果物は `projects/<案件スラッグ>/` 配下に置く。コミットはしてよいが、push・PR 作成・マージはしない（③ が行う）
+- 依頼書（`projects/<slug>/handoff/*.md`）があれば、その Goal / Context / Constraints / Done when に従う
 
 ---
 
@@ -150,3 +158,4 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 | 2026-09-28 | 第2章に `.claude/settings.json` と `orca-context.mjs` を追加（Claude Code 起動時に Orca 運用モードを自動判定） |
 | 2026-09-28 | 第2章 `orca-context.mjs` に `--on-prompt`（ワイヤー依頼時に Orca を自動起動）を追記 |
 | 2026-09-28 | 第4章の分担を改定（①Claude 整理 → ②Codex 作成 → ③Claude Code チェック）。第2章に `setup-orca-pipeline.ps1` `handoff-scan.mjs`、第5章に `gg-handoff` |
+| 2026-10-03 | 第4章に Codex（②）へのルール（終了時に `②完了`）を追加。②の終了で ③ を自動起動（`.codex/hooks.json`、`codex-stop.mjs`）。第2章に追記 |

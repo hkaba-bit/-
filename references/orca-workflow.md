@@ -1,4 +1,4 @@
-# Orca で回す（①整理 → ②Codex 作成 → ③Claude Code チェック）
+# Orca で回す（②Codex 作成 → ③Claude Code チェック）
 
 Orca（stablyai/orca）は、CLI エージェントを **作業ごとの git worktree** で並べて動かすデスクトップアプリ。
 この環境では、②Codex による資料・ワイヤー作成と、③Claude Code によるチェック・ブラッシュアップを、Orca 上で自動で回すために使う。
@@ -17,30 +17,52 @@ Orca（stablyai/orca）は、CLI エージェントを **作業ごとの git wor
 | 3 | このリポジトリを Orca に追加 | サイドバーの **Add Repo** → `C:\work\gg`。CLI なら `orca repo list --json`（済） |
 | 4 | Orca CLI を有効化 | Settings → General → Orca CLI。`orca status --json` が通る（済） |
 | 5 | エージェントに Orca CLI の Skill を入れる | `orca skills install --skill orca-cli`（済） |
-| 6 | 定期実行「gg handoff pipeline」を登録 | `C:\work\gg` を main にして `powershell -ExecutionPolicy Bypass -File scripts\setup-orca-pipeline.ps1`。Orca の Automations 画面に出る |
+| 6 | Codex のプロジェクトフックを信頼する | `C:\work\gg` で `codex` を起動し、`.codex/hooks.json` の Stop フックを承認（信頼）する。Codex 0.157.1 でフックが使えない場合は `npm install -g @openai/codex` で更新 |
 | 7 | 自動実行中に承認待ちで止まらないようにする | **人間が判断して設定する**（§6） |
+| 8 | （claude.ai 起点も使う場合のみ）定期実行を登録 | §3 |
 
 リポジトリ直下の `orca.yaml` で `node_modules` を各 worktree に共有し、`.worktreeinclude` で `.env` を各 worktree にコピーする。`node_modules` は元チェックアウトで一度 `npm ci` しておくこと。
 
 ---
 
-## 2. 全体の流れ
+## 2. Codex 起点（基本）
+
+| 工程 | 担当 | 起動のしかた |
+|---|---|---|
+| ② 資料・ワイヤー作成 | Codex | 人間が PC で頼む（Orca の worktree で Codex を起動するのが基本。`C:\work\gg` で `codex` でも可） |
+| ③ チェック・ブラッシュアップ → PR | Claude Code | **自動**。Codex が最終メッセージの最後に `②完了` と書くと、Stop フックが同じ作業フォルダで起動する |
+| マージ | 人間 | GitHub |
+
+しくみ：
+
+| 部品 | 役割 |
+|---|---|
+| `AGENTS.md` 第4章「Codex（②）へのルール」 | Codex は成果物を作り終えたら最後の行を `②完了` にする（Codex は AGENTS.md を自動で読む） |
+| `.codex/hooks.json` | Codex の Stop フック。毎ターンの終わりに `node scripts/codex-stop.mjs` を呼ぶ |
+| `scripts/codex-stop.mjs` | `②完了` が無ければ何もしない。あれば ③ の依頼ファイル（`.orca-pipeline/review-*.md`）を作り、`claude "Read <依頼ファイル> and follow it."` を起動する。起動先は Orca のターミナル（`orca terminal create --worktree path:<作業フォルダ>`）、Orca に接続できなければ Windows の新しいコンソール |
+| 重複防止 | 同じ作業フォルダ・同じ状態（HEAD と未コミット差分）では1回だけ。記録は元チェックアウトの `.orca-pipeline/reviewed.json`（Git 追跡外） |
+
+③ は依頼書（`projects/*/handoff/*.md`）があればその基準で、無ければ AGENTS.md と該当 Skill で検品し、その場で直して PR を作る。main 上で作業していた場合は、③ が `codex/<案件>-<内容>` ブランチを切ってからコミットする。
+
+---
+
+## 2.5 claude.ai 起点（依頼書）
 
 | 工程 | 担当 | 場所 | 使う Skill | 出力 |
 |---|---|---|---|---|
 | ① 情報整理 → 依頼書 | Claude | claude.ai（クラウド可） | `gg-handoff` | `projects/<slug>/handoff/<日付>-<種類>-<名前>.md`（status: ready）を main へ |
 | ② 資料・ワイヤー作成 | Codex | Orca（PC） | 依頼書の Context にある Skill | worktree にコミット |
 | ③ チェック・ブラッシュアップ | Claude Code | Orca（PC）・同じ worktree | `gg-proposal-standard` ＋種類別の検品 | 修正コミット → PR（依頼書は status: review） |
-| マージ | 人間 | GitHub | — | — |
 
-②③の進行は `skills/gg-orca-flow/SKILL.md`。Orca の定期実行が 15 分ごとに呼ぶ。
+依頼書を Orca が自動で拾うには §3 の定期実行の登録が必要。登録しない場合は、依頼書を main に入れたあと PC の Codex に「依頼書 <パス> を処理して」と頼めば、§2 の流れ（②完了 → ③自動起動）で進む。
 
 ---
 
-## 3. 自動実行のしくみ
+## 3. 依頼書の定期実行（claude.ai 起点を自動化する場合のみ）
 
 | 部品 | 役割 |
 |---|---|
+| 登録 | `C:\work\gg` を main にして `powershell -ExecutionPolicy Bypass -File scripts\setup-orca-pipeline.ps1`（Orca の Automations 画面に出る） |
 | Orca automation「gg handoff pipeline」 | 15 分ごと（cron `*/15 * * * *`）。`provider: claude` で進行役を起動する |
 | precheck：`node C:/work/gg/scripts/handoff-scan.mjs --check` | main を pull し、未着手の `status: ready` が無ければ exit 1 → その回はスキップ（**エージェントを起動しないので費用がかからない**） |
 | 進行役（Claude）→ `gg-orca-flow` | `handoff-scan.mjs --next` で1件取り出し → worktree 作成＋②Codex 起動 → 完了待ち → 同じ worktree で③Claude Code 起動 → 完了待ち → PR URL を記録 |

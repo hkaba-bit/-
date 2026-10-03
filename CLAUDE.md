@@ -20,6 +20,8 @@
 ### Orca 運用（自動）
 分担は ①Claude（claude.ai）で情報整理 → 依頼書 → ②Codex が資料・ワイヤーを作成 → ③Claude Code がチェック・ブラッシュアップ → PR。②③は PC の Orca が自動で回す（`references/orca-workflow.md`）。
 
+Codex が `②完了` で作業を終えると、Codex の Stop フック（`scripts/codex-stop.mjs`）が同じ作業フォルダでこの Claude Code を ③ として起動する。最初のメッセージで渡される依頼ファイル（`.orca-pipeline/review-*.md`）に従う。
+
 セッション開始時と依頼送信時に `.claude/settings.json` のフックが `scripts/orca-context.mjs` を実行し、`[Orca モード A/B/C]` を1行出す。その行の役割で動く。
 
 | モード | 状況 | 役割 |
