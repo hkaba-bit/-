@@ -1,5 +1,11 @@
 ﻿# Windows に Orca（stablyai/orca）と周辺ツールを入れる。手順ごとに結果を出す。
-#
+# 用途: Git・Node.js LTS・GitHub CLI・Codex CLI と Orca を導入し、導入結果を表示する。
+# 前提条件: Windows PowerShell 5.1 以降で、リポジトリのルートから実行する。
+#   winget が使用でき、パッケージ配布元・npm レジストリ・GitHub へ接続できること。
+#   ソフトウェアのインストールとユーザー環境変数の変更が許可されていること。
+#   Git のグローバル設定 core.longpaths とユーザー PATH を更新する。
+#   Claude Code の導入や各 CLI のログインは別途行う。
+# 実行方法の例:
 #   powershell -ExecutionPolicy Bypass -File scripts\setup-orca.ps1
 #
 # 署名が Valid でなければ中止する。サイレント導入できなければ「PC画面で操作が必要」と出して止まる。

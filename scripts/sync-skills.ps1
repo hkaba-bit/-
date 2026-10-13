@@ -1,6 +1,11 @@
 ﻿# skills/ を正本として Claude Code 側（%USERPROFILE%\.claude\skills）へ配布する。
 # シンボリックリンクを試み、権限不足なら robocopy でミラーコピーに切り替える。
-#
+# 用途: 各 Skill をリンクまたはコピーで同期する。配布先の同名ディレクトリは削除して作り直す。
+# 前提条件: Windows PowerShell 5.1 以降で、リポジトリのルートから実行する。
+#   skills が存在し、配布先への書き込み権限があること。コピー同期には robocopy が必要。
+#   リンク作成には開発者モードまたは管理者権限が必要。作成できない場合はコピーに切り替える。
+#   CLAUDE_SKILLS_DIR を設定すると配布先を変更できる。配布先の独自変更は事前に退避する。
+# 実行方法の例（-Copy はリンクを使わずコピー同期する）:
 #   powershell -ExecutionPolicy Bypass -File scripts\sync-skills.ps1
 #   powershell -ExecutionPolicy Bypass -File scripts\sync-skills.ps1 -Copy
 
