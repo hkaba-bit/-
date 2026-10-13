@@ -19,6 +19,7 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+.venv-ads-ops/
 
 # --- OS / エディタ ---
 .DS_Store
