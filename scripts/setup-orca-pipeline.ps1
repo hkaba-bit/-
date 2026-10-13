@@ -1,6 +1,11 @@
 ﻿# Orca に「gg handoff pipeline」（15分ごとに依頼書を確認して ②Codex → ③Claude Code を回す）を登録する。
 # 運用は references/orca-workflow.md 第3章。Orca を起動した状態で、元チェックアウト（main）で実行する。
-#
+# 用途: 未登録の場合に定期実行を追加する。既存の同名定期実行は変更しない。
+# 前提条件: Windows PowerShell 5.1 以降で、元チェックアウトのルートから実行する。
+#   Git が PATH 上にあり、Orca が起動済みで、このリポジトリが Orca に登録されていること。
+#   orca CLI が PATH 上、またはユーザーの Orca インストール先に存在すること。
+#   定期実行には Node.js と Claude Code、後続工程には Codex の実行環境・認証が必要。
+# 実行方法の例:
 #   powershell -ExecutionPolicy Bypass -File scripts\setup-orca-pipeline.ps1            # 登録（有効）
 #   powershell -ExecutionPolicy Bypass -File scripts\setup-orca-pipeline.ps1 -Disabled  # 無効のまま登録（試運転用）
 

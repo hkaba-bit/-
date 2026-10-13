@@ -1,5 +1,10 @@
 ﻿# 案件ディレクトリを projects\_template\ から作る。
-#
+# 用途: 雛形をコピーし、案件用 STATUS.md のスラッグ・案件名・日付を設定する。
+# 前提条件: Windows PowerShell 5.1 以降で、リポジトリのルートから実行する。
+#   projects\_template が存在し、projects への書き込み権限があること。
+#   スラッグは英小文字・数字をハイフンで区切った形式とし、同名の案件が未作成であること。
+#   案件名を省略した場合はスラッグを案件名として使用する。
+# 実行方法の例:
 #   powershell -ExecutionPolicy Bypass -File scripts\new-project.ps1 tokyo-weld "東京ウェルディングパーツ リニューアル"
 
 param(
