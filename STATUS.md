@@ -19,6 +19,11 @@
 
 ## 直近
 
+### [2026-10-15] Supermetrics 解約 — 人間（蒲）
+- 内容: Supermetrics Hub でサブスクリプション（Supermetrics Growth・ID 1882822）を解約。自動更新 OFF、2026-11-01 まで有効（画面で確認）
+- 判断メモ: 2席（Kaba@cava-llc.com・h.kaba@grow-group.jp）とデータソース接続は外さない。TheDeptStore_統合シートの置き換え（10/17 設置・10/21 切り替え）まで Supermetrics のクエリを動かすため
+- 残課題: Hub → Token management で Looker Studio の利用確認／claude.ai（GrowGroup 側）のコネクタ削除／TheDeptStore の置き換え
+
 ### [2026-10-15] Supermetrics 依存レポートの棚卸しと設定ファイル更新 — Claude
 - 経緯: カレンダー【作業】GrowGroup株式会社_Supermetrics依存レポートの棚卸しと設定ファイル更新（予定 10/14）。10/16 の解約の前提作業
 - 成果物: `references/mcp-ad-ops.md`（第1章を実構成に・第5章に状態と 5.1 棚卸し結果・第9章）/ `CLAUDE.md`（MCP 節：Supermetrics と ds_id 表を外し、BigQuery・Meta Ads MCP・google-ads-ops に）/ `AGENTS.md` 第2章（`setup-ads-mcp`・`google_ads_ops_mcp.py`）と改訂履歴 / `skills/gg-sitemap-spec/references/audit.md` 第4章（GA4 は BigQuery `ga4_agg`、足りない切り口は gg-manager）/ `references/role-split.md`

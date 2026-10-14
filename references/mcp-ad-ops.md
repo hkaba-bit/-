@@ -113,7 +113,7 @@ PC 上で動く（クラウドの Claude Code・claude.ai からは使えない�
 | 1 | Supermetrics を使っているレポートの棚卸し → 付け替え | 人間＋Claude | 棚卸し済み（5.1）。**CAVA 側に付け替え前のものが2件** |
 | 2 | 第3章・第4章を済ませ、Google 広告と Meta の数値が取れることを確認 | 人間＋Claude | Meta MCP 接続済み。Google 広告は BigQuery で読める。`google-ads-ops` の実アカウント確認は未確認 |
 | 3 | GA4・Search Console を BigQuery（GG-Hub）へ | 人間 | 済（`ga4_agg` / `search_console`）。未リンクの GA4 プロパティは保留 |
-| 4 | Supermetrics を解約（自動更新を止める）。claude.ai のコネクタからも外す | 人間 | 未。**5.1 の CAVA 分を付け替えるか、CAVA 席を残すかを決めてから** |
+| 4 | Supermetrics を解約（自動更新を止める）。claude.ai のコネクタからも外す | 人間 | **2026-10-15 解約済み**（自動更新 OFF・2026-11-01 まで有効・月額・請求先 CAVA LLC）。2席とデータソース接続は 11/1 まで残す（TheDeptStore の並行稼働用）。コネクタ削除は未 |
 | 5 | CLAUDE.md の「MCP」節を書き換え | Claude（人間の指示） | 済（2026-10-15） |
 
 Supermetrics のチーム設定に保存した運用ルール（タグ `operations-policy` / `reporting`）は解約で消えてよい。同じ内容が第7章にある（2026-10-15 に両者が一致していることを確認）。
