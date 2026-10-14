@@ -148,25 +148,23 @@ grep -oiE '<(input|select|textarea)[^>]*>' form.html
 
 ## 4. ページ別の実力を測る（GA4）
 
-Supermetrics経由でGoogle Analyticsを引ける場合、以下を取る。
+GA4 は BigQuery（`gg-hub-498500.ga4_agg`）から取る。プロパティIDは `ga4_agg.properties` で引く。
+集計表に無い切り口（ランディングページ・イベント名）は `gg-manager:google_analytics_run_report` で取る。
 
-| 取るもの | fields |
+| 取るもの | 取り方 |
 |---|---|
-| チャネル別 | `sessionDefaultChannelGrouping, sessions, engagedSessions, conversions` |
-| ランディングページ別 | `landingPage, sessions, engagedSessions, averageSessionDuration, conversions` |
-| イベント別 | `eventName, isConversionEvent, eventCount` |
-| CVの発生元 | `landingPage, eventName, eventCount` |
-| フォームの通過 | `pagePath, screenPageViews`（フォーム・確認・完了の各URL） |
-| デバイス | `deviceCategory, sessions, conversions` |
-| 個別ページ | `pagePath, pageTitle, screenPageViews` |
+| チャネル別 | `ga4_agg.traffic_daily`：`channel_group, sessions, engaged_sessions, key_events` |
+| デバイス | `ga4_agg.traffic_daily`：`device, sessions, key_events` |
+| 個別ページ | `ga4_agg.pages_daily`：`page_path, page_views, active_users, key_events` |
+| フォームの通過 | `ga4_agg.pages_daily`：フォーム・確認・完了の各URLの `page_views` |
+| ランディングページ別 | gg-manager：`landingPage, sessions, engagedSessions, averageSessionDuration, keyEvents` |
+| イベント別・CVの発生元 | gg-manager：`eventName, isKeyEvent, eventCount`／`landingPage, eventName, eventCount` |
 
 **注意点**
 
-- 優先アカウント（prioritised accounts）に登録されていないプロパティは引けない。
-  登録を依頼する
-- 同じ条件で再送すると失敗ジョブのキャッシュが返ることがある。日付を1日ずらすなど
-  条件を変えて投げ直す
-- GA4の「コンバージョン」は全イベントの合計。電話タップが大半を占めることが多いので、
+- `ga4_agg` は日別・プロパティ別の集計。期間で絞ってから合計する（`date` で月パーティション）。比率（CVR・エンゲージメント率）は行を平均せず、合計値から計算し直す
+- BigQuery にリンクされていないプロパティ（編集者権限が無いもの）は入っていない。`properties` に無ければ先方に権限を依頼するか、GA4 画面で取る
+- GA4の「キーイベント（旧コンバージョン）」は全イベントの合計。電話タップが大半を占めることが多いので、
   **KGIに当たるイベント単体の数字を必ず分けて出す**
 
 **見るべきポイント**

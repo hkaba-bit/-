@@ -19,7 +19,7 @@
 | 作業 | 担当 | 補足 |
 |---|---|---|
 | ヒアリング議事録の整理・与件確定 | ① Claude | 文脈量が多い |
-| 競合調査・市場調査 | ① Claude | MCP（Semrush / Supermetrics）を持つのは Claude 側 |
+| 競合調査・市場調査 | ① Claude | MCP（Semrush / BigQuery / Meta Ads）を持つのは Claude 側 |
 | 提案骨子・章立て・論点設計 | ① Claude | `gg-proposal-standard` `gg-proposal-deck` |
 | 依頼書の作成（②③への受け渡し） | ① Claude | `gg-handoff` |
 | PPTX 生成スクリプトの実装・修正 | ② **Codex** | 依頼書＋`gg-proposal-deck` |

@@ -19,6 +19,19 @@
 
 ## 直近
 
+### [2026-10-15] Supermetrics 依存レポートの棚卸しと設定ファイル更新 — Claude
+- 経緯: カレンダー【作業】GrowGroup株式会社_Supermetrics依存レポートの棚卸しと設定ファイル更新（予定 10/14）。10/16 の解約の前提作業
+- 成果物: `references/mcp-ad-ops.md`（第1章を実構成に・第5章に状態と 5.1 棚卸し結果・第9章）/ `CLAUDE.md`（MCP 節：Supermetrics と ds_id 表を外し、BigQuery・Meta Ads MCP・google-ads-ops に）/ `AGENTS.md` 第2章（`setup-ads-mcp`・`google_ads_ops_mcp.py`）と改訂履歴 / `skills/gg-sitemap-spec/references/audit.md` 第4章（GA4 は BigQuery `ga4_agg`、足りない切り口は gg-manager）/ `references/role-split.md`
+- 検証: Drive 全文検索「Supermetrics」（2件）・Supermetrics Studio ダッシュボード（0件）・チーム設定（第7章と一致）・BigQuery GG-Hub のデータセット（`google_ads` `ads_mart` `ga4_agg` `search_console` あり、`meta_ads` は空）を確認＝**OK**。リポジトリ内の Supermetrics 参照は経緯・棚卸しの記述だけになったことを grep で確認
+- 判断メモ:
+  - CLAUDE.md・AGENTS.md は「人間のみ編集」だが、蒲さんのカレンダータスク（設定ファイル更新）に基づく依頼として Claude が編集した
+  - 依存は CAVA 側にだけ残っていた。GrowGroup 分は影響なし
+- 残課題（人間）:
+  1. **TheDeptStore_統合シート**：Sheets アドオンのクエリ5本（Google 広告・Meta・GA4・Shopify×2）が毎朝更新中。解約・CAVA 席の削除で 11/1 以降止まる。付け替えるか、CAVA 席だけ残すかを決める（mcp-ad-ops.md 5.1）
+  2. **HABUSH 月次報告**：Shopify の数値の取り方を決める（次回は 11月初）
+  3. Looker Studio のレポートを Supermetrics Hub → Token management で確認（Drive 検索では出ない）
+  4. 上が決まったら解約（自動更新停止）と claude.ai のコネクタ削除
+
 ### [2026-10-03] MCP で管理画面に入らず広告・解析を運用する（Supermetrics 解約前提） — Claude
 - 経緯: 人間（蒲）から「Supermetrics は解約したいのでその前提で」。Supermetrics は優先アカウント8件/データソースの上限があり、ライセンスも 2026-11-01 まで
 - 成果物: `references/mcp-ad-ops.md`（実装手順）/ `scripts/google_ads_ops_mcp.py`（自作 MCP：Google 広告の日予算・停止/再開・キーワード・除外キーワードを propose → apply の2段階で変更）/ `scripts/setup-ads-mcp.ps1`・`.sh`（公式 google-ads・analytics-mcp・Meta Ads MCP と google-ads-ops を Claude Code に登録）

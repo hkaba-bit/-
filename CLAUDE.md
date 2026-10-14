@@ -47,15 +47,19 @@ Codex が `②完了` で作業を終えると、Codex の Stop フック（`scr
 - 生ログ・大きな CSV を丸ごと貼らない。抜粋を渡す
 
 ### MCP
-接続中：Notion / Gmail / Google Drive / Google Calendar / Slack / Semrush / Supermetrics / Dropbox / Figma / Canva
+接続中：Notion / Gmail / Google Drive / Google Calendar / Slack / Semrush / Dropbox / Figma / Canva / BigQuery / Meta Ads（公式）
 
-Supermetrics の `ds_id`：
-| サービス | ds_id |
-|---|---|
-| GA4 | `GAWA` |
-| Google Ads | `AW` |
-| Meta | `FA` |
-| Search Console | `GW` |
+広告・解析の数値と運用操作（Supermetrics は解約予定のため使わない。詳細は `references/mcp-ad-ops.md`）：
+| サービス | 数値取得 | 運用操作 |
+|---|---|---|
+| Google 広告 | BigQuery `gg-hub-498500.google_ads`（ビュー `ads_mart.google_ads_daily_account`）／PC は `google-ads` | `google-ads-ops`（PC・propose → apply）。CAVA 管理アカウントは `CAVA_Google` |
+| Meta 広告 | Meta Ads MCP（`https://mcp.facebook.com/ads`） | Meta Ads MCP（即時反映。OK まで書き込まない） |
+| GA4 | BigQuery `gg-hub-498500.ga4_agg`（`traffic_daily` / `pages_daily` / `properties`） | — |
+| Search Console | BigQuery `gg-hub-498500.search_console.searchdata` | — |
+| Yahoo!広告 | Google Drive の `広告レポート/Yahoo/`（Yahoo!広告スクリプトの出力） | 管理画面 |
+
+- BigQuery は前日分までが入る（当日・直近1〜2日は暫定）
+- CAVA（GCP `long-ratio-497810-r6`）は Search Console のみ BigQuery 化済み。広告・GA4 は未整備
 
 ---
 

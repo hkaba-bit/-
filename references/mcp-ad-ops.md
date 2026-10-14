@@ -2,7 +2,7 @@
 
 > 目的：予算変更・停止・キーワード追加などの運用操作と数値取得を、管理画面にログインせず Claude から行う。
 > 前提：**Supermetrics は解約する**（ライセンスは 2026-11-01 まで）。公式 MCP と自作の小さな MCP だけで組む。
-> 初版 2026-10-03。実機未確認のものは「未確認」と書く。
+> 初版 2026-10-03。2026-10-15 に第1・5・9章を実際の構成（GA4・Search Console は BigQuery 経由）と依存レポートの棚卸し結果に合わせて更新。実機未確認のものは「未確認」と書く。
 
 ---
 
@@ -10,10 +10,10 @@
 
 | サービス | 数値取得 | 運用操作 | 使うもの | 費用 |
 |---|---|---|---|---|
-| Google 広告 | MCC 配下の全アカウント | 日予算・停止/再開・キーワード・除外キーワード | 公式 `google-ads`（読み取り）＋自作 `google-ads-ops`（書き込み） | 無料（API） |
-| Meta 広告 | 全アカウント | キャンペーン作成・更新・停止・再開・予算 | 公式 Meta Ads MCP（`https://mcp.facebook.com/ads`） | 無料 |
-| GA4 | 全プロパティ | — | 公式 `google-analytics`（`analytics-mcp`）、または gg-manager | 無料 |
-| Search Console | 全サイト | — | gg-manager `google_search_console_*` | 既存 |
+| Google 広告 | MCC 配下の全アカウント | 日予算・停止/再開・キーワード・除外キーワード | 読み取り：BigQuery `gg-hub-498500.google_ads`（データ転送・毎日）／PC では公式 `google-ads`。書き込み：自作 `google-ads-ops`。CAVA 管理アカウントは claude.ai の `CAVA_Google` コネクタ | 無料（API） |
+| Meta 広告 | 全アカウント | キャンペーン作成・更新・停止・再開・予算 | 公式 Meta Ads MCP（`https://mcp.facebook.com/ads`）。claude.ai に接続済み（2026-10-06） | 無料 |
+| GA4 | 全プロパティ | — | BigQuery `gg-hub-498500.ga4_agg`（`traffic_daily` / `pages_daily` / `properties`）。2026-10-06 に GA4→BigQuery リンクを一括実行。編集者権限が無いプロパティは未リンク | 無料 |
+| Search Console | 全サイト | — | BigQuery `gg-hub-498500.search_console.searchdata`（API で過去16か月＋毎日） | 無料 |
 | Google×Meta の横断レポート | — | — | 上の MCP から Claude がまとめる | — |
 | Yahoo!広告 | 第6章 | 第6章 | Yahoo!広告スクリプト → スプレッドシート → Google Drive MCP | 無料 |
 | LINE 広告・TikTok 広告 | 対象外（必要になったら調べる） | — | — | — |
@@ -22,9 +22,10 @@ Supermetrics でやっていたことの置き換え：
 
 | Supermetrics の機能 | 置き換え先 |
 |---|---|
-| `data_query`（Google 広告） | `google-ads` の `search`（GAQL） |
+| `data_query`（Google 広告） | BigQuery `google_ads`（claude.ai）／`google-ads` の `search`（GAQL・PC） |
 | `data_query`（Meta） | Meta Ads MCP のインサイト系ツール |
-| `data_query`（GA4 / Search Console） | `google-analytics` / gg-manager |
+| `data_query`（GA4 / Search Console） | BigQuery `ga4_agg` / `search_console` |
+| Sheets アドオン・Looker Studio コネクタ | 代わりなし。レポートごとに付け替える（第5章 5.1） |
 | `manage_campaign`（Google 広告） | `google-ads-ops`（予算・状態・キーワード）。**新規キャンペーン作成・広告文の入稿は対象外** |
 | `manage_campaign`（Meta） | Meta Ads MCP |
 | Business context（運用ルール） | 第7章のルール＋`google-ads-ops` の2段階承認 |
@@ -107,15 +108,31 @@ PC 上で動く（クラウドの Claude Code・claude.ai からは使えない�
 
 ## 5. Supermetrics 解約までにやること
 
-| # | 作業 | 担当 |
-|---|---|---|
-| 1 | Supermetrics を使っている Looker Studio・スプレッドシートのレポートが無いか確認（あれば、公式コネクタ（Google 広告・GA4・Search Console は Looker Studio 標準）に付け替え） | 人間 |
-| 2 | 第3章・第4章を済ませ、Google 広告と Meta の数値が取れることを確認 | 人間＋Claude |
-| 3 | gg-manager で GA4・Search Console を連携（件数制限なし） | 人間 |
-| 4 | Supermetrics を解約（自動更新を止める）。claude.ai のコネクタからも外す | 人間 |
-| 5 | CLAUDE.md の「MCP」節から Supermetrics と ds_id 表を外し、`google-ads` / `google-ads-ops` / `google-analytics` / `meta-ads` に書き換え（CLAUDE.md は人間のみ編集） | 人間 |
+| # | 作業 | 担当 | 状態（2026-10-15） |
+|---|---|---|---|
+| 1 | Supermetrics を使っているレポートの棚卸し → 付け替え | 人間＋Claude | 棚卸し済み（5.1）。**CAVA 側に付け替え前のものが2件** |
+| 2 | 第3章・第4章を済ませ、Google 広告と Meta の数値が取れることを確認 | 人間＋Claude | Meta MCP 接続済み。Google 広告は BigQuery で読める。`google-ads-ops` の実アカウント確認は未確認 |
+| 3 | GA4・Search Console を BigQuery（GG-Hub）へ | 人間 | 済（`ga4_agg` / `search_console`）。未リンクの GA4 プロパティは保留 |
+| 4 | Supermetrics を解約（自動更新を止める）。claude.ai のコネクタからも外す | 人間 | 未。**5.1 の CAVA 分を付け替えるか、CAVA 席を残すかを決めてから** |
+| 5 | CLAUDE.md の「MCP」節を書き換え | Claude（人間の指示） | 済（2026-10-15） |
 
-Supermetrics のチーム設定に保存した運用ルール（タグ `operations-policy` / `reporting`）は解約で消えてよい。同じ内容が第7章にある。
+Supermetrics のチーム設定に保存した運用ルール（タグ `operations-policy` / `reporting`）は解約で消えてよい。同じ内容が第7章にある（2026-10-15 に両者が一致していることを確認）。
+
+### 5.1 依存レポートの棚卸し結果（2026-10-15）
+
+調べた範囲：Google Drive（h.kaba@grow-group.jp から見える範囲、全文検索「Supermetrics」）／Supermetrics Studio のダッシュボード／Supermetrics のチーム設定。
+
+| # | レポート | 所有 | Supermetrics の使い方 | 解約したら | 付け替え先（案） |
+|---|---|---|---|---|---|
+| 1 | TheDeptStore_統合シート（The Dept. Store・Google スプレッドシート） | Kaba@cava-llc.com | Sheets アドオンのクエリ5本を毎朝 6:00 にトリガー更新（2026-10-14 も成功）。Google 広告 209-666-9084 → `RAW_google_ads`、Meta act_598338802363016 → `RAW_meta_ads`、GA4 413798732 → `RAW_ga4_source`、Shopify → `RAW_shopify_daily` / `RAW_shopify_channel`。Apps Script（6:20〜7:00）がこれを元に MART・アラート・月次 PDF を作る | RAW が更新されず、FRESHNESS_DAYS=1 の判定で「データ取得失敗」アラートが毎朝出る。月次レポート（毎月1日）も止まる | Shopify：`SHOPIFY_TOKEN` を設定し、既存の Shopify GraphQL 取得に寄せる（現状は未設定で、AOV 補完も Supermetrics 経由）。Google 広告・Meta・GA4：Apps Script から各 API を直接呼ぶか、CAVA の BigQuery（`long-ratio-497810-r6`）に入れてから読む |
+| 2 | HABUSH 月次実績報告（PDF・and okinawa 株式会社 向け） | Kaba@cava-llc.com | Meta 広告・GA4・Shopify の数値（毎月作成） | 次回（11月初・10月分）から Shopify の数値の取り方が無い | Meta：Meta Ads MCP。GA4：BigQuery または GA4 画面。Shopify：Shopify 管理画面のレポート、または Shopify の MCP・API |
+| — | Supermetrics Studio のダッシュボード | — | 0件 | 影響なし | — |
+| — | GrowGroup（h.kaba@grow-group.jp）所有のシート・レポート | — | 該当なし | 影響なし | — |
+
+確認できていないもの：
+- Looker Studio のレポート（Drive 検索に出ない）。Supermetrics Hub → Token management で、接続が使われているレポートを確認する
+- Kaba@cava-llc.com でだけ見えるファイル（今回の Drive 検索は grow-group.jp のアカウント）
+- Supermetrics の接続状況：GA4（GAWA）・Google 広告（AW）・Meta（FA）・Search Console（GW）は認証済みのまま。解約時にあわせて外す
 
 ---
 
@@ -173,9 +190,9 @@ A の手順：Yahoo!広告の管理画面 → ツール → スクリプト → 
 | 1 | Google 広告 API の開発者トークン申請（一番時間がかかる。すぐ着手） | 人間 |
 | 2 | 第3章（Meta 公式 MCP） | 人間 |
 | 3 | 第4章（Google Cloud 準備 → `setup-ads-mcp.ps1` → 4.3 の動作確認） | 人間＋Claude |
-| 4 | 第5章（Supermetrics 解約の準備と解約、CLAUDE.md 更新） | 人間 |
+| 4 | 第5章（Supermetrics 解約）。棚卸しと CLAUDE.md 更新は 2026-10-15 に済。残りは 5.1 の CAVA 分の付け替えと解約 | 人間 |
 | 5 | 第6章 A（Yahoo!広告スクリプト） | 人間 |
-| 6 | AGENTS.md 第2章の環境スクリプト表に `setup-ads-mcp` と `google_ads_ops_mcp.py` を追記（AGENTS.md は人間のみ編集） | 人間 |
+| 6 | AGENTS.md 第2章の環境スクリプト表に `setup-ads-mcp` と `google_ads_ops_mcp.py` を追記 | 済（2026-10-15・人間の指示で Claude） |
 | 7 | 回ったら第7章を Skill `gg-ad-ops` にする（`skills/` と AGENTS.md 第5章の更新が要るので承認後） | Claude |
 | 8 | `google-ads-ops` に追加したい操作（入札戦略・広告文の入稿など）が出たら足す | Claude |
 

@@ -47,6 +47,8 @@ AI エージェント2種で分担して生成・検証する。エンジニア�
 | `scripts\setup-orca-pipeline.ps1`（Windows のみ） | Orca に定期実行「gg handoff pipeline」（15分ごと）を登録 |
 | `node scripts/handoff-scan.mjs --check / --next / --release / --list` | 依頼書（status: ready）の検出と着手記録。Orca の定期実行から使う |
 | `node scripts/codex-stop.mjs`（Codex の Stop フックから自動実行） | Codex が `②完了` で終えたら、同じ作業フォルダで ③ Claude Code を起動（Orca のターミナル、無ければ新しいコンソール） |
+| `scripts\setup-ads-mcp.ps1` / `bash scripts/setup-ads-mcp.sh` | 広告・解析の MCP（`google-ads` / `google-ads-ops` / `google-analytics` / `meta-ads`）を Claude Code に登録（`references/mcp-ad-ops.md` 第4章） |
+| `scripts/google_ads_ops_mcp.py`（MCP サーバー・直接は実行しない） | Google 広告の日予算・停止/再開・キーワード・除外キーワードを propose → apply の2段階で変更する自作 MCP |
 | `python scripts/check-skills-table.py` | 第5章の一覧表と `skills/` の実体が一致しているか検証 |
 | `python scripts/find-skill-script.py <skill> <スクリプト>` | Skill 同梱スクリプトの実パスを解決（環境ごとに置き場所が違うため直書きしない） |
 | `python scripts/check-skill-assets.py` | SKILL.md が参照する assets / scripts / references が実在するか検証 |
@@ -159,3 +161,4 @@ Codex は Skill を自動読込しない。該当する作業のときは以下�
 | 2026-09-28 | 第2章 `orca-context.mjs` に `--on-prompt`（ワイヤー依頼時に Orca を自動起動）を追記 |
 | 2026-09-28 | 第4章の分担を改定（①Claude 整理 → ②Codex 作成 → ③Claude Code チェック）。第2章に `setup-orca-pipeline.ps1` `handoff-scan.mjs`、第5章に `gg-handoff` |
 | 2026-10-03 | 第4章に Codex（②）へのルール（終了時に `②完了`）を追加。②の終了で ③ を自動起動（`.codex/hooks.json`、`codex-stop.mjs`）。第2章に追記 |
+| 2026-10-15 | 第2章に `setup-ads-mcp` と `google_ads_ops_mcp.py` を追加（Supermetrics 解約に伴う広告 MCP 構成） |
